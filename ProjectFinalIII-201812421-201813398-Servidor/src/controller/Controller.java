@@ -1,9 +1,13 @@
 package controller;
 
+import java.net.ServerSocket;
+
 public class Controller {
 	
-	public static void main(String[] args) {
-		System.out.println("DevelopManuel");
+	private ServerSocket serverSocket;
+	private String PORT;
+	
+	public Controller() {
+		
 	}
-
 }
