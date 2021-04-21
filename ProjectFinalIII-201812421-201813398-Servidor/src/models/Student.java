@@ -1,7 +1,6 @@
 package models;
 
 import structures.AVLTree;
-import models.*;
 
 public class Student extends User{
 	
@@ -16,9 +15,9 @@ public class Student extends User{
 		
 	}
 	
-	public Course getCourse(String nameCourse) {
-		
-	}
+//	public Course getCourse(String nameCourse) {
+//		return new Course();
+//	}
 	
 	public AVLTree<Course> getCourseList(){
 		return courseTree;
@@ -28,11 +27,11 @@ public class Student extends User{
 		
 	}
 	
-	public ExternalActivity getExternalActivity(String nameExActivity) {
-		
-	}
+//	public ExternalActivity getExternalActivity(String nameExActivity) {
+//		
+//	}
 	
-	public AVLTree<ExternalActivity> getExternalActivity(){
+	public AVLTree<Activity> getExternalActivity(){
 		return externalActivitiesTree;
 	}
 
