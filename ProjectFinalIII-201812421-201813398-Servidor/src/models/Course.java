@@ -1,4 +1,4 @@
-package models;
+                                    package models;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -56,8 +56,6 @@ public class Course extends Activity{
 	
 	public Comparator<Homework> homeworkComparator(){
 		return new Comparator<Homework>() {
-
-			@Override
 			public int compare(Homework homeworkOne, Homework homeworkTwo) {
 				int compare = homeworkOne.getNameHomework().compareToIgnoreCase(homeworkTwo.getNameHomework());
 				if(compare == 0) {
