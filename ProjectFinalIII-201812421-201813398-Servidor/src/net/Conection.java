@@ -15,6 +15,6 @@ public class Conection {
 	}
 
 	public String receiveUTF() {
-		return "-";
+		return " ";
 	}
 }
