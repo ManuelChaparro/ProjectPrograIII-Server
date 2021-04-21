@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 import structures.DoubleList;
@@ -11,6 +12,11 @@ public class Course extends Activity{
 	
 	public Course(String nameCourse, String descriptionCourse, String scheduleCourse) {
 		super(nameCourse, descriptionCourse, scheduleCourse);
+		homeworkList = new DoubleList<Homework>(homeworkComparator());
+	}
+	
+	public Course(String nameCourse) {
+		super(nameCourse);
 	}
 
 	public String getNameCourseTeacher() {
@@ -48,5 +54,18 @@ public class Course extends Activity{
 		return null;
 	}
 	
-	
+	public Comparator<Homework> homeworkComparator(){
+		return new Comparator<Homework>() {
+
+			@Override
+			public int compare(Homework homeworkOne, Homework homeworkTwo) {
+				int compare = homeworkOne.getNameHomework().compareToIgnoreCase(homeworkTwo.getNameHomework());
+				if(compare == 0) {
+					return 0;
+				}else {
+					return 1;
+				}
+			}
+		};
+	}
 }

@@ -11,6 +11,10 @@ public class Activity {
 		this.descriptionActivity = descriptionActivity;
 		this.scheduleActivity = scheduleActivity;
 	}
+	
+	public Activity(String nameActivity) {
+		this.nameActivity = nameActivity;
+	}
 
 	public String getNameActivity() {
 		return nameActivity;
