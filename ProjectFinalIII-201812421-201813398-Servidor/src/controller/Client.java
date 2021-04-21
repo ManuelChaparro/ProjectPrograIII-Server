@@ -1,10 +1,12 @@
 package controller;
 
 import java.net.Socket;
+import net.Conection;
 
 public class Client extends Thread{
 	
-	
+	private Conection conection;
+//	private ModelsManager modelsManager;
 	private Socket socketClient;
 	private int userCode;
 	

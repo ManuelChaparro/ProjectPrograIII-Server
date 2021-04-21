@@ -17,4 +17,20 @@ public class Conection {
 	public String receiveUTF() {
 		return " ";
 	}
+	
+	public void sendUTF(String info) {
+		
+	}
+	
+	public boolean receiveBoolean() {
+		return true;
+	}
+	
+	public void sendBoolean(boolean info) {
+		
+	}
+	
+	public void closeConection() {
+		
+	}
 }
