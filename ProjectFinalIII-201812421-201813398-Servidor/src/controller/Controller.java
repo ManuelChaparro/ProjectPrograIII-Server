@@ -6,6 +6,9 @@ public class Controller {
 		System.out.println("Ahora si xd");
 		System.out.println("DevelopManuel");
 		System.out.println("DevelopLucho");
+		System.out.println("DevelopLucho");
+		System.out.println("DevelopLucho");
+		System.out.println("DevelopLucho");
 	}
 
 }
