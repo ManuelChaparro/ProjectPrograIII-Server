@@ -18,6 +18,7 @@ public class ModelsManager {
 		studentTree = new AVLTree<Student>(studentComparator());
 		teacherTree = new AVLTree<Teacher>(teacherComparator());
 		courseGeneralList = new DoubleList<Course>(courseGeneralComparator());
+		gsonManager = new GSONFileManager();
 	}
 
 	public void createStudent(String nameStudent, String code, String password) throws Exception {
@@ -56,7 +57,7 @@ public class ModelsManager {
 		}
 	}
 
-	// metodo unicamente para crear y añadir asignatura a la lista general de
+	// metodo unicamente para crear y aï¿½adir asignatura a la lista general de
 	// asignaturas.
 	public void addCourseGeneralList(Course course) throws Exception {
 		if (!courseGeneralList.exist(course)) {
@@ -105,9 +106,10 @@ public class ModelsManager {
 			ExternalActivity exActivity = new ExternalActivity(nameExActivity, descriptionExActivity,
 					scheduleExActivity);
 			while (itStudent.hasNext()) {
-				if (itStudent.next().getCode().equalsIgnoreCase(codeUser)) {
-					if (!itStudent.next().getExternalActivityList().isIntoTree(exActivity)) {
-						itStudent.next().addExternalActivity(exActivity);
+				Student nextStudent = itStudent.next();
+				if (nextStudent.getCode().equalsIgnoreCase(codeUser)) {
+					if (!nextStudent.getExternalActivityList().isIntoTree(exActivity)) {
+						nextStudent.addExternalActivity(exActivity);
 					}
 				}
 			}
@@ -136,11 +138,13 @@ public class ModelsManager {
 		Iterator<Student> itStudent = studentTree.inOrder();
 		if (studentTree.isIntoTree(new Student(codeUser))) {
 			while (itStudent.hasNext()) {
-				if (itStudent.next().getCode().equalsIgnoreCase(codeUser)) {
-					Iterator<Course> itCourse = itStudent.next().getCourseList().inOrder();
+				Student newStudent = itStudent.next();
+				if (newStudent.getCode().equalsIgnoreCase(codeUser)) {
+					Iterator<Course> itCourse = newStudent.getCourseList().inOrder();
 					while (itCourse.hasNext()) {
-						if (itCourse.next().getNameActivity().equalsIgnoreCase(nameCourse)) {
-							Iterator<Homework> itHomework = itCourse.next().getHomeworkList().iterator();
+						Course newCourse = itCourse.next();
+						if (newCourse.getNameActivity().equalsIgnoreCase(nameCourse)) {
+							Iterator<Homework> itHomework = newCourse.getHomeworkList().iterator();
 							while (itHomework.hasNext()) {
 								quantityCalification++;
 								sumatoryCalification += itHomework.next().getCalification();
@@ -165,8 +169,9 @@ public class ModelsManager {
 		Iterator<Student> itStudent = studentTree.inOrder();
 		if (studentTree.isIntoTree(new Student(codeUser))) {
 			while (itStudent.hasNext()) {
-				if (itStudent.next().getCode().equalsIgnoreCase(codeUser)) {
-					Iterator<Course> itCourse = itStudent.next().getCourseList().inOrder();
+				Student actualStudent = itStudent.next();
+				if (actualStudent.getCode().equalsIgnoreCase(codeUser)) {
+					Iterator<Course> itCourse = actualStudent.getCourseList().inOrder();
 					while (itCourse.hasNext()) {
 						quantityCourses++;
 						sumatoryCalification += calculateAvgCourseCalification(codeUser,
@@ -187,13 +192,11 @@ public class ModelsManager {
 	}
 
 	public void manageCourseAdmin() {
-
+		
 	}
 
 	private Comparator<Student> studentComparator() {
 		return new Comparator<Student>() {
-
-			@Override
 			public int compare(Student studentOne, Student studentTwo) {
 				int compare = studentOne.getCode().compareToIgnoreCase(studentTwo.getCode());
 				if (compare < 0) {
@@ -209,8 +212,6 @@ public class ModelsManager {
 
 	private Comparator<Teacher> teacherComparator() {
 		return new Comparator<Teacher>() {
-
-			@Override
 			public int compare(Teacher teacherOne, Teacher teacherTwo) {
 				int compare = teacherOne.getCode().compareToIgnoreCase(teacherTwo.getCode());
 				if (compare < 0) {
@@ -226,8 +227,6 @@ public class ModelsManager {
 
 	private Comparator<Course> courseGeneralComparator() {
 		return new Comparator<Course>() {
-
-			@Override
 			public int compare(Course courseOne, Course courseTwo) {
 				int compare = courseOne.getNameActivity().compareToIgnoreCase(courseTwo.getNameActivity());
 				if (compare == 0) {
