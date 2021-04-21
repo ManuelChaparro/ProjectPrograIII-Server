@@ -21,7 +21,7 @@ public class Student extends User{
 	}
 	
 	public AVLTree<Course> getCourseList(){
-		
+		return courseTree;
 	}
 	
 	public void addExternalActivity(ExternalActivity externalActivity) {
@@ -33,7 +33,7 @@ public class Student extends User{
 	}
 	
 	public AVLTree<ExternalActivity> getExternalActivity(){
-		
+		return externalActivitiesTree;
 	}
 
 	public String toString() {
