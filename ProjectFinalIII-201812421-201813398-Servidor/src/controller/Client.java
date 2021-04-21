@@ -1,12 +1,16 @@
 package controller;
 
 import java.net.Socket;
+import net.Conection;
 
 public class Client extends Thread{
 	
+	private Conection conection;
+//	private ModelsManager modelsManager;
 	private Socket socketClient;
+	private int userCode;
 	
-	public Client() {
+	public Client(Socket socket) {
 		
 	}
 	
@@ -14,5 +18,31 @@ public class Client extends Thread{
 		
 	}
 	
-
+	private void initApp() {
+		
+	}
+	
+	private void createUser() {
+		
+	}
+	
+	private void manageCourseUser() {
+		
+	}
+	
+	private void manageActivities() {
+		
+	}
+	
+	private void getClassSchedule() {
+		
+	}
+	
+	private void getAvgCalification(){
+		
+	}
+	
+	private void manageCourseAdmin() {
+		
+	}
 }
