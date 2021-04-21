@@ -1,8 +1,9 @@
 package structures;
 
 import java.util.Comparator;
+import java.util.Iterator;
 
-public class DoubleList<T> {
+public class DoubleList<T> implements Iterable<T>{
 	private Node<T> head;
 	private Comparator<T> comparator;
 
@@ -41,7 +42,7 @@ public class DoubleList<T> {
 			return false;
 		}
 	}
-
+	
 	public boolean isEmpty() {
 		return head == null ? true : false;
 	}
@@ -97,5 +98,24 @@ public class DoubleList<T> {
 		} else {
 			return listMessage;
 		}
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new Iterator<T>() {
+			Node<T> actual = head;
+
+			@Override
+			public boolean hasNext() {
+				return actual != null;
+			}
+
+			@Override
+			public T next() {
+				T data = actual.getData();
+				actual = actual.getRightNode();
+				return data;
+			}
+		};
 	}
 }
