@@ -23,32 +23,32 @@ public class ModelsManager {
 		
 	}
 	
-	public Student getStudent(String code) {
-		
-	}
-	
-	public Teacher getTeacher(String code) {
-		
-	}
+//	public Student getStudent(String code) {
+//		
+//	}
+//	
+//	public Teacher getTeacher(String code) {
+//		
+//	}
 	
 	public void addCourse(Course course) {
 		
 	}
 	
-	public Course getCourse(String nameCourse) {
-		
-	}
+//	public Course getCourse(String nameCourse) {
+//		
+//	}
 	
 	public void addExternalActivity(String nameExActivity, String description, String schedule) {
 		
 	}
 	
-	public ExternalActivity getExternalActivity(String nameExActivity) {
-		
-	}
+//	public ExternalActivity getExternalActivity(String nameExActivity) {
+//		
+//	}
 	
 	public double calculateAvgCalification(String code) {
-		
+		return 0;
 	}
 	
 	public void addCourseGeneralList(Course course) {
@@ -56,7 +56,7 @@ public class ModelsManager {
 	}
 	
 	public DoubleList<Course> getCourseGeneralList(){
-		
+		return courseGeneralList;
 	}
 	
 	public void manageCourseAdmin() {

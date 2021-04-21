@@ -9,6 +9,6 @@ public class GSONFileManager {
 	}
 	
 	public Object readFile() {
-		
+		return new Object();
 	}
 }
