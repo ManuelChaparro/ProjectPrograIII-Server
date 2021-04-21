@@ -35,7 +35,7 @@ public class Course extends Activity{
 		homeworkList.remove(new Homework(nameHomework));
 	}
 
-	public void modifyHomework(String nameHomework, String annotation, double calification) {
+	public void modifyHomework(String nameHomework, String annotation, double calification) throws Exception {
 		getHomework(nameHomework).setAnnotation(annotation);
 		getHomework(nameHomework).setCalification(calification);
 	}
@@ -44,14 +44,14 @@ public class Course extends Activity{
 		return homeworkList;
 	}
 	
-	public Homework getHomework(String nameHomework) {
+	public Homework getHomework(String nameHomework) throws Exception {
 		Iterator<Homework> it = homeworkList.iterator();
 		while (it.hasNext()) {
 			if(it.next().getNameHomework().equalsIgnoreCase(nameHomework)) {
 				return it.next();
 			}
 		}
-		return null;
+		throw new Exception("La tarea que busca no existe.");
 	}
 	
 	public Comparator<Homework> homeworkComparator(){
