@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 import structures.DoubleList;
@@ -11,6 +12,11 @@ public class Course extends Activity{
 	
 	public Course(String nameCourse, String descriptionCourse, String scheduleCourse) {
 		super(nameCourse, descriptionCourse, scheduleCourse);
+		homeworkList = new DoubleList<Homework>(homeworkComparator());
+	}
+	
+	public Course(String nameCourse) {
+		super(nameCourse);
 	}
 
 	public String getNameCourseTeacher() {
@@ -29,7 +35,7 @@ public class Course extends Activity{
 		homeworkList.remove(new Homework(nameHomework));
 	}
 
-	public void modifyHomework(String nameHomework, String annotation, double calification) {
+	public void modifyHomework(String nameHomework, String annotation, double calification) throws Exception {
 		getHomework(nameHomework).setAnnotation(annotation);
 		getHomework(nameHomework).setCalification(calification);
 	}
@@ -38,15 +44,28 @@ public class Course extends Activity{
 		return homeworkList;
 	}
 	
-	public Homework getHomework(String nameHomework) {
+	public Homework getHomework(String nameHomework) throws Exception {
 		Iterator<Homework> it = homeworkList.iterator();
 		while (it.hasNext()) {
 			if(it.next().getNameHomework().equalsIgnoreCase(nameHomework)) {
 				return it.next();
 			}
 		}
-		return null;
+		throw new Exception("La tarea que busca no existe.");
 	}
 	
-	
+	public Comparator<Homework> homeworkComparator(){
+		return new Comparator<Homework>() {
+
+			@Override
+			public int compare(Homework homeworkOne, Homework homeworkTwo) {
+				int compare = homeworkOne.getNameHomework().compareToIgnoreCase(homeworkTwo.getNameHomework());
+				if(compare == 0) {
+					return 0;
+				}else {
+					return 1;
+				}
+			}
+		};
+	}
 }

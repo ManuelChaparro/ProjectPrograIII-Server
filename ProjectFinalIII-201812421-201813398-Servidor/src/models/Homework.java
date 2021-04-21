@@ -38,6 +38,5 @@ public class Homework {
 
 	public void setCalification(double calification) {
 		this.calification = calification;
-	}
-	
+	}	
 }
