@@ -1,17 +1,17 @@
 package models;
 
-public class Teacher extends User{
+public class Teacher extends User {
 
-	public Teacher(String nameUser, String code, String password) {
-		super(nameUser, code, password);
+	public Teacher(String nameTeacher, String codeTeacher, String password) {
+		super(nameTeacher, codeTeacher, password);
 	}
-	
-	public Teacher(String code) {
-		super(code);
+
+	public Teacher(String codeTeacher) {
+		super(codeTeacher);
 	}
 
 	public String toString() {
-		return "Teacher [getNameUser()=" + getNameUser() + ", getCode()=" + getCode() + ", getPassword()="
+		return "Teacher [getNameUser()=" + getNameUser() + ", getCode()=" + getCodeUser() + ", getPassword()="
 				+ getPassword() + ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()="
 				+ hashCode() + "]";
 	}
