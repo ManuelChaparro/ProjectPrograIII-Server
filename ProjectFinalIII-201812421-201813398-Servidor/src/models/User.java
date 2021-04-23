@@ -1,19 +1,19 @@
 package models;
 
 public class User {
-	
+
 	private String nameUser;
-	private String code;
+	private String codeUser;
 	private String password;
-	
-	public User(String nameUser, String code, String password) {
+
+	public User(String nameUser, String codeUser, String password) {
 		this.nameUser = nameUser;
-		this.code = code;
+		this.codeUser = codeUser;
 		this.password = password;
 	}
-	
-	public User(String code) {
-		this.code = code;
+
+	public User(String codeUser) {
+		this.codeUser = codeUser;
 	}
 
 	public String getNameUser() {
@@ -24,12 +24,12 @@ public class User {
 		this.nameUser = nameUser;
 	}
 
-	public String getCode() {
-		return code;
+	public String getCodeUser() {
+		return codeUser;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setCodeUser(String code) {
+		this.codeUser = code;
 	}
 
 	public String getPassword() {
@@ -41,6 +41,6 @@ public class User {
 	}
 
 	public String toString() {
-		return "User [nameUser=" + nameUser + ", code=" + code + ", password=" + password + "]";
+		return "User [nameUser=" + nameUser + ", code=" + codeUser + ", password=" + password + "]";
 	}
 }

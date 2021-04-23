@@ -9,16 +9,16 @@ public class Student extends User {
 	private AVLTree<Course> courseTree;
 	private AVLTree<ExternalActivity> externalActivitiesTree;
 
-	public Student(String nameUser, String code, String password) {
-		super(nameUser, code, password);
+	public Student(String nameStudent, String codeStudent, String password) {
+		super(nameStudent, codeStudent, password);
 		courseTree = new AVLTree<Course>(courseComparator());
 		externalActivitiesTree = new AVLTree<ExternalActivity>(exActivityComparator());
 		courseTree.createTree();
 		externalActivitiesTree.createTree();
 	}
-	
-	public Student(String code) {
-		super(code);
+
+	public Student(String codeStudent) {
+		super(codeStudent);
 	}
 
 	public void addCourse(Course course) throws Exception {
@@ -78,7 +78,7 @@ public class Student extends User {
 			}
 		};
 	}
-	
+
 	private Comparator<ExternalActivity> exActivityComparator() {
 		return new Comparator<ExternalActivity>() {
 			@Override
@@ -96,7 +96,7 @@ public class Student extends User {
 	}
 
 	public String toString() {
-		return "Student [getNameUser()=" + getNameUser() + ", getCode()=" + getCode() + ", getPassword()="
+		return "Student [getNameUser()=" + getNameUser() + ", getCode()=" + getCodeUser() + ", getPassword()="
 				+ getPassword() + ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()="
 				+ hashCode() + "]";
 	}

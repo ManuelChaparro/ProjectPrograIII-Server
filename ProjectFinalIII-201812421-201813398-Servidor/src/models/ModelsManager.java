@@ -21,8 +21,8 @@ public class ModelsManager {
 		gsonManager = new GSONFileManager();
 	}
 
-	public void createStudent(String nameStudent, String code, String password) throws Exception {
-		Student student = new Student(nameStudent, code, password);
+	public void createStudent(String nameStudent, String codeStudent, String password) throws Exception {
+		Student student = new Student(nameStudent, codeStudent, password);
 		if (!studentTree.isIntoTree(student)) {
 			studentTree.insert(student);
 		} else {
@@ -30,8 +30,8 @@ public class ModelsManager {
 		}
 	}
 
-	public void createTeacher(String nameTeacher, String code, String password) throws Exception {
-		Teacher teacher = new Teacher(nameTeacher, code, password);
+	public void createTeacher(String nameTeacher, String codeTeacher, String password) throws Exception {
+		Teacher teacher = new Teacher(nameTeacher, codeTeacher, password);
 		if (!teacherTree.isIntoTree(teacher)) {
 			teacherTree.insert(teacher);
 		} else {
@@ -39,8 +39,8 @@ public class ModelsManager {
 		}
 	}
 
-	public Student getStudent(String code) throws Exception {
-		Student student = new Student(code);
+	public Student getStudent(String codeStudent) throws Exception {
+		Student student = new Student(codeStudent);
 		if (studentTree.isIntoTree(student)) {
 			return studentTree.findNode(student).getData();
 		} else {
@@ -48,8 +48,8 @@ public class ModelsManager {
 		}
 	}
 
-	public Teacher getTeacher(String code) throws Exception {
-		Teacher teacher = new Teacher(code);
+	public Teacher getTeacher(String codeTeacher) throws Exception {
+		Teacher teacher = new Teacher(codeTeacher);
 		if (teacherTree.isIntoTree(teacher)) {
 			return teacherTree.findNode(teacher).getData();
 		} else {
@@ -82,9 +82,9 @@ public class ModelsManager {
 	}
 
 	// metodo nuevo para asignar al estudiante la respectiva asignatura
-	public void assignStudentCourse(String codeUser, String nameCourse) throws Exception {
+	public void assignStudentCourse(String codeStudent, String nameCourse) throws Exception {
 		Iterator<Course> itCourse = courseGeneralList.iterator();
-		Student student = new Student(codeUser);
+		Student student = new Student(codeStudent);
 		if (courseGeneralList.exist(new Course(nameCourse))) {
 			while (itCourse.hasNext()) {
 				if (itCourse.next().getNameActivity().equalsIgnoreCase(nameCourse)) {
@@ -98,48 +98,48 @@ public class ModelsManager {
 
 	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
 	// asignarle una actividad externa.
-	public void addExternalActivity(String codeUser, String nameExActivity, String descriptionExActivity,
+	public void addExternalActivity(String codeStudent, String nameExActivity, String descriptionExActivity,
 			String scheduleExActivity) throws Exception {
 		Iterator<Student> itStudent = studentTree.inOrder();
-		Student student = new Student(codeUser);
+		Student student = new Student(codeStudent);
 		if (studentTree.isIntoTree(student)) {
 			ExternalActivity exActivity = new ExternalActivity(nameExActivity, descriptionExActivity,
 					scheduleExActivity);
 			while (itStudent.hasNext()) {
 				Student nextStudent = itStudent.next();
-				if (nextStudent.getCode().equalsIgnoreCase(codeUser)) {
+				if (nextStudent.getCodeUser().equalsIgnoreCase(codeStudent)) {
 					if (!nextStudent.getExternalActivityList().isIntoTree(exActivity)) {
 						nextStudent.addExternalActivity(exActivity);
 					}
 				}
 			}
 		} else {
-			throw new Exception("No existe estudiante con codigo: " + codeUser);
+			throw new Exception("No existe estudiante con codigo: " + codeStudent);
 		}
 	}
 
 	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
 	// obtener una actividad externa especifica.
-	public ExternalActivity getExternalActivity(String codeUser, String nameExActivity) throws Exception {
+	public ExternalActivity getExternalActivity(String codeStudent, String nameExActivity) throws Exception {
 		Iterator<Student> itStudent = studentTree.inOrder();
 		while (itStudent.hasNext()) {
-			if (itStudent.next().getCode().equalsIgnoreCase(codeUser)) {
+			if (itStudent.next().getCodeUser().equalsIgnoreCase(codeStudent)) {
 				return itStudent.next().getExternalActivity(nameExActivity);
 			}
 		}
-		throw new Exception("No existe un estudiante con codigo: " + codeUser);
+		throw new Exception("No existe un estudiante con codigo: " + codeStudent);
 	}
 
 	// Metodo para calcular el promedio de notas para la asignatura que se quiera.
-	public double calculateAvgCourseCalification(String codeUser, String nameCourse) throws Exception {
+	public double calculateAvgCourseCalification(String codeStudent, String nameCourse) throws Exception {
 		double result = 0;
 		double sumatoryCalification = 0;
 		int quantityCalification = 0;
 		Iterator<Student> itStudent = studentTree.inOrder();
-		if (studentTree.isIntoTree(new Student(codeUser))) {
+		if (studentTree.isIntoTree(new Student(codeStudent))) {
 			while (itStudent.hasNext()) {
 				Student newStudent = itStudent.next();
-				if (newStudent.getCode().equalsIgnoreCase(codeUser)) {
+				if (newStudent.getCodeUser().equalsIgnoreCase(codeStudent)) {
 					Iterator<Course> itCourse = newStudent.getCourseList().inOrder();
 					while (itCourse.hasNext()) {
 						Course newCourse = itCourse.next();
@@ -156,25 +156,25 @@ public class ModelsManager {
 				}
 			}
 		} else {
-			throw new Exception("No existe estudiante con codigo: " + codeUser);
+			throw new Exception("No existe estudiante con codigo: " + codeStudent);
 		}
 		return result;
 	}
 
 	// Metodo para calcular el promedio general de un estudiante.
-	public double calculateTotalAvgCalification(String codeUser) throws Exception {
+	public double calculateTotalAvgCalification(String codeStudent) throws Exception {
 		double result = 0;
 		double sumatoryCalification = 0;
 		int quantityCourses = 0;
 		Iterator<Student> itStudent = studentTree.inOrder();
-		if (studentTree.isIntoTree(new Student(codeUser))) {
+		if (studentTree.isIntoTree(new Student(codeStudent))) {
 			while (itStudent.hasNext()) {
 				Student actualStudent = itStudent.next();
-				if (actualStudent.getCode().equalsIgnoreCase(codeUser)) {
+				if (actualStudent.getCodeUser().equalsIgnoreCase(codeStudent)) {
 					Iterator<Course> itCourse = actualStudent.getCourseList().inOrder();
 					while (itCourse.hasNext()) {
 						quantityCourses++;
-						sumatoryCalification += calculateAvgCourseCalification(codeUser,
+						sumatoryCalification += calculateAvgCourseCalification(codeStudent,
 								itCourse.next().getNameActivity());
 					}
 					result = sumatoryCalification / quantityCourses;
@@ -182,7 +182,7 @@ public class ModelsManager {
 				}
 			}
 		} else {
-			throw new Exception("No existe estudiante con codigo: " + codeUser);
+			throw new Exception("No existe estudiante con codigo: " + codeStudent);
 		}
 		return result;
 	}
@@ -191,14 +191,10 @@ public class ModelsManager {
 		return courseGeneralList;
 	}
 
-	public void manageCourseAdmin() {
-		
-	}
-
 	private Comparator<Student> studentComparator() {
 		return new Comparator<Student>() {
 			public int compare(Student studentOne, Student studentTwo) {
-				int compare = studentOne.getCode().compareToIgnoreCase(studentTwo.getCode());
+				int compare = studentOne.getCodeUser().compareToIgnoreCase(studentTwo.getCodeUser());
 				if (compare < 0) {
 					return 1;
 				} else if (compare == 0) {
@@ -213,7 +209,7 @@ public class ModelsManager {
 	private Comparator<Teacher> teacherComparator() {
 		return new Comparator<Teacher>() {
 			public int compare(Teacher teacherOne, Teacher teacherTwo) {
-				int compare = teacherOne.getCode().compareToIgnoreCase(teacherTwo.getCode());
+				int compare = teacherOne.getCodeUser().compareToIgnoreCase(teacherTwo.getCodeUser());
 				if (compare < 0) {
 					return 1;
 				} else if (compare == 0) {
