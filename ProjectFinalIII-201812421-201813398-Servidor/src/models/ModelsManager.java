@@ -82,17 +82,29 @@ public class ModelsManager {
 	}
 
 	// metodo nuevo para asignar al estudiante la respectiva asignatura
-	public void assignStudentCourse(String codeStudent, String nameCourse) throws Exception {
+	public void assignStudentCourse(String codeStudent, String nameCourse, String nameTeacher) throws Exception {
 		Iterator<Course> itCourse = courseGeneralList.iterator();
 		Student student = new Student(codeStudent);
 		if (courseGeneralList.exist(new Course(nameCourse))) {
 			while (itCourse.hasNext()) {
-				if (itCourse.next().getNameActivity().equalsIgnoreCase(nameCourse)) {
-					studentTree.findNode(student).getData().addCourse(itCourse.next());
+				Course course = itCourse.next();
+				if (course.getNameActivity().equalsIgnoreCase(nameCourse)
+						&& course.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
+					studentTree.findNode(student).getData().addCourse(course);
 				}
 			}
 		} else {
 			throw new Exception("La asignatura que desea inscribir no existe.");
+		}
+	}
+	
+	//metodo nuev para el caso de que el estudiante quiera cancelar la materia de su horario.
+	public void cancelStudentCourse(String codeStudent, String nameCourse) throws Exception {
+		Student student = new Student(codeStudent);
+		if(studentTree.isIntoTree(student)) {
+			studentTree.findNode(student).getData().cancelCourse(nameCourse);
+		}else {
+			throw new Exception("El estudiante no existe.");
 		}
 	}
 
@@ -185,6 +197,22 @@ public class ModelsManager {
 			throw new Exception("No existe estudiante con codigo: " + codeStudent);
 		}
 		return result;
+	}
+
+	public void assignCourseTeacher(String codeTeacher, String nameCourse, String descriptionCourse,
+			String schedulerCourse) throws Exception {
+		Iterator<Course> itCourse = courseGeneralList.iterator();
+		if (courseGeneralList.exist(new Course(nameCourse))) {
+			while (itCourse.hasNext()) {
+				Course course = itCourse.next();
+				if (course.getNameActivity().equalsIgnoreCase(nameCourse)
+						&& !course.getNameCourseTeacher().equalsIgnoreCase(getTeacher(codeTeacher).getNameUser())) {
+					courseGeneralList.insert(new Course(course.getNameActivity(), descriptionCourse, schedulerCourse));
+				}
+			}
+		} else {
+			throw new Exception("La asignatura que desea inscribir no existe.");
+		}
 	}
 
 	public DoubleList<Course> getCourseGeneralList() {

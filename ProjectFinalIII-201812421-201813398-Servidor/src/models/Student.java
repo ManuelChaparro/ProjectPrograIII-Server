@@ -28,6 +28,15 @@ public class Student extends User {
 			throw new Exception("La asignatura que desea inscribir ya existe.");
 		}
 	}
+	
+	public void cancelCourse(String nameCourse) throws Exception {
+		Course course = new Course(nameCourse);
+		if (courseTree.isIntoTree(course)) {
+			courseTree.deleteNode(course);
+		}else {
+			throw new Exception("La asignatura que desea eliminar, no ha sido inscrita.");
+		}
+	}
 
 	public Course getCourse(String nameCourse) throws Exception {
 		Course course = new Course(nameCourse);
