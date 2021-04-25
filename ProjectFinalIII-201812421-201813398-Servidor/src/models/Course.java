@@ -13,6 +13,7 @@ public class Course extends Activity {
 	public Course(String nameCourse, String descriptionCourse, String scheduleCourse) {
 		super(nameCourse, descriptionCourse, scheduleCourse);
 		homeworkList = new DoubleList<Homework>(homeworkComparator());
+		this.nameCourseTeacher = "";
 	}
 
 	public Course(String nameCourse) {
