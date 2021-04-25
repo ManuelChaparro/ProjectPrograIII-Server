@@ -36,8 +36,11 @@ public class Course extends Activity {
 		homeworkList.remove(new Homework(nameHomework));
 	}
 
-	public void modifyHomework(String nameHomework, String annotation, double calification) throws Exception {
+	public void modifyHomeworkAnnotation(String nameHomework, String annotation) throws Exception {
 		getHomework(nameHomework).setAnnotation(annotation);
+	}
+	
+	public void modifyHomeworkCalification(String nameHomework, double calification) throws Exception {
 		getHomework(nameHomework).setCalification(calification);
 	}
 
