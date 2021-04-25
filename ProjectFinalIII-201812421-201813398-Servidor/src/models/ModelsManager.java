@@ -71,8 +71,9 @@ public class ModelsManager {
 		if (courseGeneralList.exist(new Course(nameCourse))) {
 			Iterator<Course> itCourse = courseGeneralList.iterator();
 			while (itCourse.hasNext()) {
-				if (itCourse.next().getNameActivity().equalsIgnoreCase(nameCourse)) {
-					return itCourse.next();
+				Course course = itCourse.next();
+				if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
+					return course;
 				}
 			}
 		} else {
@@ -84,50 +85,31 @@ public class ModelsManager {
 	// metodo nuevo para asignar al estudiante la respectiva asignatura
 	public void assignStudentCourse(String codeStudent, String nameCourse, String nameTeacher) throws Exception {
 		Iterator<Course> itCourse = courseGeneralList.iterator();
-		Student student = new Student(codeStudent);
 		if (courseGeneralList.exist(new Course(nameCourse))) {
 			while (itCourse.hasNext()) {
 				Course course = itCourse.next();
 				if (course.getNameActivity().equalsIgnoreCase(nameCourse)
 						&& course.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
-					studentTree.findNode(student).getData().addCourse(course);
+					getStudent(codeStudent).addCourse(course);
 				}
 			}
 		} else {
 			throw new Exception("La asignatura que desea inscribir no existe.");
 		}
 	}
-	
-	//metodo nuev para el caso de que el estudiante quiera cancelar la materia de su horario.
+
+	// metodo nuevO para el caso de que el estudiante quiera cancelar la materia de
+	// su horario.
 	public void cancelStudentCourse(String codeStudent, String nameCourse) throws Exception {
-		Student student = new Student(codeStudent);
-		if(studentTree.isIntoTree(student)) {
-			studentTree.findNode(student).getData().cancelCourse(nameCourse);
-		}else {
-			throw new Exception("El estudiante no existe.");
-		}
+		getStudent(codeStudent).cancelCourse(nameCourse);
 	}
 
 	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
 	// asignarle una actividad externa.
 	public void addExternalActivity(String codeStudent, String nameExActivity, String descriptionExActivity,
 			String scheduleExActivity) throws Exception {
-		Iterator<Student> itStudent = studentTree.inOrder();
-		Student student = new Student(codeStudent);
-		if (studentTree.isIntoTree(student)) {
-			ExternalActivity exActivity = new ExternalActivity(nameExActivity, descriptionExActivity,
-					scheduleExActivity);
-			while (itStudent.hasNext()) {
-				Student nextStudent = itStudent.next();
-				if (nextStudent.getCodeUser().equalsIgnoreCase(codeStudent)) {
-					if (!nextStudent.getExternalActivityList().isIntoTree(exActivity)) {
-						nextStudent.addExternalActivity(exActivity);
-					}
-				}
-			}
-		} else {
-			throw new Exception("No existe estudiante con codigo: " + codeStudent);
-		}
+		ExternalActivity exActivity = new ExternalActivity(nameExActivity, descriptionExActivity, scheduleExActivity);
+		getStudent(codeStudent).addExternalActivity(exActivity);
 	}
 
 	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
@@ -144,61 +126,15 @@ public class ModelsManager {
 
 	// Metodo para calcular el promedio de notas para la asignatura que se quiera.
 	public double calculateAvgCourseCalification(String codeStudent, String nameCourse) throws Exception {
-		double result = 0;
-		double sumatoryCalification = 0;
-		int quantityCalification = 0;
-		Iterator<Student> itStudent = studentTree.inOrder();
-		if (studentTree.isIntoTree(new Student(codeStudent))) {
-			while (itStudent.hasNext()) {
-				Student newStudent = itStudent.next();
-				if (newStudent.getCodeUser().equalsIgnoreCase(codeStudent)) {
-					Iterator<Course> itCourse = newStudent.getCourseList().inOrder();
-					while (itCourse.hasNext()) {
-						Course newCourse = itCourse.next();
-						if (newCourse.getNameActivity().equalsIgnoreCase(nameCourse)) {
-							Iterator<Homework> itHomework = newCourse.getHomeworkList().iterator();
-							while (itHomework.hasNext()) {
-								quantityCalification++;
-								sumatoryCalification += itHomework.next().getCalification();
-							}
-							result = sumatoryCalification / quantityCalification;
-							return result;
-						}
-					}
-				}
-			}
-		} else {
-			throw new Exception("No existe estudiante con codigo: " + codeStudent);
-		}
-		return result;
+		return getStudent(codeStudent).calculateAvgCourseCalification(nameCourse);
 	}
 
 	// Metodo para calcular el promedio general de un estudiante.
 	public double calculateTotalAvgCalification(String codeStudent) throws Exception {
-		double result = 0;
-		double sumatoryCalification = 0;
-		int quantityCourses = 0;
-		Iterator<Student> itStudent = studentTree.inOrder();
-		if (studentTree.isIntoTree(new Student(codeStudent))) {
-			while (itStudent.hasNext()) {
-				Student actualStudent = itStudent.next();
-				if (actualStudent.getCodeUser().equalsIgnoreCase(codeStudent)) {
-					Iterator<Course> itCourse = actualStudent.getCourseList().inOrder();
-					while (itCourse.hasNext()) {
-						quantityCourses++;
-						sumatoryCalification += calculateAvgCourseCalification(codeStudent,
-								itCourse.next().getNameActivity());
-					}
-					result = sumatoryCalification / quantityCourses;
-					return result;
-				}
-			}
-		} else {
-			throw new Exception("No existe estudiante con codigo: " + codeStudent);
-		}
-		return result;
+		return getStudent(codeStudent).calculateTotalAvgCalification();
 	}
 
+	//Metodo para que el docente pueda seleccionar la asignatura y pueda agregar descripcion y horario.
 	public void assignCourseTeacher(String codeTeacher, String nameCourse, String descriptionCourse,
 			String schedulerCourse) throws Exception {
 		Iterator<Course> itCourse = courseGeneralList.iterator();
