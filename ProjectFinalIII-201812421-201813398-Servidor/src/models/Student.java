@@ -1,6 +1,7 @@
 package models;
 
 import java.util.Comparator;
+import java.util.Iterator;
 
 import structures.AVLTree;
 
@@ -9,16 +10,16 @@ public class Student extends User {
 	private AVLTree<Course> courseTree;
 	private AVLTree<ExternalActivity> externalActivitiesTree;
 
-	public Student(String nameUser, String code, String password) {
-		super(nameUser, code, password);
+	public Student(String nameStudent, String codeStudent, String password) {
+		super(nameStudent, codeStudent, password);
 		courseTree = new AVLTree<Course>(courseComparator());
 		externalActivitiesTree = new AVLTree<ExternalActivity>(exActivityComparator());
 		courseTree.createTree();
 		externalActivitiesTree.createTree();
 	}
-	
-	public Student(String code) {
-		super(code);
+
+	public Student(String codeStudent) {
+		super(codeStudent);
 	}
 
 	public void addCourse(Course course) throws Exception {
@@ -26,6 +27,15 @@ public class Student extends User {
 			courseTree.insert(course);
 		} else {
 			throw new Exception("La asignatura que desea inscribir ya existe.");
+		}
+	}
+
+	public void cancelCourse(String nameCourse) throws Exception {
+		Course course = new Course(nameCourse);
+		if (courseTree.isIntoTree(course)) {
+			courseTree.deleteNode(course);
+		} else {
+			throw new Exception("La asignatura que desea eliminar, no ha sido inscrita.");
 		}
 	}
 
@@ -50,6 +60,20 @@ public class Student extends User {
 		}
 	}
 
+	public void modifyExternalActivityDescription(String nameExActivity, String descriptionExActivity)
+			throws Exception {
+		getExternalActivity(nameExActivity).setDescriptionActivity(descriptionExActivity);
+	}
+
+	public void deleteExternalActivity(String nameExActivity) throws Exception {
+		ExternalActivity exActivity = new ExternalActivity(nameExActivity);
+		if (externalActivitiesTree.isIntoTree(exActivity)) {
+			externalActivitiesTree.deleteNode(exActivity);
+		} else {
+			throw new Exception("La actividad externa que desea eliminar no existe.");
+		}
+	}
+
 	public ExternalActivity getExternalActivity(String nameExActivity) throws Exception {
 		ExternalActivity exActivity = new ExternalActivity(nameExActivity);
 		if (externalActivitiesTree.isIntoTree(exActivity)) {
@@ -61,6 +85,36 @@ public class Student extends User {
 
 	public AVLTree<ExternalActivity> getExternalActivityList() {
 		return externalActivitiesTree;
+	}
+
+	public double calculateAvgCourseCalification(String nameCourse) throws Exception {
+		double result = 0;
+		double sumatoryCalification = 0;
+		int quantityCalification = 0;
+		Course course = getCourse(nameCourse);
+		if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
+			Iterator<Homework> itHomework = course.getHomeworkList().iterator();
+			while (itHomework.hasNext()) {
+				quantityCalification++;
+				sumatoryCalification += itHomework.next().getCalification();
+			}
+			result = sumatoryCalification / quantityCalification;
+			return result;
+		}
+		return result;
+	}
+
+	public double calculateTotalAvgCalification() throws Exception {
+		double result = 0;
+		double sumatoryCalification = 0;
+		int quantityCourses = 0;
+		Iterator<Course> itCourse = getCourseList().inOrder();
+		while (itCourse.hasNext()) {
+			quantityCourses++;
+			sumatoryCalification += calculateAvgCourseCalification(itCourse.next().getNameActivity());
+		}
+		result = sumatoryCalification / quantityCourses;
+		return result;
 	}
 
 	private Comparator<Course> courseComparator() {
@@ -78,7 +132,7 @@ public class Student extends User {
 			}
 		};
 	}
-	
+
 	private Comparator<ExternalActivity> exActivityComparator() {
 		return new Comparator<ExternalActivity>() {
 			@Override
@@ -96,7 +150,7 @@ public class Student extends User {
 	}
 
 	public String toString() {
-		return "Student [getNameUser()=" + getNameUser() + ", getCode()=" + getCode() + ", getPassword()="
+		return "Student [getNameUser()=" + getNameUser() + ", getCode()=" + getCodeUser() + ", getPassword()="
 				+ getPassword() + ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()="
 				+ hashCode() + "]";
 	}
