@@ -15,7 +15,7 @@ import models.ModelsManager;
 public class GSONFileManager {
 	
 	private String LOCATION_FILE = "data/infoServer.json";
-	
+
 	public void writeFile(ModelsManager object) throws Exception {
 		try {
 			FileWriter fileWriter;

@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 
@@ -11,13 +12,13 @@ public class ModelsManager {
 
 	private AVLTree<Student> studentTree;
 	private AVLTree<Teacher> teacherTree;
-	private DoubleList<Course> courseGeneralList;
+	private ArrayList<Course> courseGeneralList;
 	private GSONFileManager gsonManager;
 
 	public ModelsManager() {
 		studentTree = new AVLTree<Student>(studentComparator());
 		teacherTree = new AVLTree<Teacher>(teacherComparator());
-		courseGeneralList = new DoubleList<Course>(courseGeneralComparator());
+		courseGeneralList = new ArrayList<Course>();
 		gsonManager = new GSONFileManager();
 	}
 
@@ -59,102 +60,102 @@ public class ModelsManager {
 
 	// metodo unicamente para crear y a�adir asignatura a la lista general de
 	// asignaturas.
-	public void addCourseGeneralList(Course course) throws Exception {
-		if (!courseGeneralList.exist(course)) {
-			courseGeneralList.insert(course);
-		} else {
-			throw new Exception("La asignatura " + course.getNameActivity() + " ya existe.");
-		}
-	}
-
-	public Course getGeneralCourse(String nameCourse) throws Exception {
-		if (courseGeneralList.exist(new Course(nameCourse))) {
-			Iterator<Course> itCourse = courseGeneralList.iterator();
-			while (itCourse.hasNext()) {
-				Course course = itCourse.next();
-				if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
-					return course;
-				}
-			}
-		} else {
-			throw new Exception("La asignatura " + nameCourse + " no existe.");
-		}
-		return null;
-	}
-
-	// metodo nuevo para asignar al estudiante la respectiva asignatura
-	public void assignStudentCourse(String codeStudent, String nameCourse, String nameTeacher) throws Exception {
-		Iterator<Course> itCourse = courseGeneralList.iterator();
-		if (courseGeneralList.exist(new Course(nameCourse))) {
-			while (itCourse.hasNext()) {
-				Course course = itCourse.next();
-				if (course.getNameActivity().equalsIgnoreCase(nameCourse)
-						&& course.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
-					getStudent(codeStudent).addCourse(course);
-				}
-			}
-		} else {
-			throw new Exception("La asignatura que desea inscribir no existe.");
-		}
-	}
-
-	// metodo nuevO para el caso de que el estudiante quiera cancelar la materia de
-	// su horario.
-	public void cancelStudentCourse(String codeStudent, String nameCourse) throws Exception {
-		getStudent(codeStudent).cancelCourse(nameCourse);
-	}
-
-	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
-	// asignarle una actividad externa.
-	public void addExternalActivity(String codeStudent, String nameExActivity, String descriptionExActivity,
-			String scheduleExActivity) throws Exception {
-		ExternalActivity exActivity = new ExternalActivity(nameExActivity, descriptionExActivity, scheduleExActivity);
-		getStudent(codeStudent).addExternalActivity(exActivity);
-	}
-
-	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
-	// obtener una actividad externa especifica.
-	public ExternalActivity getExternalActivity(String codeStudent, String nameExActivity) throws Exception {
-		Iterator<Student> itStudent = studentTree.inOrder();
-		while (itStudent.hasNext()) {
-			if (itStudent.next().getCodeUser().equalsIgnoreCase(codeStudent)) {
-				return itStudent.next().getExternalActivity(nameExActivity);
-			}
-		}
-		throw new Exception("No existe un estudiante con codigo: " + codeStudent);
-	}
-
-	// Metodo para calcular el promedio de notas para la asignatura que se quiera.
-	public double calculateAvgCourseCalification(String codeStudent, String nameCourse) throws Exception {
-		return getStudent(codeStudent).calculateAvgCourseCalification(nameCourse);
-	}
-
-	// Metodo para calcular el promedio general de un estudiante.
-	public double calculateTotalAvgCalification(String codeStudent) throws Exception {
-		return getStudent(codeStudent).calculateTotalAvgCalification();
-	}
-
-	//Metodo para que el docente pueda seleccionar la asignatura y pueda agregar descripcion y horario.
-	public void assignCourseTeacher(String codeTeacher, String nameCourse, String descriptionCourse,
-			String schedulerCourse) throws Exception {
-		Iterator<Course> itCourse = courseGeneralList.iterator();
-		if (courseGeneralList.exist(new Course(nameCourse))) {
-			while (itCourse.hasNext()) {
-				Course course = itCourse.next();
-				if (course.getNameActivity().equalsIgnoreCase(nameCourse)
-						&& !course.getNameCourseTeacher().equalsIgnoreCase(getTeacher(codeTeacher).getNameUser())) {
-					courseGeneralList.insert(new Course(course.getNameActivity(), descriptionCourse, schedulerCourse));
-				}
-			}
-		} else {
-			throw new Exception("La asignatura que desea inscribir no existe.");
-		}
-	}
-
-	public DoubleList<Course> getCourseGeneralList() {
-		return courseGeneralList;
-	}
-
+//	public void addCourseGeneralList(Course course) throws Exception {
+//		if (!courseGeneralList.exist(course)) {
+//			courseGeneralList.insert(course);
+//		} else {
+//			throw new Exception("La asignatura " + course.getNameActivity() + " ya existe.");
+//		}
+//	}
+//
+//	public Course getGeneralCourse(String nameCourse) throws Exception {
+//		if (courseGeneralList.exist(new Course(nameCourse))) {
+//			Iterator<Course> itCourse = courseGeneralList.iterator();
+//			while (itCourse.hasNext()) {
+//				Course course = itCourse.next();
+//				if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
+//					return course;
+//				}
+//			}
+//		} else {
+//			throw new Exception("La asignatura " + nameCourse + " no existe.");
+//		}
+//		return null;
+//	}
+//
+//	// metodo nuevo para asignar al estudiante la respectiva asignatura
+//	public void assignStudentCourse(String codeStudent, String nameCourse, String nameTeacher) throws Exception {
+//		Iterator<Course> itCourse = courseGeneralList.iterator();
+//		if (courseGeneralList.exist(new Course(nameCourse))) {
+//			while (itCourse.hasNext()) {
+//				Course course = itCourse.next();
+//				if (course.getNameActivity().equalsIgnoreCase(nameCourse)
+//						&& course.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
+//					getStudent(codeStudent).addCourse(course);
+//				}
+//			}
+//		} else {
+//			throw new Exception("La asignatura que desea inscribir no existe.");
+//		}
+//	}
+//
+//	// metodo nuevO para el caso de que el estudiante quiera cancelar la materia de
+//	// su horario.
+//	public void cancelStudentCourse(String codeStudent, String nameCourse) throws Exception {
+//		getStudent(codeStudent).cancelCourse(nameCourse);
+//	}
+//
+//	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
+//	// asignarle una actividad externa.
+//	public void addExternalActivity(String codeStudent, String nameExActivity, String descriptionExActivity,
+//			String scheduleExActivity) throws Exception {
+//		ExternalActivity exActivity = new ExternalActivity(nameExActivity, descriptionExActivity, scheduleExActivity);
+//		getStudent(codeStudent).addExternalActivity(exActivity);
+//	}
+//
+//	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
+//	// obtener una actividad externa especifica.
+//	public ExternalActivity getExternalActivity(String codeStudent, String nameExActivity) throws Exception {
+//		Iterator<Student> itStudent = studentTree.inOrder();
+//		while (itStudent.hasNext()) {
+//			if (itStudent.next().getCodeUser().equalsIgnoreCase(codeStudent)) {
+//				return itStudent.next().getExternalActivity(nameExActivity);
+//			}
+//		}
+//		throw new Exception("No existe un estudiante con codigo: " + codeStudent);
+//	}
+//
+//	// Metodo para calcular el promedio de notas para la asignatura que se quiera.
+//	public double calculateAvgCourseCalification(String codeStudent, String nameCourse) throws Exception {
+//		return getStudent(codeStudent).calculateAvgCourseCalification(nameCourse);
+//	}
+//
+//	// Metodo para calcular el promedio general de un estudiante.
+//	public double calculateTotalAvgCalification(String codeStudent) throws Exception {
+//		return getStudent(codeStudent).calculateTotalAvgCalification();
+//	}
+//
+//	//Metodo para que el docente pueda seleccionar la asignatura y pueda agregar descripcion y horario.
+//	public void assignCourseTeacher(String codeTeacher, String nameCourse, String descriptionCourse,
+//			String schedulerCourse) throws Exception {
+//		Iterator<Course> itCourse = courseGeneralList.iterator();
+//		if (courseGeneralList.exist(new Course(nameCourse))) {
+//			while (itCourse.hasNext()) {
+//				Course course = itCourse.next();
+//				if (course.getNameActivity().equalsIgnoreCase(nameCourse)
+//						&& !course.getNameCourseTeacher().equalsIgnoreCase(getTeacher(codeTeacher).getNameUser())) {
+//					courseGeneralList.insert(new Course(course.getNameActivity(), descriptionCourse, schedulerCourse));
+//				}
+//			}
+//		} else {
+//			throw new Exception("La asignatura que desea inscribir no existe.");
+//		}
+//	}
+//
+//	public DoubleList<Course> getCourseGeneralList() {
+//		return courseGeneralList;
+//	}
+//
 	private Comparator<Student> studentComparator() {
 		return new Comparator<Student>() {
 			public int compare(Student studentOne, Student studentTwo) {

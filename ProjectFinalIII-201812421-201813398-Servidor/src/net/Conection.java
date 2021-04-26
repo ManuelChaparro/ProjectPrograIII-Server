@@ -29,8 +29,8 @@ public class Conection {
 		return true;
 	}
 	
-	public void sendBoolean(boolean info) {
-		
+	public void sendBoolean(boolean info) throws IOException {
+		output.writeBoolean(info);
 	}
 	
 	public void closeConection() throws IOException {
