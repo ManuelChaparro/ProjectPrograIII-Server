@@ -1,11 +1,15 @@
 package controller;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+import models.Course;
 import models.ModelsManager;
+import models.User;
 import net.Conection;
 
 public class Client extends Thread{
@@ -29,8 +33,15 @@ public class Client extends Thread{
 	}
 	
 	private void initApp() throws IOException {
-		String option = conection.receiveUTF();
-		System.out.println(option);
+		if (conection.receiveBoolean()) {
+			Gson gson = new Gson();
+			String option = conection.receiveUTF();
+			User user = gson.fromJson(option.toString(), User.class);
+			System.out.println(user.getCodeUser());
+		}else {
+			System.out.println("Crear usuario");
+		}
+		
 	}
 	
 	private void createUser() {
