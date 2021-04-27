@@ -11,20 +11,22 @@ public class ModelsManager {
 
 	private AVLTree<Student> studentTree;
 	private AVLTree<Teacher> teacherTree;
+	private AVLTree<String>	availableCourses;
 	private ArrayList<Course> courseGeneralList;
 	private GSONFileManager gsonManager;
 
 	public ModelsManager() {
 		studentTree = new AVLTree<Student>(studentComparator());
 		teacherTree = new AVLTree<Teacher>(teacherComparator());
+
+		availableCourses = new AVLTree<String>(stringComparator());
+		availableCourses.insert("Hola");
+		availableCourses.insert("Manuel");
+		availableCourses.insert("Santiago");
 		courseGeneralList = new ArrayList<Course>();
 		loadDefaulData();
 		gsonManager = new GSONFileManager();
-		try {
-			System.out.println(getAvailableCourses());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
 	}
 
 	public void createStudent(Student student) throws Exception {
@@ -88,13 +90,13 @@ public class ModelsManager {
 	}
 
 	public String getAvailableCourses() throws Exception {
-		String teachers = "";
-		for (int i = 0; i < courseGeneralList.size(); i++) {
-			if (courseGeneralList.get(i).getNameCourseTeacher() != null) {
-				teachers += courseGeneralList.get(i).toString();
+		String courses = "";
+		for (Course course : courseGeneralList) {
+			if (!course.getNameCourseTeacher().equalsIgnoreCase("")) {
+				courses+=course.toString();
 			}
 		}
-		return teachers;
+		return courses;
 	}
 
 //  nuevo para asignar al estudiante la respectiva asignatura
@@ -149,23 +151,35 @@ public class ModelsManager {
 
 	// Metodo para que el docente pueda seleccionar la asignatura y pueda agregar
 	// descripcion y horario.
-	public void assignCourseTeacher(String nameTeacher, String codeTeacher, String nameCourse, String descriptionCourse,
+	public void assignCourseTeacher(String nameTeacher, String nameCourse, String descriptionCourse,
 			String schedulerCourse) throws Exception {
-		if (courseGeneralList.contains(new Course(nameCourse))) {
-			for (int i = 0; i < courseGeneralList.size(); i++) {
-				if (courseGeneralList.get(i).getNameActivity().equalsIgnoreCase(nameCourse) && !courseGeneralList.get(i)
-						.getNameCourseTeacher().equalsIgnoreCase(getTeacher(codeTeacher).getNameUser())) {
-					courseGeneralList.add(new Course(courseGeneralList.get(i).getNameActivity(), nameTeacher,
-							descriptionCourse, schedulerCourse));
-				}
+		boolean exist = false;
+		for (Course course : courseGeneralList) {
+			if (course.getNameActivity().equalsIgnoreCase(nameCourse) && course.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
+				exist = true;
 			}
-		} else {
-			throw new Exception("La asignatura que desea inscribir no existe.");
 		}
-	}
+		if (!exist) {
+			courseGeneralList.add(new Course(nameCourse, nameTeacher, descriptionCourse, schedulerCourse));
+			availableCourses.insert(nameCourse);
+		}
+}
 
 	public ArrayList<Course> getCourseGeneralList() {
 		return courseGeneralList;
+	}
+	
+	private Comparator<String> stringComparator() {
+		return new Comparator<String>() {
+			public int compare(String stringOne, String stringTwo) {
+				if (stringOne.compareToIgnoreCase(stringTwo) == 0) {
+					return 1;
+				}else {
+					return 0;
+				}
+				
+			}
+		};
 	}
 
 	private Comparator<Student> studentComparator() {
@@ -199,7 +213,6 @@ public class ModelsManager {
 	}
 
 	private void loadDefaulData() {
-		studentTree.insert(new Student("Luis Fernando Sandoval Parra", "201813398", "1"));
 		courseGeneralList.add(new Course("PROGRAMACION I"));
 		courseGeneralList.add(new Course("PROGRAMACION II"));
 		courseGeneralList.add(new Course("PROGRAMACION III"));
@@ -240,11 +253,25 @@ public class ModelsManager {
 		courseGeneralList.add(new Course("SIMULACION DE COMPUTADORAS"));
 		courseGeneralList.add(new Course("AUDITORIA DE SISTEMAS"));
 		courseGeneralList.add(new Course("GERENCIA INFORMATICA"));
-		courseGeneralList.add(
-				new Course("PROGRAMACION III", "Jorge Enrique Hoyos", "Bienvenidos a progra 3", "LUN#6#8%MIE#10#12"));
-		courseGeneralList.add(
-				new Course("PROGRAMACION III", "Omaria Galindo", "Bienvenidos a progra 3 mis chicos", "LUN#10#13%MIE#8#10"));
-		courseGeneralList.add(
-				new Course("PROGRAMACION III", "Alexander Sapoperro", "Bienvenidos a progra 3", "LUN#6#8%MIE#10#12"));
+		
+		try {
+			createTeacher("Hoyitos", "2345", "1");
+			createTeacher("Omaira", "1234", "1");
+			createTeacher("Alexander", "3456", "1");
+			
+			assignCourseTeacher("Hoyitos", "PROGRAMACION III", "Bienvenidas perras", "LUN#6#8%MIE#10#12");
+			assignCourseTeacher("Omaria Galindo", "PROGRAMACION III", "Hola soy omaewa kawai senpai :v<3", "MAR#10#12%MIE#12#2");
+			assignCourseTeacher("Alexander Sapoperro", "PROGRAMACION III", "OLA", "MAR#10#12%MIE#12#2");
+			assignCourseTeacher("lademetodosxd", "CALCULO I", "OLA", "MAR#10#12%MIE#12#2");
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Iterator<String> it = availableCourses.inOrder();
+		while (it.hasNext()) {
+			String string = (String) it.next();
+			System.out.println(string);
+		}
 	}
 }

@@ -18,6 +18,7 @@ public class Course extends Activity {
 
 	public Course(String nameCourse) {
 		super(nameCourse);
+		this.nameCourseTeacher = "";
 	}
 
 	public void setNameCourseTeacher(String nameCourseTeacher) {
