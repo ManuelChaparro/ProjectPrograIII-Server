@@ -49,7 +49,7 @@ public class Course extends Activity {
 	}
 
 	public Homework getHomework(String nameHomework) throws Exception {
-		Iterator<Homework> it = homeworkList.inorderIterator();
+		Iterator<Homework> it = homeworkList.inOrder();
 		while (it.hasNext()) {
 			if (it.next().getNameHomework().equalsIgnoreCase(nameHomework)) {
 				return it.next();

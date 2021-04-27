@@ -90,7 +90,7 @@ public class Student extends User {
 		int quantityCalification = 0;
 		Course course = getCourse(nameCourse);
 		if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
-			Iterator<Homework> itHomework = course.getHomeworkList().inorderIterator();
+			Iterator<Homework> itHomework = course.getHomeworkList().inOrder();
 			while (itHomework.hasNext()) {
 				quantityCalification++;
 				sumatoryCalification += itHomework.next().getCalification();
@@ -105,7 +105,7 @@ public class Student extends User {
 		double result = 0;
 		double sumatoryCalification = 0;
 		int quantityCourses = 0;
-		Iterator<Course> itCourse = getCourseList().inorderIterator();
+		Iterator<Course> itCourse = getCourseList().inOrder();
 		while (itCourse.hasNext()) {
 			quantityCourses++;
 			sumatoryCalification += calculateAvgCourseCalification(itCourse.next().getNameActivity());

@@ -31,7 +31,7 @@ public class ModelsManager {
 	}
 
 	public boolean isExistStudent(String codeStudent, String password) {
-		Iterator<Student> itStudent = studentTree.inorderIterator();
+		Iterator<Student> itStudent = studentTree.inOrder();
 		while (itStudent.hasNext()) {
 			Student student = itStudent.next();
 			if (student.getCodeUser().equalsIgnoreCase(codeStudent) && student.getPassword().equals(password)) {
@@ -123,7 +123,7 @@ public class ModelsManager {
 	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
 	// obtener una actividad externa especifica.
 	public ExternalActivity getExternalActivity(String codeStudent, String nameExActivity) throws Exception {
-		Iterator<Student> itStudent = studentTree.inorderIterator();
+		Iterator<Student> itStudent = studentTree.inOrder();
 		while (itStudent.hasNext()) {
 			if (itStudent.next().getCodeUser().equalsIgnoreCase(codeStudent)) {
 				return itStudent.next().getExternalActivity(nameExActivity);
@@ -201,6 +201,8 @@ public class ModelsManager {
 	}
 
 	private void loadDefaulData() {
+		studentTree.insert(new Student("Santiago", "201812421", "1"));
+		studentTree.insert(new Student("Luis", "201813398", "1"));
 		courseGeneralList.add(new Course("PROGRAMACION I"));
 		courseGeneralList.add(new Course("PROGRAMACION II"));
 		courseGeneralList.add(new Course("PROGRAMACION III"));
