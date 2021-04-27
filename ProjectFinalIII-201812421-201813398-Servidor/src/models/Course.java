@@ -2,22 +2,22 @@ package models;
 
 import java.util.Comparator;
 import java.util.Iterator;
-
-import structures.DoubleList;
+import structures.AVLtree;
 
 public class Course extends Activity {
 
 	private String nameCourseTeacher;
-	private DoubleList<Homework> homeworkList;
+	private AVLtree<Homework> homeworkList;
 
 	public Course(String nameCourse, String nameTeacher, String descriptionCourse, String scheduleCourse) {
 		super(nameCourse, descriptionCourse, scheduleCourse);
 		this.nameCourseTeacher = nameTeacher;
-		homeworkList = new DoubleList<Homework>(homeworkComparator());
+		homeworkList = new AVLtree<Homework>(homeworkComparator());
 	}
 
 	public Course(String nameCourse) {
 		super(nameCourse);
+		this.nameCourseTeacher = "";
 	}
 
 	public void setNameCourseTeacher(String nameCourseTeacher) {
@@ -33,7 +33,7 @@ public class Course extends Activity {
 	}
 
 	public void deleteHomework(String nameHomework) {
-		homeworkList.remove(new Homework(nameHomework));
+		homeworkList.delete(new Homework(nameHomework));
 	}
 
 	public void modifyHomeworkAnnotation(String nameHomework, String annotation) throws Exception {
@@ -44,12 +44,12 @@ public class Course extends Activity {
 		getHomework(nameHomework).setCalification(calification);
 	}
 
-	public DoubleList<Homework> getHomeworkList() {
+	public AVLtree<Homework> getHomeworkList() {
 		return homeworkList;
 	}
 
 	public Homework getHomework(String nameHomework) throws Exception {
-		Iterator<Homework> it = homeworkList.iterator();
+		Iterator<Homework> it = homeworkList.inorderIterator();
 		while (it.hasNext()) {
 			if (it.next().getNameHomework().equalsIgnoreCase(nameHomework)) {
 				return it.next();
