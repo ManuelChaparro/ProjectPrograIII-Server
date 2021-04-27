@@ -199,7 +199,7 @@ public class ModelsManager {
 	}
 
 	private void loadDefaulData() {
-		studentTree.insert(new Student("Luis Fernando Sandoval Parra", "201813398", "Luis123456789"));
+		studentTree.insert(new Student("Luis Fernando Sandoval Parra", "201813398", "1"));
 		courseGeneralList.add(new Course("PROGRAMACION I"));
 		courseGeneralList.add(new Course("PROGRAMACION II"));
 		courseGeneralList.add(new Course("PROGRAMACION III"));
