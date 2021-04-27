@@ -58,28 +58,4 @@ public class Client extends Thread {
 			}
 		}
 	}
-
-	private void createUser() {
-
-	}
-
-	private void manageCourseUser() {
-
-	}
-
-	private void manageActivities() {
-
-	}
-
-	private void getClassSchedule() {
-
-	}
-
-	private void getAvgCalification() {
-
-	}
-
-	private void manageCourseAdmin() {
-
-	}
 }
