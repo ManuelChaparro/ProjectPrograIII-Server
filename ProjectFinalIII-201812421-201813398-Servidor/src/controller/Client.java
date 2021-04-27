@@ -40,6 +40,7 @@ public class Client extends Thread {
 			Student user = gson.fromJson(option.toString(), Student.class);
 			if (modelsManager.isExistStudent(user.getCodeUser(), user.getPassword())) {
 				conection.sendBoolean(true);
+				options();
 			} else {
 				conection.sendBoolean(false);
 				initApp();
@@ -57,5 +58,30 @@ public class Client extends Thread {
 				initApp();
 			}
 		}
+	}
+	
+	private void options() throws Exception {
+		int option = conection.receiveInt();
+		switch (option) {
+		case 1:
+//			addContact();
+			break;
+		case 2:
+			conection.sendUTF(modelsManager.getAvailableCourses());
+			break;
+		case 3:
+//			deleteContact();
+			break;
+		case 4:
+//			conection.sendUTF(contactRecord.getContactListString());
+			break;
+		case 5:
+//			showContactsStatistic();
+			break;
+		default:
+			break;
+		}
+		options();
+		conection.closeConection();
 	}
 }

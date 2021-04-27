@@ -10,10 +10,10 @@ public class Course extends Activity {
 	private String nameCourseTeacher;
 	private DoubleList<Homework> homeworkList;
 
-	public Course(String nameCourse, String descriptionCourse, String scheduleCourse) {
+	public Course(String nameCourse, String nameTeacher, String descriptionCourse, String scheduleCourse) {
 		super(nameCourse, descriptionCourse, scheduleCourse);
+		this.nameCourseTeacher = nameTeacher;
 		homeworkList = new DoubleList<Homework>(homeworkComparator());
-		this.nameCourseTeacher = "";
 	}
 
 	public Course(String nameCourse) {
@@ -23,7 +23,7 @@ public class Course extends Activity {
 	public void setNameCourseTeacher(String nameCourseTeacher) {
 		this.nameCourseTeacher = nameCourseTeacher;
 	}
-	
+
 	public String getNameCourseTeacher() {
 		return nameCourseTeacher;
 	}
@@ -39,7 +39,7 @@ public class Course extends Activity {
 	public void modifyHomeworkAnnotation(String nameHomework, String annotation) throws Exception {
 		getHomework(nameHomework).setAnnotation(annotation);
 	}
-	
+
 	public void modifyHomeworkCalification(String nameHomework, double calification) throws Exception {
 		getHomework(nameHomework).setCalification(calification);
 	}
@@ -69,5 +69,11 @@ public class Course extends Activity {
 				}
 			}
 		};
+	}
+
+	@Override
+	public String toString() {
+		return getNameActivity() + "&" + getNameCourseTeacher() + "&" + getDescriptionActivity() + "&"
+				+ getScheduleActivity() + "$";
 	}
 }
