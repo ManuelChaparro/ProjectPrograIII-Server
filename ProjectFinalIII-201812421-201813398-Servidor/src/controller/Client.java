@@ -7,9 +7,15 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 
+
 import models.ModelsManager;
 import models.Student;
+
 import net.Conection;
+import persistence.GSONFileManager;
+
+public class Client extends Thread {
+
 
 public class Client extends Thread {
 
@@ -17,16 +23,37 @@ public class Client extends Thread {
 	private ModelsManager modelsManager;
 	private Socket socketClient;
 
+
 	public Client(Socket socket) throws IOException {
 		this.socketClient = socket;
 		conection = new Conection(socketClient);
+		json = new JsonParser();
+		gson = new Gson();
+//		loadModelsManager();
+		saveModelsManager();
+	}
+
+	private void saveModelsManager() {
+		for
+		
+	}
+
+	private void loadModelsManager() throws JsonIOException, JsonSyntaxException, FileNotFoundException {
 		modelsManager = new ModelsManager();
+		modelsManager = GSONFileManager.readFile();
+		try {
+			System.out.println(modelsManager.getGeneralCourse("PROGRAMACION III").getNameActivity());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void run() {
 		try {
 			initApp();
-		} catch (IOException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			Logger.getGlobal().log(Level.INFO, "Una conexion finalizada.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -37,6 +64,7 @@ public class Client extends Thread {
 		if (conection.receiveBoolean()) {
 			Gson gson = new Gson();
 			String option = conection.receiveUTF();
+    }
 			Student user = gson.fromJson(option.toString(), Student.class);
 			if (modelsManager.isExistStudent(user.getCodeUser(), user.getPassword())) {
 				conection.sendBoolean(true);
@@ -55,6 +83,7 @@ public class Client extends Thread {
 				modelsManager.createStudent(user);
 				conection.sendBoolean(true);
 				initApp();
+      }
 			}
 		}
 	}

@@ -161,6 +161,10 @@ public class ModelsManager {
 			throw new Exception("La asignatura que desea inscribir no existe.");
 		}
 	}
+	
+	public boolean isExistStudent(String codeStudent) {
+		return studentTree.isIntoTree(new Student(codeStudent));
+	}
 
 	public ArrayList<Course> getCourseGeneralList() {
 		return courseGeneralList;
