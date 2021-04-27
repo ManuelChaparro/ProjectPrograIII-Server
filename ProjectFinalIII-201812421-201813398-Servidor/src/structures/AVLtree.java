@@ -126,9 +126,9 @@ public class AVLtree<T> {
 	}
 
 	public T encontrarMax() {
-	Node<T> n = encontrarMax(root);
+		Node<T> n = encontrarMax(root);
 		return n.getData();
-    }
+	}
 
 	public boolean isEmpty() {
 		return (root == null);
@@ -168,52 +168,46 @@ public class AVLtree<T> {
 		}
 	}
 
-	public Iterator<T> preorderIterator() {
-		listTree = new ArrayList<T>();
-		preRunTree(root, listTree);
-		return listTree.iterator();
+	public Iterator<T> inOrder() {
+		ArrayList<T> inOrderList = new ArrayList<T>();
+		inOrder(inOrderList, root);
+		return inOrderList.iterator();
 	}
 
-	public Iterator<T> inorderIterator() {
-		listTree = new ArrayList<T>();
-		inRunTree(root, listTree);
-		return listTree.iterator();
+	private void inOrder(ArrayList<T> inOrderList, Node<T> node) {
+		if (node != null) {
+			inOrder(inOrderList, node.getLeft());
+			inOrderList.add(node.getData());
+			inOrder(inOrderList, node.getRight());
+		}
 	}
 
-	public Iterator<T> postIrderIterator() {
-		listTree = new ArrayList<T>();
-		postRunTree(root, listTree);
-		return listTree.iterator();
+	public Iterator<T> preOrder() {
+		ArrayList<T> preOrderList = new ArrayList<T>();
+		preOrder(preOrderList, root);
+		return preOrderList.iterator();
 	}
 
-	private void postRunTree(Node<T> temp, ArrayList<T> orderedTree) {
-		if (temp.getLeft() != null)
-			if (!isInArray(temp.getLeft().getData()))
-				postRunTree(temp.getLeft(), orderedTree);
-		if (temp.getRight() != null)
-			if (!isInArray(temp.getRight().getData()))
-				postRunTree(temp.getRight(), orderedTree);
-		orderedTree.add(temp.getData());
+	private void preOrder(ArrayList<T> preOrderList, Node<T> node) {
+		if (node != null) {
+			preOrderList.add(node.getData());
+			preOrder(preOrderList, node.getLeft());
+			preOrder(preOrderList, node.getRight());
+		}
 	}
 
-	private void preRunTree(Node<T> temp, ArrayList<T> orderedTree) {
-		orderedTree.add(temp.getData());
-		if (temp.getLeft() != null)
-			if (!isInArray(temp.getLeft().getData()))
-				preRunTree(temp.getLeft(), orderedTree);
-		if (temp.getRight() != null)
-			if (!isInArray(temp.getRight().getData()))
-				preRunTree(temp.getRight(), orderedTree);
+	public Iterator<T> postOrder() {
+		ArrayList<T> postOrderList = new ArrayList<T>();
+		postOrder(postOrderList, root);
+		return postOrderList.iterator();
 	}
 
-	private void inRunTree(Node<T> temp, ArrayList<T> orderedTree) {
-		if (temp.getLeft() != null)
-			if (!isInArray(temp.getLeft().getData()))
-				inRunTree(temp.getLeft(), orderedTree);
-		orderedTree.add(temp.getData());
-		if (temp.getRight() != null)
-			if (!isInArray(temp.getRight().getData()))
-				inRunTree(temp.getRight(), orderedTree);
+	private void postOrder(ArrayList<T> postOrderList, Node<T> node) {
+		if (node != null) {
+			postOrder(postOrderList, node.getLeft());
+			postOrder(postOrderList, node.getRight());
+			postOrderList.add(node.getData());
+		}
 	}
 
 	public void showPost(Node<T> auxNode) {
