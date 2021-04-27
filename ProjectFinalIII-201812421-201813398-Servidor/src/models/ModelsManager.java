@@ -5,32 +5,25 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import persistence.GSONFileManager;
-import structures.AVLTree;
+import structures.AVLtree;
 
 public class ModelsManager {
 
-	private AVLTree<Student> studentTree;
-	private AVLTree<Teacher> teacherTree;
-	private AVLTree<String>	availableCourses;
+	private AVLtree<Student> studentTree;
+	private AVLtree<Teacher> teacherTree;
+	private AVLtree<String>	availableCourses;
 	private ArrayList<Course> courseGeneralList;
-	private GSONFileManager gsonManager;
 
 	public ModelsManager() {
-		studentTree = new AVLTree<Student>(studentComparator());
-		teacherTree = new AVLTree<Teacher>(teacherComparator());
-
-		availableCourses = new AVLTree<String>(stringComparator());
-		availableCourses.insert("Hola");
-		availableCourses.insert("Manuel");
-		availableCourses.insert("Santiago");
+		studentTree = new AVLtree<Student>(studentComparator());
+		teacherTree = new AVLtree<Teacher>(teacherComparator());
+		availableCourses = new AVLtree<String>(stringComparator());
 		courseGeneralList = new ArrayList<Course>();
-		loadDefaulData();
-		gsonManager = new GSONFileManager();
-		
+		loadDefaulData();		
 	}
 
 	public void createStudent(Student student) throws Exception {
-		if (!studentTree.isIntoTree(student)) {
+		if (!studentTree.exist(student)) {
 			studentTree.insert(student);
 		} else {
 			throw new Exception("El estudiante " + student.getNameUser() + " ya existe.");
@@ -38,7 +31,7 @@ public class ModelsManager {
 	}
 
 	public boolean isExistStudent(String codeStudent, String password) {
-		Iterator<Student> itStudent = studentTree.inOrder();
+		Iterator<Student> itStudent = studentTree.inorderIterator();
 		while (itStudent.hasNext()) {
 			Student student = itStudent.next();
 			if (student.getCodeUser().equalsIgnoreCase(codeStudent) && student.getPassword().equals(password)) {
@@ -49,12 +42,12 @@ public class ModelsManager {
 	}
 
 	public boolean isExistStudent(String codeStudent) {
-		return studentTree.isIntoTree(new Student(codeStudent));
+		return studentTree.exist(new Student(codeStudent));
 	}
 
 	public void createTeacher(String nameTeacher, String codeTeacher, String password) throws Exception {
 		Teacher teacher = new Teacher(nameTeacher, codeTeacher, password);
-		if (!teacherTree.isIntoTree(teacher)) {
+		if (!teacherTree.exist(teacher)) {
 			teacherTree.insert(teacher);
 		} else {
 			throw new Exception("El docente " + teacher.getNameUser() + " ya existe.");
@@ -63,8 +56,8 @@ public class ModelsManager {
 
 	public Student getStudent(String codeStudent) throws Exception {
 		Student student = new Student(codeStudent);
-		if (studentTree.isIntoTree(student)) {
-			return studentTree.findNode(student).getData();
+		if (studentTree.exist(student)) {
+			return studentTree.find(student);
 		} else {
 			throw new Exception("El estudiante que busca no existe.");
 		}
@@ -72,8 +65,8 @@ public class ModelsManager {
 
 	public Teacher getTeacher(String codeTeacher) throws Exception {
 		Teacher teacher = new Teacher(codeTeacher);
-		if (teacherTree.isIntoTree(teacher)) {
-			return teacherTree.findNode(teacher).getData();
+		if (teacherTree.exist(teacher)) {
+			return teacherTree.find(teacher);
 		} else {
 			throw new Exception("El profesor que busca no existe.");
 		}
@@ -130,7 +123,7 @@ public class ModelsManager {
 	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
 	// obtener una actividad externa especifica.
 	public ExternalActivity getExternalActivity(String codeStudent, String nameExActivity) throws Exception {
-		Iterator<Student> itStudent = studentTree.inOrder();
+		Iterator<Student> itStudent = studentTree.inorderIterator();
 		while (itStudent.hasNext()) {
 			if (itStudent.next().getCodeUser().equalsIgnoreCase(codeStudent)) {
 				return itStudent.next().getExternalActivity(nameExActivity);
@@ -172,12 +165,7 @@ public class ModelsManager {
 	private Comparator<String> stringComparator() {
 		return new Comparator<String>() {
 			public int compare(String stringOne, String stringTwo) {
-				if (stringOne.compareToIgnoreCase(stringTwo) == 0) {
-					return 1;
-				}else {
-					return 0;
-				}
-				
+				return stringOne.compareToIgnoreCase(stringTwo);
 			}
 		};
 	}
@@ -253,25 +241,18 @@ public class ModelsManager {
 		courseGeneralList.add(new Course("SIMULACION DE COMPUTADORAS"));
 		courseGeneralList.add(new Course("AUDITORIA DE SISTEMAS"));
 		courseGeneralList.add(new Course("GERENCIA INFORMATICA"));
-		
 		try {
 			createTeacher("Hoyitos", "2345", "1");
 			createTeacher("Omaira", "1234", "1");
 			createTeacher("Alexander", "3456", "1");
-			
 			assignCourseTeacher("Hoyitos", "PROGRAMACION III", "Bienvenidas perras", "LUN#6#8%MIE#10#12");
 			assignCourseTeacher("Omaria Galindo", "PROGRAMACION III", "Hola soy omaewa kawai senpai :v<3", "MAR#10#12%MIE#12#2");
 			assignCourseTeacher("Alexander Sapoperro", "PROGRAMACION III", "OLA", "MAR#10#12%MIE#12#2");
+			assignCourseTeacher("lademetodosxd", "CALCULO II", "OLA", "MAR#10#12%MIE#12#2");
 			assignCourseTeacher("lademetodosxd", "CALCULO I", "OLA", "MAR#10#12%MIE#12#2");
-			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		Iterator<String> it = availableCourses.inOrder();
-		while (it.hasNext()) {
-			String string = (String) it.next();
-			System.out.println(string);
 		}
 	}
 }

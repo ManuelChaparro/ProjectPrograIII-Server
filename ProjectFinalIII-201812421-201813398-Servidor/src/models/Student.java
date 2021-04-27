@@ -2,20 +2,17 @@ package models;
 
 import java.util.Comparator;
 import java.util.Iterator;
-
-import structures.AVLTree;
+import structures.AVLtree;
 
 public class Student extends User {
 
-	private AVLTree<Course> courseTree;
-	private AVLTree<ExternalActivity> externalActivitiesTree;
+	private AVLtree<Course> courseTree;
+	private AVLtree<ExternalActivity> externalActivitiesTree;
 
 	public Student(String nameStudent, String codeStudent, String password) {
 		super(nameStudent, codeStudent, password);
-		courseTree = new AVLTree<Course>(courseComparator());
-		externalActivitiesTree = new AVLTree<ExternalActivity>(exActivityComparator());
-		courseTree.createTree();
-		externalActivitiesTree.createTree();
+		courseTree = new AVLtree<Course>(courseComparator());
+		externalActivitiesTree = new AVLtree<ExternalActivity>(exActivityComparator());
 	}
 
 	public Student(String codeStudent) {
@@ -23,7 +20,7 @@ public class Student extends User {
 	}
 
 	public void addCourse(Course course) throws Exception {
-		if (!courseTree.isIntoTree(course)) {
+		if (!courseTree.exist(course)) {
 			courseTree.insert(course);
 		} else {
 			throw new Exception("La asignatura que desea inscribir ya existe.");
@@ -32,8 +29,8 @@ public class Student extends User {
 
 	public void cancelCourse(String nameCourse) throws Exception {
 		Course course = new Course(nameCourse);
-		if (courseTree.isIntoTree(course)) {
-			courseTree.deleteNode(course);
+		if (courseTree.exist(course)) {
+			courseTree.delete(course);
 		} else {
 			throw new Exception("La asignatura que desea eliminar, no ha sido inscrita.");
 		}
@@ -41,19 +38,19 @@ public class Student extends User {
 
 	public Course getCourse(String nameCourse) throws Exception {
 		Course course = new Course(nameCourse);
-		if (courseTree.isIntoTree(course)) {
-			return courseTree.findNode(course).getData();
+		if (courseTree.exist(course)) {
+			return courseTree.find(course);
 		} else {
 			throw new Exception("La asignatura que usted busca no existe.");
 		}
 	}
 
-	public AVLTree<Course> getCourseList() {
+	public AVLtree<Course> getCourseList() {
 		return courseTree;
 	}
 
 	public void addExternalActivity(ExternalActivity externalActivity) throws Exception {
-		if (!externalActivitiesTree.isIntoTree(externalActivity)) {
+		if (!externalActivitiesTree.exist(externalActivity)) {
 			externalActivitiesTree.insert(externalActivity);
 		} else {
 			throw new Exception("La actividad externa que desea a�adir ya existe.");
@@ -67,8 +64,8 @@ public class Student extends User {
 
 	public void deleteExternalActivity(String nameExActivity) throws Exception {
 		ExternalActivity exActivity = new ExternalActivity(nameExActivity);
-		if (externalActivitiesTree.isIntoTree(exActivity)) {
-			externalActivitiesTree.deleteNode(exActivity);
+		if (externalActivitiesTree.exist(exActivity)) {
+			externalActivitiesTree.delete(exActivity);
 		} else {
 			throw new Exception("La actividad externa que desea eliminar no existe.");
 		}
@@ -76,14 +73,14 @@ public class Student extends User {
 
 	public ExternalActivity getExternalActivity(String nameExActivity) throws Exception {
 		ExternalActivity exActivity = new ExternalActivity(nameExActivity);
-		if (externalActivitiesTree.isIntoTree(exActivity)) {
-			return externalActivitiesTree.findNode(exActivity).getData();
+		if (externalActivitiesTree.exist(exActivity)) {
+			return externalActivitiesTree.find(exActivity);
 		} else {
 			throw new Exception("La actividad que busca no existe.");
 		}
 	}
 
-	public AVLTree<ExternalActivity> getExternalActivityList() {
+	public AVLtree<ExternalActivity> getExternalActivityList() {
 		return externalActivitiesTree;
 	}
 
@@ -93,7 +90,7 @@ public class Student extends User {
 		int quantityCalification = 0;
 		Course course = getCourse(nameCourse);
 		if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
-			Iterator<Homework> itHomework = course.getHomeworkList().iterator();
+			Iterator<Homework> itHomework = course.getHomeworkList().inorderIterator();
 			while (itHomework.hasNext()) {
 				quantityCalification++;
 				sumatoryCalification += itHomework.next().getCalification();
@@ -108,7 +105,7 @@ public class Student extends User {
 		double result = 0;
 		double sumatoryCalification = 0;
 		int quantityCourses = 0;
-		Iterator<Course> itCourse = getCourseList().inOrder();
+		Iterator<Course> itCourse = getCourseList().inorderIterator();
 		while (itCourse.hasNext()) {
 			quantityCourses++;
 			sumatoryCalification += calculateAvgCourseCalification(itCourse.next().getNameActivity());
