@@ -39,10 +39,4 @@ public class Activity {
 	public void setScheduleActivity(String scheduleActivity) {
 		this.scheduleActivity = scheduleActivity;
 	}
-
-	@Override
-	public String toString() {
-		return "Activity [nameActivity=" + nameActivity + ", descriptionActivity=" + descriptionActivity
-				+ ", scheduleActivity=" + scheduleActivity + "]";
-	}
 }

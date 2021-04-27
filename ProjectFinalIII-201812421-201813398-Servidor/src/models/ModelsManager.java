@@ -18,8 +18,13 @@ public class ModelsManager {
 		studentTree = new AVLTree<Student>(studentComparator());
 		teacherTree = new AVLTree<Teacher>(teacherComparator());
 		courseGeneralList = new ArrayList<Course>();
-		gsonManager = new GSONFileManager();
 		loadDefaulData();
+		gsonManager = new GSONFileManager();
+		try {
+			System.out.println(getAvailableCourses());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void createStudent(Student student) throws Exception {
@@ -29,18 +34,18 @@ public class ModelsManager {
 			throw new Exception("El estudiante " + student.getNameUser() + " ya existe.");
 		}
 	}
-	
+
 	public boolean isExistStudent(String codeStudent, String password) {
 		Iterator<Student> itStudent = studentTree.inOrder();
 		while (itStudent.hasNext()) {
 			Student student = itStudent.next();
-			if(student.getCodeUser().equalsIgnoreCase(codeStudent) && student.getPassword().equals(password)) {
+			if (student.getCodeUser().equalsIgnoreCase(codeStudent) && student.getPassword().equals(password)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public boolean isExistStudent(String codeStudent) {
 		return studentTree.isIntoTree(new Student(codeStudent));
 	}
@@ -72,7 +77,7 @@ public class ModelsManager {
 		}
 	}
 
-	// metodo unicamente para crear y a�adir asignatura a la lista general de
+	// metodo unicamente para crear y aï¿½adir asignatura a la lista general de
 	// asignaturas.
 	public void addCourseGeneralList(Course course) throws Exception {
 		if (!courseGeneralList.contains(course)) {
@@ -82,17 +87,14 @@ public class ModelsManager {
 		}
 	}
 
-	public Course getGeneralCourse(String nameCourse) throws Exception {
-		if (courseGeneralList.contains(new Course(nameCourse))) {
-			for (int i = 0; i < courseGeneralList.size(); i++) {
-				if (courseGeneralList.get(i).getNameActivity().equalsIgnoreCase(nameCourse)) {
-					return courseGeneralList.get(i);
-				}
+	public String getAvailableCourses() throws Exception {
+		String teachers = "";
+		for (int i = 0; i < courseGeneralList.size(); i++) {
+			if (courseGeneralList.get(i).getNameCourseTeacher() != null) {
+				teachers += courseGeneralList.get(i).toString();
 			}
-		} else {
-			throw new Exception("La asignatura " + nameCourse + " no existe.");
 		}
-		return null;
+		return teachers;
 	}
 
 //  nuevo para asignar al estudiante la respectiva asignatura
@@ -147,14 +149,14 @@ public class ModelsManager {
 
 	// Metodo para que el docente pueda seleccionar la asignatura y pueda agregar
 	// descripcion y horario.
-	public void assignCourseTeacher(String codeTeacher, String nameCourse, String descriptionCourse,
+	public void assignCourseTeacher(String nameTeacher, String codeTeacher, String nameCourse, String descriptionCourse,
 			String schedulerCourse) throws Exception {
 		if (courseGeneralList.contains(new Course(nameCourse))) {
 			for (int i = 0; i < courseGeneralList.size(); i++) {
 				if (courseGeneralList.get(i).getNameActivity().equalsIgnoreCase(nameCourse) && !courseGeneralList.get(i)
 						.getNameCourseTeacher().equalsIgnoreCase(getTeacher(codeTeacher).getNameUser())) {
-					courseGeneralList.add(
-							new Course(courseGeneralList.get(i).getNameActivity(), descriptionCourse, schedulerCourse));
+					courseGeneralList.add(new Course(courseGeneralList.get(i).getNameActivity(), nameTeacher,
+							descriptionCourse, schedulerCourse));
 				}
 			}
 		} else {
@@ -195,10 +197,9 @@ public class ModelsManager {
 			}
 		};
 	}
-	
+
 	private void loadDefaulData() {
 		studentTree.insert(new Student("Luis Fernando Sandoval Parra", "201813398", "Luis123456789"));
-		courseGeneralList.add(new Course("ALGORITMOS"));
 		courseGeneralList.add(new Course("PROGRAMACION I"));
 		courseGeneralList.add(new Course("PROGRAMACION II"));
 		courseGeneralList.add(new Course("PROGRAMACION III"));
@@ -239,5 +240,11 @@ public class ModelsManager {
 		courseGeneralList.add(new Course("SIMULACION DE COMPUTADORAS"));
 		courseGeneralList.add(new Course("AUDITORIA DE SISTEMAS"));
 		courseGeneralList.add(new Course("GERENCIA INFORMATICA"));
+		courseGeneralList.add(
+				new Course("PROGRAMACION III", "Jorge Enrique Hoyos", "Bienvenidos a progra 3", "LUN#6#8%MIE#10#12"));
+		courseGeneralList.add(
+				new Course("PROGRAMACION III", "Omaria Galindo", "Bienvenidos a progra 3 mis chicos", "LUN#10#13%MIE#8#10"));
+		courseGeneralList.add(
+				new Course("PROGRAMACION III", "Alexander Sapoperro", "Bienvenidos a progra 3", "LUN#6#8%MIE#10#12"));
 	}
 }
