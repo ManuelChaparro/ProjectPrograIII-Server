@@ -21,8 +21,7 @@ public class ModelsManager {
 		gsonManager = new GSONFileManager();
 	}
 
-	public void createStudent(String nameStudent, String codeStudent, String password) throws Exception {
-		Student student = new Student(nameStudent, codeStudent, password);
+	public void createStudent(Student student) throws Exception {
 		if (!studentTree.isIntoTree(student)) {
 			studentTree.insert(student);
 		} else {
@@ -145,6 +144,10 @@ public class ModelsManager {
 		} else {
 			throw new Exception("La asignatura que desea inscribir no existe.");
 		}
+	}
+	
+	public boolean isExistStudent(String codeStudent) {
+		return studentTree.isIntoTree(new Student(codeStudent));
 	}
 
 	public ArrayList<Course> getCourseGeneralList() {
