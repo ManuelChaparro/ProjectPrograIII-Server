@@ -18,8 +18,8 @@ public class ModelsManager {
 		studentTree = new AVLTree<Student>(studentComparator());
 		teacherTree = new AVLTree<Teacher>(teacherComparator());
 		courseGeneralList = new ArrayList<Course>();
-		loadDefaulData();
 		gsonManager = new GSONFileManager();
+		loadDefaulData();
 	}
 
 	public void createStudent(Student student) throws Exception {
@@ -161,10 +161,6 @@ public class ModelsManager {
 			throw new Exception("La asignatura que desea inscribir no existe.");
 		}
 	}
-	
-	public boolean isExistStudent(String codeStudent) {
-		return studentTree.isIntoTree(new Student(codeStudent));
-	}
 
 	public ArrayList<Course> getCourseGeneralList() {
 		return courseGeneralList;
@@ -202,5 +198,46 @@ public class ModelsManager {
 	
 	private void loadDefaulData() {
 		studentTree.insert(new Student("Luis Fernando Sandoval Parra", "201813398", "Luis123456789"));
+		courseGeneralList.add(new Course("ALGORITMOS"));
+		courseGeneralList.add(new Course("PROGRAMACION I"));
+		courseGeneralList.add(new Course("PROGRAMACION II"));
+		courseGeneralList.add(new Course("PROGRAMACION III"));
+		courseGeneralList.add(new Course("CALCULO I"));
+		courseGeneralList.add(new Course("CALCULO II"));
+		courseGeneralList.add(new Course("CALCULO III"));
+		courseGeneralList.add(new Course("CALCULO IV"));
+		courseGeneralList.add(new Course("METODOS NUMERICOS"));
+		courseGeneralList.add(new Course("INGLES I"));
+		courseGeneralList.add(new Course("INGLES II"));
+		courseGeneralList.add(new Course("INGLES III"));
+		courseGeneralList.add(new Course("INGLES IV"));
+		courseGeneralList.add(new Course("INGLES V"));
+		courseGeneralList.add(new Course("INGLES VI"));
+		courseGeneralList.add(new Course("DISEÑO GRAFICO"));
+		courseGeneralList.add(new Course("FISICA I"));
+		courseGeneralList.add(new Course("FISICA II"));
+		courseGeneralList.add(new Course("FISICA III"));
+		courseGeneralList.add(new Course("ADMINISTRACION"));
+		courseGeneralList.add(new Course("BASES DE DATOS I"));
+		courseGeneralList.add(new Course("BASES DE DATOS II"));
+		courseGeneralList.add(new Course("CATEDRA UNIVERSITARIA"));
+		courseGeneralList.add(new Course("ETICA"));
+		courseGeneralList.add(new Course("MATEMATICAS DISCRETAS"));
+		courseGeneralList.add(new Course("INGENIERIA DE REQUISITOS"));
+		courseGeneralList.add(new Course("ELECTRONICA GENERAL"));
+		courseGeneralList.add(new Course("INGENIERIA DE SOFTWARE I"));
+		courseGeneralList.add(new Course("INGENIERIA DE SOFTWARE II"));
+		courseGeneralList.add(new Course("COMUNICACIONES"));
+		courseGeneralList.add(new Course("INVESTIGACION DE OPERACIONES"));
+		courseGeneralList.add(new Course("SISTEMAS DISTRIBUIDOS"));
+		courseGeneralList.add(new Course("LENGUAJES FORMALES"));
+		courseGeneralList.add(new Course("TRANSMISION DE DATOS"));
+		courseGeneralList.add(new Course("SISTEMAS OPERATIVOS"));
+		courseGeneralList.add(new Course("INTELIGENCIA COMPUTACIONAL"));
+		courseGeneralList.add(new Course("REDES DE DATOS"));
+		courseGeneralList.add(new Course("ARQUITECTURA DE COMPUTADORES"));
+		courseGeneralList.add(new Course("SIMULACION DE COMPUTADORAS"));
+		courseGeneralList.add(new Course("AUDITORIA DE SISTEMAS"));
+		courseGeneralList.add(new Course("GERENCIA INFORMATICA"));
 	}
 }

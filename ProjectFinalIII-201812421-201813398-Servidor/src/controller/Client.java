@@ -21,6 +21,7 @@ public class Client extends Thread {
 		this.socketClient = socket;
 		conection = new Conection(socketClient);
 		modelsManager = new ModelsManager();
+		
 	}
 
 	public void run() {
@@ -48,6 +49,9 @@ public class Client extends Thread {
 			Gson gson = new Gson();
 			String option = conection.receiveUTF();
 			Student user = gson.fromJson(option.toString(), Student.class);
+			System.out.println(user.getNameUser());
+			System.out.println(user.getCodeUser());
+			System.out.println(user.getPassword());
 			if (modelsManager.isExistStudent(user.getCodeUser())) {
 				conection.sendBoolean(false);
 				initApp();
