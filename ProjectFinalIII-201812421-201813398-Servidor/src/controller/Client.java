@@ -1,33 +1,28 @@
 package controller;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import models.Course;
-import models.Homework;
-import models.InterfaceSerializer;
+
+
 import models.ModelsManager;
 import models.Student;
-import models.User;
+
 import net.Conection;
 import persistence.GSONFileManager;
+
+public class Client extends Thread {
+
 
 public class Client extends Thread {
 
 	private Conection conection;
 	private ModelsManager modelsManager;
 	private Socket socketClient;
-	private JsonParser json;
-	private Gson gson;
+
 
 	public Client(Socket socket) throws IOException {
 		this.socketClient = socket;
@@ -60,6 +55,8 @@ public class Client extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 			Logger.getGlobal().log(Level.INFO, "Una conexion finalizada.");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -67,17 +64,26 @@ public class Client extends Thread {
 		if (conection.receiveBoolean()) {
 			Gson gson = new Gson();
 			String option = conection.receiveUTF();
-			User user = gson.fromJson(option.toString(), User.class);
-		} else {
-			String user = conection.receiveUTF();
-			Student student = gson.fromJson(user.toString(), Student.class);
-			if (modelsManager.isExistStudent(student.getCodeUser())) {
+    }
+			Student user = gson.fromJson(option.toString(), Student.class);
+			if (modelsManager.isExistStudent(user.getCodeUser(), user.getPassword())) {
 				conection.sendBoolean(true);
 			} else {
 				conection.sendBoolean(false);
-				modelsManager.createStudent(student);
-				System.out.println(modelsManager.isExistStudent(student.getCodeUser()));
-				GSONFileManager.writeFile(modelsManager);
+				initApp();
+			}
+		} else {
+			Gson gson = new Gson();
+			String option = conection.receiveUTF();
+			Student user = gson.fromJson(option.toString(), Student.class);
+			if (modelsManager.isExistStudent(user.getCodeUser())) {
+				conection.sendBoolean(false);
+				initApp();
+			} else {
+				modelsManager.createStudent(user);
+				conection.sendBoolean(true);
+				initApp();
+      }
 			}
 		}
 	}

@@ -18,6 +18,7 @@ public class ModelsManager {
 		studentTree = new AVLTree<Student>(studentComparator());
 		teacherTree = new AVLTree<Teacher>(teacherComparator());
 		courseGeneralList = new ArrayList<Course>();
+		loadDefaulData();
 		gsonManager = new GSONFileManager();
 	}
 
@@ -27,6 +28,21 @@ public class ModelsManager {
 		} else {
 			throw new Exception("El estudiante " + student.getNameUser() + " ya existe.");
 		}
+	}
+	
+	public boolean isExistStudent(String codeStudent, String password) {
+		Iterator<Student> itStudent = studentTree.inOrder();
+		while (itStudent.hasNext()) {
+			Student student = itStudent.next();
+			if(student.getCodeUser().equalsIgnoreCase(codeStudent) && student.getPassword().equals(password)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isExistStudent(String codeStudent) {
+		return studentTree.isIntoTree(new Student(codeStudent));
 	}
 
 	public void createTeacher(String nameTeacher, String codeTeacher, String password) throws Exception {
@@ -182,5 +198,9 @@ public class ModelsManager {
 				}
 			}
 		};
+	}
+	
+	private void loadDefaulData() {
+		studentTree.insert(new Student("Luis Fernando Sandoval Parra", "201813398", "Luis123456789"));
 	}
 }
