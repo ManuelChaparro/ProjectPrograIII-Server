@@ -77,7 +77,7 @@ public class ModelsManager {
 		}
 	}
 
-	// metodo unicamente para crear y a�adir asignatura a la lista general de
+	// metodo unicamente para crear y aï¿½adir asignatura a la lista general de
 	// asignaturas.
 	public void addCourseGeneralList(Course course) throws Exception {
 		if (!courseGeneralList.contains(course)) {
@@ -214,7 +214,7 @@ public class ModelsManager {
 		courseGeneralList.add(new Course("INGLES IV"));
 		courseGeneralList.add(new Course("INGLES V"));
 		courseGeneralList.add(new Course("INGLES VI"));
-		courseGeneralList.add(new Course("DISE�O GRAFICO"));
+		courseGeneralList.add(new Course("DISEÑO GRAFICO"));
 		courseGeneralList.add(new Course("FISICA I"));
 		courseGeneralList.add(new Course("FISICA II"));
 		courseGeneralList.add(new Course("FISICA III"));

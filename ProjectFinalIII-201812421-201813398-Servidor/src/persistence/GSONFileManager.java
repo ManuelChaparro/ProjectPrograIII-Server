@@ -14,9 +14,9 @@ import models.ModelsManager;
 
 public class GSONFileManager {
 	
-	private String LOCATION_FILE = "data/infoServer.json";
+	private static String LOCATION_FILE = "data/infoModelsManager.json";
 
-	public void writeFile(ModelsManager object) throws Exception {
+	public static void writeFile(ModelsManager object) throws Exception {
 		try {
 			FileWriter fileWriter;
 			fileWriter = new FileWriter(LOCATION_FILE);
@@ -27,7 +27,7 @@ public class GSONFileManager {
 		}
 	}
 	
-	public ModelsManager readFile() {
+	public static ModelsManager readFile() {
 		ModelsManager newModel = null;
 		try {
 			JsonParser json = new JsonParser();

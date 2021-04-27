@@ -56,7 +56,7 @@ public class Student extends User {
 		if (!externalActivitiesTree.isIntoTree(externalActivity)) {
 			externalActivitiesTree.insert(externalActivity);
 		} else {
-			throw new Exception("La actividad externa que desea añadir ya existe.");
+			throw new Exception("La actividad externa que desea aï¿½adir ya existe.");
 		}
 	}
 
