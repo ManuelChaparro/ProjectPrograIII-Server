@@ -21,12 +21,12 @@ public class Conection {
 		return input.readUTF();
 	}
 	
-	public void sendUTF(String info) {
-		
+	public void sendUTF(String info) throws IOException {
+		output.writeUTF(info);
 	}
 	
-	public boolean receiveBoolean() {
-		return true;
+	public boolean receiveBoolean() throws IOException {
+		return input.readBoolean();
 	}
 	
 	public void sendBoolean(boolean info) throws IOException {
