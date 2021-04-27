@@ -60,7 +60,7 @@ public class Client extends Thread {
 	}
 
 	private void createUser() {
-
+		System.out.println("is here");
 	}
 
 	private void manageCourseUser() {
