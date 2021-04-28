@@ -7,46 +7,54 @@ import structures.AVLtree;
 
 public class Student extends User {
 
-	private ArrayList<Course> courseTree;
-	private ArrayList<ExternalActivity> externalActivitiesTree;
+	private ArrayList<Course> courseList;
+	private ArrayList<ExternalActivity> externalActivitiesList;
 
 	public Student(String nameStudent, String codeStudent, String password) {
 		super(nameStudent, codeStudent, password);
-		courseTree = new ArrayList<Course>();
-		externalActivitiesTree = new ArrayList<ExternalActivity>();
+		courseList = new ArrayList<Course>();
+		externalActivitiesList = new ArrayList<ExternalActivity>();
 	}
 
 	public Student(String codeStudent) {
 		super(codeStudent);
-		courseTree = new ArrayList<Course>();
-		externalActivitiesTree = new ArrayList<ExternalActivity>();
+		courseList = new ArrayList<Course>();
+		externalActivitiesList = new ArrayList<ExternalActivity>();
 	}
 
 	public void addCourse(Course course) throws Exception {
+		initArrayCourseList();
 		boolean exist = false;
-		for (Course auxCourse : courseTree) {
-			if (auxCourse.getNameActivity().equalsIgnoreCase(course.getNameActivity())) {
+		for (int i = 0; i < courseList.size(); i++) {
+			if (courseList.get(i).getNameActivity().equalsIgnoreCase(course.getNameActivity())) {
 				exist = true;
 			}
 		}
+
 		if (!exist) {
-			courseTree.add(course);
-		}else {
+			courseList.add(course);
+		} else {
 			throw new Exception("La asignatura que desea inscribir ya existe.");
 		}
 	}
 
+	private void initArrayCourseList() {
+		if (courseList == null) {
+			courseList = new ArrayList<Course>();
+		}
+	}
+
 	public void cancelCourse(String nameCourse) throws Exception {
-		for (Course auxCourse : courseTree) {
+		for (Course auxCourse : courseList) {
 			if (auxCourse.getNameActivity().equalsIgnoreCase(nameCourse)) {
-				courseTree.remove(auxCourse);
+				courseList.remove(auxCourse);
 			}
 		}
 	}
 
 	public Course getCourse(String nameCourse) throws Exception {
 		Course course = null;
-		for (Course auxCourse : courseTree) {
+		for (Course auxCourse : courseList) {
 			if (auxCourse.getNameActivity().equalsIgnoreCase(nameCourse)) {
 				course = auxCourse;
 			}
@@ -55,7 +63,7 @@ public class Student extends User {
 	}
 
 	public ArrayList<Course> getCourseList() {
-		return courseTree;
+		return courseList;
 	}
 
 //	public void addExternalActivity(ExternalActivity externalActivity) throws Exception {
