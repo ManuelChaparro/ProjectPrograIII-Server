@@ -71,11 +71,12 @@ public class Client extends Thread {
 //			addContact();
 			break;
 		case 2:
-			conection.sendUTF(modelsManager.getStringAvailableCourses());
+			conection.sendUTF(modelsManager.getAllAvailableCourses());
+			
 			break;
 		case 3:
-			String string = conection.receiveUTF();
-			conection.sendUTF(modelsManager.getAvailableTeachers(string));
+//			String string = conection.receiveUTF();
+//			conection.sendUTF(modelsManager.getAvailableTeachers());
 			break;
 		case 4:
 //			conection.sendUTF(contactRecord.getContactListString());

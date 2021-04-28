@@ -21,22 +21,40 @@ public class ModelsManager {
 
 	private void loadData() {
 		archiveClass = GSONFileManager.readFile();
+		
 		studentTree = new AVLtree<>(studentComparator());
-		teacherTree = new AVLtree<>(teacherComparator());
-		availableCourses = new AVLtree<>(stringComparator());
-		courseGeneralList = archiveClass.getCourseGeneralList();
 		ArrayList<Student> students = archiveClass.getStudents();
-		ArrayList<Teacher> teachers = archiveClass.getTeachers();
-		ArrayList<String> courses = archiveClass.getAvailableCourses();
 		for (Student student : students) {
 			studentTree.insert(student);
 		}
+		
+		
+		teacherTree = new AVLtree<>(teacherComparator());
+		ArrayList<Teacher> teachers = archiveClass.getTeachers();
 		for (Teacher teacher : teachers) {
 			teacherTree.insert(teacher);
 		}
+		
+		availableCourses = new AVLtree<>(stringComparator());
+		ArrayList<String> courses = archiveClass.getAvailableCourses();
 		for (String course : courses) {
+			System.out.println(courses.toString());
 			availableCourses.insert(course);
 		}
+		
+
+		
+		
+		courseGeneralList = archiveClass.getCourseGeneralList();
+		
+		
+		
+		
+		
+
+
+
+		
 	}
 
 	public void createStudent(Student student) throws Exception {
@@ -99,6 +117,16 @@ public class ModelsManager {
 			throw new Exception("La asignatura " + course.getNameActivity() + " ya existe.");
 		}
 	}
+	
+	public String getAllAvailableCourses() {
+		String courses = "";
+		for (Course course : courseGeneralList) {
+			if (!course.getNameCourseTeacher().equalsIgnoreCase("")) {
+				courses += course.toString()+"¿";
+			}
+		}
+		return courses;
+	}
 
 	public String getStringAvailableCourses() throws Exception {
 		String courses = "";
@@ -110,12 +138,12 @@ public class ModelsManager {
 		return courses;
 	}
 
-	public String getAvailableTeachers(String course) {
+	public String getAvailableTeachers() {
 		String teachers = "";
 		for (int i = 0; i < courseGeneralList.size(); i++) {
-			if (courseGeneralList.get(i).getNameActivity().equalsIgnoreCase(course)
-					&& !courseGeneralList.get(i).getNameCourseTeacher().equalsIgnoreCase("")) {
-				teachers += courseGeneralList.get(i).getNameCourseTeacher() + ";";
+			if (!courseGeneralList.get(i).getNameCourseTeacher().equalsIgnoreCase("")) {
+				teachers += courseGeneralList.get(i).getNameCourseTeacher()
+						+courseGeneralList.get(i).getScheduleActivity() + ";";
 			}
 		}
 		return teachers;
@@ -239,5 +267,19 @@ public class ModelsManager {
 	
 	public AVLtree<String> getAvailableCourse(){
 		return availableCourses;
+	}
+	
+	private void loadDefaulData() {
+		try {
+			assignCourseTeacher("Hoyitos", "PROGRAMACION III", "Bienvenidas perras", "LUN#6#8%MIE#10#12");
+			assignCourseTeacher("Omaria Galindo", "PROGRAMACION III", "Hola soy omaewa kawai senpai :v<3",
+					"MAR#10#12%MIE#12#2");
+			assignCourseTeacher("Alexander Sapoperro", "PROGRAMACION III", "OLA", "MAR#10#12%MIE#12#2");
+			assignCourseTeacher("Maria Alejandra", "CALCULO II", "OLA", "MAR#10#12%MIE#12#2");
+			assignCourseTeacher("Pedro costa", "CALCULO I", "OLA", "MAR#10#12%MIE#12#2");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
