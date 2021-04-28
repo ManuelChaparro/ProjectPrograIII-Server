@@ -1,9 +1,6 @@
 package models;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import structures.AVLtree;
 
 public class Course extends Activity {
 
@@ -62,19 +59,6 @@ public class Course extends Activity {
 			}
 		}
 		return auxHomework;
-	}
-
-	private Comparator<Homework> homeworkComparator() {
-		return new Comparator<Homework>() {
-			public int compare(Homework homeworkOne, Homework homeworkTwo) {
-				int compare = homeworkOne.getNameHomework().compareToIgnoreCase(homeworkTwo.getNameHomework());
-				if (compare == 0) {
-					return 0;
-				} else {
-					return 1;
-				}
-			}
-		};
 	}
 
 	@Override
