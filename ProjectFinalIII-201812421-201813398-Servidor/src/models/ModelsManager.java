@@ -3,22 +3,40 @@ package models;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
-
+import persistence.ArchiveClass;
+import persistence.GSONFileManager;
 import structures.AVLtree;
 
 public class ModelsManager {
-
+	
+	private ArchiveClass archiveClass;
 	private AVLtree<Student> studentTree;
 	private AVLtree<Teacher> teacherTree;
 	private AVLtree<String> availableCourses;
 	private ArrayList<Course> courseGeneralList;
 
 	public ModelsManager() {
-		studentTree = new AVLtree<Student>(studentComparator());
-		teacherTree = new AVLtree<Teacher>(teacherComparator());
-		availableCourses = new AVLtree<String>(stringComparator());
-		courseGeneralList = new ArrayList<Course>();
-		loadDefaulData();
+		loadData();
+	}
+
+	private void loadData() {
+		archiveClass = GSONFileManager.readFile();
+		studentTree = new AVLtree<>(studentComparator());
+		teacherTree = new AVLtree<>(teacherComparator());
+		availableCourses = new AVLtree<>(stringComparator());
+		courseGeneralList = archiveClass.getCourseGeneralList();
+		ArrayList<Student> students = archiveClass.getStudents();
+		ArrayList<Teacher> teachers = archiveClass.getTeachers();
+		ArrayList<String> courses = archiveClass.getAvailableCourses();
+		for (Student student : students) {
+			studentTree.insert(student);
+		}
+		for (Teacher teacher : teachers) {
+			teacherTree.insert(teacher);
+		}
+		for (String course : courses) {
+			availableCourses.insert(course);
+		}
 	}
 
 	public void createStudent(Student student) throws Exception {
@@ -33,6 +51,7 @@ public class ModelsManager {
 		Iterator<Student> itStudent = studentTree.inOrder();
 		while (itStudent.hasNext()) {
 			Student student = itStudent.next();
+			System.out.println("info dentro del arbol: "+ student.getNameUser());
 			if (student.getCodeUser().equalsIgnoreCase(codeStudent) && student.getPassword().equals(password)) {
 				return true;
 			}
@@ -81,7 +100,7 @@ public class ModelsManager {
 		}
 	}
 
-	public String getAvailableCourses() throws Exception {
+	public String getStringAvailableCourses() throws Exception {
 		String courses = "";
 		Iterator<String> itAvailableCourses = availableCourses.inOrder();
 		while (itAvailableCourses.hasNext()) {
@@ -124,33 +143,33 @@ public class ModelsManager {
 
 	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
 	// asignarle una actividad externa.
-	public void addExternalActivity(String codeStudent, String nameExActivity, String descriptionExActivity,
-			String scheduleExActivity) throws Exception {
-		ExternalActivity exActivity = new ExternalActivity(nameExActivity, descriptionExActivity, scheduleExActivity);
-		getStudent(codeStudent).addExternalActivity(exActivity);
-	}
+//	public void addExternalActivity(String codeStudent, String nameExActivity, String descriptionExActivity,
+//			String scheduleExActivity) throws Exception {
+//		ExternalActivity exActivity = new ExternalActivity(nameExActivity, descriptionExActivity, scheduleExActivity);
+//		getStudent(codeStudent).addExternalActivity(exActivity);
+//	}
 
 	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
 	// obtener una actividad externa especifica.
-	public ExternalActivity getExternalActivity(String codeStudent, String nameExActivity) throws Exception {
-		Iterator<Student> itStudent = studentTree.inOrder();
-		while (itStudent.hasNext()) {
-			if (itStudent.next().getCodeUser().equalsIgnoreCase(codeStudent)) {
-				return itStudent.next().getExternalActivity(nameExActivity);
-			}
-		}
-		throw new Exception("No existe un estudiante con codigo: " + codeStudent);
-	}
-
-	// Metodo para calcular el promedio de notas para la asignatura que se quiera.
-	public double calculateAvgCourseCalification(String codeStudent, String nameCourse) throws Exception {
-		return getStudent(codeStudent).calculateAvgCourseCalification(nameCourse);
-	}
-
-	// Metodo para calcular el promedio general de un estudiante.
-	public double calculateTotalAvgCalification(String codeStudent) throws Exception {
-		return getStudent(codeStudent).calculateTotalAvgCalification();
-	}
+//	public ExternalActivity getExternalActivity(String codeStudent, String nameExActivity) throws Exception {
+//		Iterator<Student> itStudent = studentTree.inOrder();
+//		while (itStudent.hasNext()) {
+//			if (itStudent.next().getCodeUser().equalsIgnoreCase(codeStudent)) {
+//				return itStudent.next().getExternalActivity(nameExActivity);
+//			}
+//		}
+//		throw new Exception("No existe un estudiante con codigo: " + codeStudent);
+//	}
+//
+//	// Metodo para calcular el promedio de notas para la asignatura que se quiera.
+//	public double calculateAvgCourseCalification(String codeStudent, String nameCourse) throws Exception {
+//		return getStudent(codeStudent).calculateAvgCourseCalification(nameCourse);
+//	}
+//
+//	// Metodo para calcular el promedio general de un estudiante.
+//	public double calculateTotalAvgCalification(String codeStudent) throws Exception {
+//		return getStudent(codeStudent).calculateTotalAvgCalification();
+//	}
 
 	// Metodo para que el docente pueda seleccionar la asignatura y pueda agregar
 	// descripcion y horario.
@@ -209,64 +228,16 @@ public class ModelsManager {
 				}
 			}
 		};
+  }
+	public AVLtree<Student> getStudentTree() {
+		return studentTree;
 	}
 
-	private void loadDefaulData() {
-		studentTree.insert(new Student("Santiago", "201812421", "1"));
-		studentTree.insert(new Student("Luis", "201813398", "1"));
-		courseGeneralList.add(new Course("PROGRAMACION I"));
-		courseGeneralList.add(new Course("PROGRAMACION II"));
-		courseGeneralList.add(new Course("PROGRAMACION III"));
-		courseGeneralList.add(new Course("CALCULO I"));
-		courseGeneralList.add(new Course("CALCULO II"));
-		courseGeneralList.add(new Course("CALCULO III"));
-		courseGeneralList.add(new Course("CALCULO IV"));
-		courseGeneralList.add(new Course("METODOS NUMERICOS"));
-		courseGeneralList.add(new Course("INGLES I"));
-		courseGeneralList.add(new Course("INGLES II"));
-		courseGeneralList.add(new Course("INGLES III"));
-		courseGeneralList.add(new Course("INGLES IV"));
-		courseGeneralList.add(new Course("INGLES V"));
-		courseGeneralList.add(new Course("INGLES VI"));
-		courseGeneralList.add(new Course("DISEÑO GRAFICO"));
-		courseGeneralList.add(new Course("FISICA I"));
-		courseGeneralList.add(new Course("FISICA II"));
-		courseGeneralList.add(new Course("FISICA III"));
-		courseGeneralList.add(new Course("ADMINISTRACION"));
-		courseGeneralList.add(new Course("BASES DE DATOS I"));
-		courseGeneralList.add(new Course("BASES DE DATOS II"));
-		courseGeneralList.add(new Course("CATEDRA UNIVERSITARIA"));
-		courseGeneralList.add(new Course("ETICA"));
-		courseGeneralList.add(new Course("MATEMATICAS DISCRETAS"));
-		courseGeneralList.add(new Course("INGENIERIA DE REQUISITOS"));
-		courseGeneralList.add(new Course("ELECTRONICA GENERAL"));
-		courseGeneralList.add(new Course("INGENIERIA DE SOFTWARE I"));
-		courseGeneralList.add(new Course("INGENIERIA DE SOFTWARE II"));
-		courseGeneralList.add(new Course("COMUNICACIONES"));
-		courseGeneralList.add(new Course("INVESTIGACION DE OPERACIONES"));
-		courseGeneralList.add(new Course("SISTEMAS DISTRIBUIDOS"));
-		courseGeneralList.add(new Course("LENGUAJES FORMALES"));
-		courseGeneralList.add(new Course("TRANSMISION DE DATOS"));
-		courseGeneralList.add(new Course("SISTEMAS OPERATIVOS"));
-		courseGeneralList.add(new Course("INTELIGENCIA COMPUTACIONAL"));
-		courseGeneralList.add(new Course("REDES DE DATOS"));
-		courseGeneralList.add(new Course("ARQUITECTURA DE COMPUTADORES"));
-		courseGeneralList.add(new Course("SIMULACION DE COMPUTADORAS"));
-		courseGeneralList.add(new Course("AUDITORIA DE SISTEMAS"));
-		courseGeneralList.add(new Course("GERENCIA INFORMATICA"));
-		try {
-			createTeacher("Hoyitos", "2345", "1");
-			createTeacher("Omaira", "1234", "1");
-			createTeacher("Alexander", "3456", "1");
-			assignCourseTeacher("Hoyitos", "PROGRAMACION III", "Bienvenidas perras", "LUN#6#8%MIE#10#12");
-			assignCourseTeacher("Omaria Galindo", "PROGRAMACION III", "Hola soy omaewa kawai senpai :v<3",
-					"MAR#10#12%MIE#12#2");
-			assignCourseTeacher("Alexander Sapoperro", "PROGRAMACION III", "OLA", "MAR#10#12%MIE#12#2");
-			assignCourseTeacher("Maria Alejandra", "CALCULO II", "OLA", "MAR#10#12%MIE#12#2");
-			assignCourseTeacher("Pedro costa", "CALCULO I", "OLA", "MAR#10#12%MIE#12#2");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public AVLtree<Teacher> getTeacherTree() {
+		return teacherTree;
+	}	
+	
+	public AVLtree<String> getAvailableCourse(){
+		return availableCourses;
 	}
 }

@@ -38,5 +38,13 @@ public class Homework {
 
 	public void setCalification(double calification) {
 		this.calification = calification;
+	}
+
+	@Override
+	public String toString() {
+		return "Homework [nameHomework=" + nameHomework + ", annotation=" + annotation + ", calification="
+				+ calification + "]";
 	}	
+	
+	
 }
