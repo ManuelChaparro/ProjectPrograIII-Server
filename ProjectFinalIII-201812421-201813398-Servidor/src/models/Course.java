@@ -80,6 +80,6 @@ public class Course extends Activity {
 	@Override
 	public String toString() {
 		return getNameActivity() + "&" + getNameCourseTeacher() + "&" + getDescriptionActivity() + "&"
-				+ getScheduleActivity() + ";";
+				+ getScheduleActivity();
 	}
 }

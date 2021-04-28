@@ -43,4 +43,17 @@ public class User {
 	public String toString() {
 		return "User [nameUser=" + nameUser + ", code=" + codeUser + ", password=" + password + "]";
 	}
+	
+	
+	public static void main(String[] args) {
+		String palabra = "sql";
+		String texto = "lenguaje sql";
+		boolean resultado = texto.contains(palabra);
+
+		if(resultado){
+		    System.out.println("palabra encontrada");
+		}else{
+		    System.out.println("palabra no encontrada");
+		}
+	}
 }

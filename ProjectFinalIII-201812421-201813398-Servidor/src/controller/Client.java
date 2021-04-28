@@ -65,28 +65,20 @@ public class Client extends Thread {
 	}
 	
 	private void options() throws Exception {
-		int option = conection.receiveInt();
+		String option = conection.receiveUTF();
 		switch (option) {
-		case 1:
-//			addContact();
+		case "SHOW_SCHEDULE":
+			System.out.println("SHOW_SCHEDULE");
+			conection.sendUTF("Mostrando horario...");
 			break;
-		case 2:
+		case "ADD_COURSE_ST":
+			System.out.println("ADD_COURSE_ST");
 			conection.sendUTF(modelsManager.getStringAvailableCourses());
-			break;
-		case 3:
-			String string = conection.receiveUTF();
-			conection.sendUTF(modelsManager.getAvailableTeachers(string));
-			break;
-		case 4:
-//			conection.sendUTF(contactRecord.getContactListString());
-			break;
-		case 5:
-//			showContactsStatistic();
+			conection.sendUTF(modelsManager.getAvailableTeachers(conection.receiveUTF()));
 			break;
 		default:
 			break;
 		}
 		options();
-		conection.closeConection();
 	}
 }
