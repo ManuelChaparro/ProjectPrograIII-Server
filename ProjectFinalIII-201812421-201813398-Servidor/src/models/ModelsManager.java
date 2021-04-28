@@ -8,7 +8,7 @@ import persistence.GSONFileManager;
 import structures.AVLtree;
 
 public class ModelsManager {
-	
+
 	private ArchiveClass archiveClass;
 	private AVLtree<Student> studentTree;
 	private AVLtree<Teacher> teacherTree;
@@ -21,39 +21,22 @@ public class ModelsManager {
 
 	private void loadData() {
 		archiveClass = GSONFileManager.readFile();
-		
 		studentTree = new AVLtree<>(studentComparator());
 		ArrayList<Student> students = archiveClass.getStudents();
 		for (Student student : students) {
 			studentTree.insert(student);
 		}
-		
-		
 		teacherTree = new AVLtree<>(teacherComparator());
 		ArrayList<Teacher> teachers = archiveClass.getTeachers();
 		for (Teacher teacher : teachers) {
 			teacherTree.insert(teacher);
 		}
-		
 		availableCourses = new AVLtree<>(stringComparator());
 		ArrayList<String> courses = archiveClass.getAvailableCourses();
 		for (String course : courses) {
 			availableCourses.insert(course);
 		}
-		
-
-		
-		
 		courseGeneralList = archiveClass.getCourseGeneralList();
-		
-		
-		
-		
-		
-
-
-
-		
 	}
 
 	public void createStudent(Student student) throws Exception {
@@ -115,12 +98,12 @@ public class ModelsManager {
 			throw new Exception("La asignatura " + course.getNameActivity() + " ya existe.");
 		}
 	}
-	
+
 	public String getAllAvailableCourses() {
 		String courses = "";
 		for (Course course : courseGeneralList) {
 			if (!course.getNameCourseTeacher().equalsIgnoreCase("")) {
-				courses += course.toString()+"¿";
+				courses += course.toString() + "¿";
 			}
 		}
 		return courses;
@@ -139,9 +122,9 @@ public class ModelsManager {
 	public String getAvailableTeachers(String course) {
 		String teachers = "";
 		for (int i = 0; i < courseGeneralList.size(); i++) {
-			if (courseGeneralList.get(i).getNameActivity().equalsIgnoreCase(course) 
+			if (courseGeneralList.get(i).getNameActivity().equalsIgnoreCase(course)
 					&& !courseGeneralList.get(i).getNameCourseTeacher().equalsIgnoreCase("")) {
-				teachers += courseGeneralList.get(i).getNameCourseTeacher()+";";
+				teachers += courseGeneralList.get(i).getNameCourseTeacher() + ";";
 			}
 		}
 		return teachers;
@@ -149,11 +132,16 @@ public class ModelsManager {
 
 //  nuevo para asignar al estudiante la respectiva asignatura
 	public void assignStudentCourse(String codeStudent, String nameCourse, String nameTeacher) throws Exception {
-		if (courseGeneralList.contains(new Course(nameCourse))) {
-			for (int j = 0; j < courseGeneralList.size(); j++) {
-				if (courseGeneralList.get(j).getNameActivity().equalsIgnoreCase(nameCourse)
-						&& courseGeneralList.get(j).getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
-					getStudent(codeStudent).addCourse(courseGeneralList.get(j));
+		System.out.println(1111);
+		System.out.println(codeStudent);
+		System.out.println(nameCourse);
+		System.out.println(nameTeacher);
+		
+		if (isExistCourse(nameCourse)) {
+			for (Course course : courseGeneralList) {
+				if (course.getNameActivity().equalsIgnoreCase(nameCourse)
+						&& course.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
+					getStudent(codeStudent).addCourse(course);
 				}
 			}
 		} else {
@@ -161,7 +149,17 @@ public class ModelsManager {
 		}
 	}
 
-//	metodo nuevO para el caso de que el estudiante quiera cancelar la materia de
+	private boolean isExistCourse(String nameCourse) {
+		boolean isExist = false;
+		for (Course course : courseGeneralList) {
+			if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
+				isExist = true;
+			}
+		}
+		return isExist;
+	}
+
+	// metodo nuevO para el caso de que el estudiante quiera cancelar la materia de
 //	su horario.
 	public void cancelStudentCourse(String codeStudent, String nameCourse) throws Exception {
 		getStudent(codeStudent).cancelCourse(nameCourse);
@@ -254,30 +252,28 @@ public class ModelsManager {
 				}
 			}
 		};
-  }
+	}
+
 	public AVLtree<Student> getStudentTree() {
 		return studentTree;
 	}
 
 	public AVLtree<Teacher> getTeacherTree() {
 		return teacherTree;
-	}	
-	
-	public AVLtree<String> getAvailableCourse(){
+	}
+
+	public AVLtree<String> getAvailableCourse() {
 		return availableCourses;
 	}
-	
-	private void loadDefaulData() {
-		try {
-			assignCourseTeacher("Hoyitos", "PROGRAMACION III", "Bienvenidas perras", "LUN#6#8%MIE#10#12");
-			assignCourseTeacher("Omaria Galindo", "PROGRAMACION III", "Hola soy omaewa kawai senpai :v<3",
-					"MAR#10#12%MIE#12#2");
-			assignCourseTeacher("Alexander Sapoperro", "PROGRAMACION III", "OLA", "MAR#10#12%MIE#12#2");
-			assignCourseTeacher("Maria Alejandra", "CALCULO II", "OLA", "MAR#10#12%MIE#12#2");
-			assignCourseTeacher("Pedro costa", "CALCULO I", "OLA", "MAR#10#12%MIE#12#2");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+	public String getInfoSchedule(String course, String teacher) {
+		String schedule = "";
+		for (Course list : courseGeneralList) {
+			if (list.getNameActivity().equalsIgnoreCase(course)
+					&& list.getNameCourseTeacher().equalsIgnoreCase(teacher)) {
+				schedule += list.getScheduleActivity();
+			}
 		}
+		return schedule;
 	}
 }

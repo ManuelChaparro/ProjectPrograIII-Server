@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,25 +57,43 @@ public class Client extends Thread {
 				initApp();
 			} else {
 				modelsManager.createStudent(user);
-				GSONFileManager.writeFile(new ArchiveClass(modelsManager.getStudentTree(), modelsManager.getTeacherTree(),
-						modelsManager.getAvailableCourse(), modelsManager.getCourseGeneralList()));
+				save();
 				conection.sendBoolean(true);
 				initApp();
 			}
 		}
+	}
+
+	private void save() throws Exception {
+		GSONFileManager.writeFile(new ArchiveClass(modelsManager.getStudentTree(), modelsManager.getTeacherTree(),
+				modelsManager.getAvailableCourse(), modelsManager.getCourseGeneralList()));
 	}
 	
 	private void options() throws Exception {
 		String option = conection.receiveUTF();
 		switch (option) {
 		case "SHOW_SCHEDULE":
-			System.out.println("SHOW_SCHEDULE");
 			conection.sendUTF("Mostrando horario...");
 			break;
 		case "ADD_COURSE_ST":
-			System.out.println("ADD_COURSE_ST");
 			conection.sendUTF(modelsManager.getStringAvailableCourses());
+			break;
+		case "FIND_TEACHERS":
 			conection.sendUTF(modelsManager.getAvailableTeachers(conection.receiveUTF()));
+			break;
+		case "FIND_INFO_ADD_COURSE":
+			conection.sendUTF(modelsManager.getInfoSchedule(conection.receiveUTF(), conection.receiveUTF()));
+			break;
+		case "INSERT_COURSE":
+			String[] xd = conection.receiveUTF().split(";;;");
+			try {
+				modelsManager.assignStudentCourse(xd[0], xd[1], xd[2]);
+				conection.sendBoolean(true);
+				save();
+			} catch (Exception e) {
+				e.printStackTrace();
+				conection.sendBoolean(false);
+			}
 			break;
 		default:
 			break;
