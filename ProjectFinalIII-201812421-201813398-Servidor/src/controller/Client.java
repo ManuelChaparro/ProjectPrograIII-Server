@@ -10,6 +10,8 @@ import com.google.gson.Gson;
 import models.ModelsManager;
 import models.Student;
 import net.Conection;
+import persistence.GSONFileManager;
+import persistence.ArchiveClass;
 
 public class Client extends Thread {
 
@@ -54,6 +56,8 @@ public class Client extends Thread {
 				initApp();
 			} else {
 				modelsManager.createStudent(user);
+				GSONFileManager.writeFile(new ArchiveClass(modelsManager.getStudentTree(), modelsManager.getTeacherTree(),
+						modelsManager.getAvailableCourse(), modelsManager.getCourseGeneralList()));
 				conection.sendBoolean(true);
 				initApp();
 			}
@@ -67,7 +71,7 @@ public class Client extends Thread {
 //			addContact();
 			break;
 		case 2:
-			conection.sendUTF(modelsManager.getAvailableCourses());
+			conection.sendUTF(modelsManager.getStringAvailableCourses());
 			break;
 		case 3:
 //			deleteContact();
