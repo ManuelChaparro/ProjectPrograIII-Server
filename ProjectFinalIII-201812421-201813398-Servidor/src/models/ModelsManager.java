@@ -71,7 +71,7 @@ public class ModelsManager {
 		}
 	}
 
-	public Student getStudent(String codeStudent) throws Exception {
+	private Student getStudent(String codeStudent) throws Exception {
 		Student student = new Student(codeStudent);
 		if (studentTree.exist(student)) {
 			return studentTree.find(student);
@@ -80,7 +80,7 @@ public class ModelsManager {
 		}
 	}
 
-	public Teacher getTeacher(String codeTeacher) throws Exception {
+	private Teacher getTeacher(String codeTeacher) throws Exception {
 		Teacher teacher = new Teacher(codeTeacher);
 		if (teacherTree.exist(teacher)) {
 			return teacherTree.find(teacher);
@@ -99,17 +99,7 @@ public class ModelsManager {
 		}
 	}
 
-	public String getAllAvailableCourses() {
-		String courses = "";
-		for (Course course : courseGeneralList) {
-			if (!course.getNameCourseTeacher().equalsIgnoreCase("")) {
-				courses += course.toString() + "¿";
-			}
-		}
-		return courses;
-	}
-
-	public String getStringAvailableCourses() throws Exception {
+	public String getAvailableCourses() throws Exception {
 		String courses = "";
 		Iterator<String> itAvailableCourses = availableCourses.inOrder();
 		while (itAvailableCourses.hasNext()) {
@@ -129,14 +119,64 @@ public class ModelsManager {
 		}
 		return teachers;
 	}
+//----------Metodos para modificar tareas --------------------------------
+	public String getStudentCourses(String codeStudent) throws Exception {
+		String courses = " ";
+		Student student = getStudent(codeStudent);
+		for (Course course : student.getCourseList()) {
+			courses += course.getNameActivity() + ";";
+		}
+		return courses;
+	}
 
-//  nuevo para asignar al estudiante la respectiva asignatura
+	public String getStudentHomeworks(String codeStudent, String nameCourse) throws Exception {
+		String homeworks = " ";
+		Student student = getStudent(codeStudent);
+		for (Course course : student.getCourseList()) {
+			if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
+				for (Homework homework : course.getHomeworkList()) {
+					homeworks += homework.getNameHomework() + ";";
+				}
+			}
+		}
+		return homeworks;
+	}
+
+	public String getSpecificStudentHomework(String codeStudent, String nameCourse, String nameHomework)
+			throws Exception {
+		String completeHomework = "";
+		Student student = getStudent(codeStudent);
+		for (Course course : student.getCourseList()) {
+			if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
+				for (Homework homework : course.getHomeworkList()) {
+					if (homework.getNameHomework().equalsIgnoreCase(nameHomework)) {
+						completeHomework = homework.toString();
+					}
+				}
+			}
+		}
+		return completeHomework;
+	}
+
+	public void modifySpecificHomework(String codeStudent, String nameCourse, String nameHomework,
+			String annotationHomework, double calification) throws Exception {
+		Student student = getStudent(codeStudent);
+		if (student.getCodeUser().equalsIgnoreCase(codeStudent)) {
+			for (Course course : student.getCourseList()) {
+				if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
+					for (Homework homework : course.getHomeworkList()) {
+						if (homework.getNameHomework().equalsIgnoreCase(nameHomework)) {
+							homework.setAnnotation(annotationHomework);
+							homework.setCalification(calification);
+						}
+					}
+				}
+			}
+		}
+	}
+	//--------------------------------------------------------
+
 	public void assignStudentCourse(String codeStudent, String nameCourse, String nameTeacher) throws Exception {
-		System.out.println(1111);
-		System.out.println(codeStudent);
-		System.out.println(nameCourse);
-		System.out.println(nameTeacher);
-		
 		if (isExistCourse(nameCourse)) {
 			for (Course course : courseGeneralList) {
 				if (course.getNameActivity().equalsIgnoreCase(nameCourse)
@@ -167,11 +207,11 @@ public class ModelsManager {
 
 	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
 	// asignarle una actividad externa.
-//	public void addExternalActivity(String codeStudent, String nameExActivity, String descriptionExActivity,
-//			String scheduleExActivity) throws Exception {
-//		ExternalActivity exActivity = new ExternalActivity(nameExActivity, descriptionExActivity, scheduleExActivity);
-//		getStudent(codeStudent).addExternalActivity(exActivity);
-//	}
+	public void addExternalActivity(String codeStudent, String nameExActivity, String descriptionExActivity,
+			String scheduleExActivity) throws Exception {
+		ExternalActivity exActivity = new ExternalActivity(nameExActivity, descriptionExActivity, scheduleExActivity);
+		getStudent(codeStudent).addExternalActivity(exActivity);
+	}
 
 	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
 	// obtener una actividad externa especifica.

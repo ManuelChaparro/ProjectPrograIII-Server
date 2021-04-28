@@ -11,7 +11,7 @@ public class Homework {
 		this.annotation = annotation;
 		this.calification = calification;
 	}
-	
+
 	public Homework(String nameHomework) {
 		this.nameHomework = nameHomework;
 	}
@@ -42,9 +42,6 @@ public class Homework {
 
 	@Override
 	public String toString() {
-		return "Homework [nameHomework=" + nameHomework + ", annotation=" + annotation + ", calification="
-				+ calification + "]";
-	}	
-	
-	
+		return nameHomework + "&" + annotation + "&" + calification;
+	}
 }

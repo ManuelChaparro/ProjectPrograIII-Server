@@ -76,7 +76,7 @@ public class Client extends Thread {
 			conection.sendUTF("Mostrando horario...");
 			break;
 		case "ADD_COURSE_ST":
-			conection.sendUTF(modelsManager.getStringAvailableCourses());
+			conection.sendUTF(modelsManager.getAvailableCourses());
 			break;
 		case "FIND_TEACHERS":
 			conection.sendUTF(modelsManager.getAvailableTeachers(conection.receiveUTF()));
