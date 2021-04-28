@@ -3,21 +3,13 @@ package structures;
 public class Node<T> {
 
 	private T data;
+	private Node<T> right;
+	private Node<T> left;
 	private int height;
-	Node<T> leftNode;
-	Node<T> rightNode;
 
 	public Node(T data) {
-		this.setData(data);
-		this.height = 1;
-	}
-
-	public T getData() {
-		return data;
-	}
-
-	public void setData(T data) {
 		this.data = data;
+		this.height = 0;
 	}
 
 	public int getHeight() {
@@ -28,19 +20,32 @@ public class Node<T> {
 		this.height = height;
 	}
 
-	public Node<T> getLeftNode() {
-		return leftNode;
+	public void setData(T data) {
+		this.data = data;
 	}
 
-	public void setLeftNode(Node<T> node) {
-		leftNode = node;
+	public T getData() {
+		return data;
 	}
 
-	public Node<T> getRightNode() {
-		return rightNode;
+	public Node<T> getRight() {
+		return right;
 	}
 
-	public void setRightNode(Node<T> node) {
-		rightNode = node;
+	public void setRight(Node<T> next) {
+		this.right = next;
+	}
+
+	public Node<T> getLeft() {
+		return left;
+	}
+
+	public void setLeft(Node<T> previous) {
+		this.left = previous;
+	}
+
+	@Override
+	public String toString() {
+		return "Node [data=" + data + ", next=" + right + ", previous=" + left + "]";
 	}
 }

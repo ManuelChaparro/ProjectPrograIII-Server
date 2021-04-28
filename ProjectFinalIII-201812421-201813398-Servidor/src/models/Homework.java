@@ -11,7 +11,7 @@ public class Homework {
 		this.annotation = annotation;
 		this.calification = calification;
 	}
-	
+
 	public Homework(String nameHomework) {
 		this.nameHomework = nameHomework;
 	}
@@ -38,5 +38,10 @@ public class Homework {
 
 	public void setCalification(double calification) {
 		this.calification = calification;
-	}	
+	}
+
+	@Override
+	public String toString() {
+		return nameHomework + "&" + annotation + "&" + calification;
+	}
 }

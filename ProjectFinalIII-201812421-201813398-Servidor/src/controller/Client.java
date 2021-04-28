@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,6 +11,8 @@ import com.google.gson.Gson;
 import models.ModelsManager;
 import models.Student;
 import net.Conection;
+import persistence.GSONFileManager;
+import persistence.ArchiveClass;
 
 public class Client extends Thread {
 
@@ -54,34 +57,47 @@ public class Client extends Thread {
 				initApp();
 			} else {
 				modelsManager.createStudent(user);
+				save();
 				conection.sendBoolean(true);
 				initApp();
 			}
 		}
 	}
+
+	private void save() throws Exception {
+		GSONFileManager.writeFile(new ArchiveClass(modelsManager.getStudentTree(), modelsManager.getTeacherTree(),
+				modelsManager.getAvailableCourse(), modelsManager.getCourseGeneralList()));
+	}
 	
 	private void options() throws Exception {
-		int option = conection.receiveInt();
+		String option = conection.receiveUTF();
 		switch (option) {
-		case 1:
-//			addContact();
+		case "SHOW_SCHEDULE":
+			conection.sendUTF("Mostrando horario...");
 			break;
-		case 2:
+		case "ADD_COURSE_ST":
 			conection.sendUTF(modelsManager.getAvailableCourses());
 			break;
-		case 3:
-//			deleteContact();
+		case "FIND_TEACHERS":
+			conection.sendUTF(modelsManager.getAvailableTeachers(conection.receiveUTF()));
 			break;
-		case 4:
-//			conection.sendUTF(contactRecord.getContactListString());
+		case "FIND_INFO_ADD_COURSE":
+			conection.sendUTF(modelsManager.getInfoSchedule(conection.receiveUTF(), conection.receiveUTF()));
 			break;
-		case 5:
-//			showContactsStatistic();
+		case "INSERT_COURSE":
+			String[] xd = conection.receiveUTF().split(";;;");
+			try {
+				modelsManager.assignStudentCourse(xd[0], xd[1], xd[2]);
+				conection.sendBoolean(true);
+				save();
+			} catch (Exception e) {
+				e.printStackTrace();
+				conection.sendBoolean(false);
+			}
 			break;
 		default:
 			break;
 		}
 		options();
-		conection.closeConection();
 	}
 }

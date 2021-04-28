@@ -1,62 +1,101 @@
 package models;
 
-import java.util.Comparator;
-import java.util.Iterator;
-
-import structures.AVLTree;
+import java.util.ArrayList;
 
 public class Student extends User {
 
-	private AVLTree<Course> courseTree;
-	private AVLTree<ExternalActivity> externalActivitiesTree;
+	private ArrayList<Course> courseList;
+	private ArrayList<ExternalActivity> externalActivitiesList;
 
 	public Student(String nameStudent, String codeStudent, String password) {
 		super(nameStudent, codeStudent, password);
-		courseTree = new AVLTree<Course>(courseComparator());
-		externalActivitiesTree = new AVLTree<ExternalActivity>(exActivityComparator());
-		courseTree.createTree();
-		externalActivitiesTree.createTree();
+		courseList = new ArrayList<Course>();
+		externalActivitiesList = new ArrayList<ExternalActivity>();
 	}
 
 	public Student(String codeStudent) {
 		super(codeStudent);
+		courseList = new ArrayList<Course>();
+		externalActivitiesList = new ArrayList<ExternalActivity>();
 	}
 
 	public void addCourse(Course course) throws Exception {
-		if (!courseTree.isIntoTree(course)) {
-			courseTree.insert(course);
+		initArrayCourseList();
+		if (!validateExistCourse(course.getNameActivity())) {
+			courseList.add(course);
 		} else {
 			throw new Exception("La asignatura que desea inscribir ya existe.");
 		}
 	}
 
+	private boolean validateExistCourse(String nameCourse) {
+		boolean exist = false;
+		for (int i = 0; i < courseList.size(); i++) {
+			if (courseList.get(i).getNameActivity().equalsIgnoreCase(nameCourse)) {
+				exist = true;
+			}
+		}
+		return exist;
+	}
+
+	private void initArrayCourseList() {
+		if (courseList == null) {
+			courseList = new ArrayList<Course>();
+		}
+	}
+
 	public void cancelCourse(String nameCourse) throws Exception {
-		Course course = new Course(nameCourse);
-		if (courseTree.isIntoTree(course)) {
-			courseTree.deleteNode(course);
+		if (validateExistCourse(nameCourse)) {
+			for (Course course : courseList) {
+				if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
+					courseList.remove(course);
+				}
+			}
 		} else {
-			throw new Exception("La asignatura que desea eliminar, no ha sido inscrita.");
+			throw new Exception("La lista de cursos esta vacia.");
 		}
 	}
 
 	public Course getCourse(String nameCourse) throws Exception {
-		Course course = new Course(nameCourse);
-		if (courseTree.isIntoTree(course)) {
-			return courseTree.findNode(course).getData();
+		Course course = null;
+		if (validateExistCourse(nameCourse)) {
+			for (Course auxCourse : courseList) {
+				if (auxCourse.getNameActivity().equalsIgnoreCase(nameCourse)) {
+					course = auxCourse;
+				}
+			}
 		} else {
-			throw new Exception("La asignatura que usted busca no existe.");
+			throw new Exception("El curso que busca no existe.");
+		}
+		return course;
+	}
+
+	public ArrayList<Course> getCourseList() {
+		return courseList;
+	}
+
+	private void initArrayExActivities() {
+		if (externalActivitiesList == null) {
+			externalActivitiesList = new ArrayList<ExternalActivity>();
 		}
 	}
 
-	public AVLTree<Course> getCourseList() {
-		return courseTree;
+	private boolean validateExistExAct(String nameExActivity) {
+		boolean exist = false;
+		for (int i = 0; i < externalActivitiesList.size(); i++) {
+			if (externalActivitiesList.get(i).getNameActivity().equalsIgnoreCase(nameExActivity)) {
+				exist = true;
+			}
+		}
+		return exist;
 	}
 
 	public void addExternalActivity(ExternalActivity externalActivity) throws Exception {
-		if (!externalActivitiesTree.isIntoTree(externalActivity)) {
-			externalActivitiesTree.insert(externalActivity);
+		initArrayExActivities();
+		if (!validateExistExAct(externalActivity.getNameActivity())) {
+			externalActivitiesList.add(externalActivity);
 		} else {
-			throw new Exception("La actividad externa que desea añadir ya existe.");
+			throw new Exception("La actividad externa que desea anadir ya existe.");
 		}
 	}
 
@@ -66,25 +105,32 @@ public class Student extends User {
 	}
 
 	public void deleteExternalActivity(String nameExActivity) throws Exception {
-		ExternalActivity exActivity = new ExternalActivity(nameExActivity);
-		if (externalActivitiesTree.isIntoTree(exActivity)) {
-			externalActivitiesTree.deleteNode(exActivity);
+		if (validateExistExAct(nameExActivity)) {
+			for (ExternalActivity exActivity : externalActivitiesList) {
+				if (exActivity.getNameActivity().equalsIgnoreCase(nameExActivity)) {
+					externalActivitiesList.remove(exActivity);
+				}
+			}
 		} else {
 			throw new Exception("La actividad externa que desea eliminar no existe.");
 		}
 	}
 
 	public ExternalActivity getExternalActivity(String nameExActivity) throws Exception {
-		ExternalActivity exActivity = new ExternalActivity(nameExActivity);
-		if (externalActivitiesTree.isIntoTree(exActivity)) {
-			return externalActivitiesTree.findNode(exActivity).getData();
+		if (validateExistExAct(nameExActivity)) {
+			for (ExternalActivity exActivity : externalActivitiesList) {
+				if (exActivity.getNameActivity().equalsIgnoreCase(nameExActivity)) {
+					return exActivity;
+				}
+			}
 		} else {
 			throw new Exception("La actividad que busca no existe.");
 		}
+		return null;
 	}
 
-	public AVLTree<ExternalActivity> getExternalActivityList() {
-		return externalActivitiesTree;
+	public ArrayList<ExternalActivity> getExternalActivityList() {
+		return externalActivitiesList;
 	}
 
 	public double calculateAvgCourseCalification(String nameCourse) throws Exception {
@@ -93,60 +139,27 @@ public class Student extends User {
 		int quantityCalification = 0;
 		Course course = getCourse(nameCourse);
 		if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
-			Iterator<Homework> itHomework = course.getHomeworkList().iterator();
-			while (itHomework.hasNext()) {
+			for (Homework homework : course.getHomeworkList()) {
 				quantityCalification++;
-				sumatoryCalification += itHomework.next().getCalification();
+				sumatoryCalification += homework.getCalification();
 			}
 			result = sumatoryCalification / quantityCalification;
 			return result;
+		} else {
+			throw new Exception("El curso que desea calcular el promedio, no existe.");
 		}
-		return result;
 	}
 
 	public double calculateTotalAvgCalification() throws Exception {
 		double result = 0;
 		double sumatoryCalification = 0;
 		int quantityCourses = 0;
-		Iterator<Course> itCourse = getCourseList().inOrder();
-		while (itCourse.hasNext()) {
+		for (Course course : courseList) {
 			quantityCourses++;
-			sumatoryCalification += calculateAvgCourseCalification(itCourse.next().getNameActivity());
+			sumatoryCalification += calculateAvgCourseCalification(course.getNameActivity());
 		}
 		result = sumatoryCalification / quantityCourses;
 		return result;
-	}
-
-	private Comparator<Course> courseComparator() {
-		return new Comparator<Course>() {
-			@Override
-			public int compare(Course courseOne, Course courseTwo) {
-				int compare = courseOne.getNameActivity().compareToIgnoreCase(courseTwo.getNameActivity());
-				if (compare < 0) {
-					return 1;
-				} else if (compare == 0) {
-					return 0;
-				} else {
-					return -1;
-				}
-			}
-		};
-	}
-
-	private Comparator<ExternalActivity> exActivityComparator() {
-		return new Comparator<ExternalActivity>() {
-			@Override
-			public int compare(ExternalActivity exActOne, ExternalActivity exActTwo) {
-				int compare = exActOne.getNameActivity().compareToIgnoreCase(exActTwo.getNameActivity());
-				if (compare < 0) {
-					return 1;
-				} else if (compare == 0) {
-					return 0;
-				} else {
-					return -1;
-				}
-			}
-		};
 	}
 
 	public String toString() {

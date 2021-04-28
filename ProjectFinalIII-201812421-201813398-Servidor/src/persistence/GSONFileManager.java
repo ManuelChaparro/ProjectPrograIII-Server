@@ -4,36 +4,33 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
-import models.ModelsManager;
-
 public class GSONFileManager {
 	
-	private String LOCATION_FILE = "data/infoServer.json";
+	private static String LOCATION_FILE = "data/infoModelsManager.json";
 
-	public void writeFile(ModelsManager object) throws Exception {
+	public static void writeFile(ArchiveClass save) throws Exception {
 		try {
 			FileWriter fileWriter;
 			fileWriter = new FileWriter(LOCATION_FILE);
-			fileWriter.write(new Gson().toJson(object));
+			fileWriter.write(new Gson().toJson(save));
 			fileWriter.close();
 		} catch (IOException e) {
 			throw new Exception("Error al guardar los datos");
 		}
 	}
 	
-	public ModelsManager readFile() {
-		ModelsManager newModel = null;
+	public static ArchiveClass readFile() {
+		ArchiveClass newModel = null;
 		try {
 			JsonParser json = new JsonParser();
 			Gson gson = new Gson();
 			Object string = json.parse(new FileReader(LOCATION_FILE));
-			newModel = gson.fromJson(string.toString(), ModelsManager.class);
+			newModel = gson.fromJson(string.toString(), ArchiveClass.class);
 			return newModel;
 		} catch (JsonIOException | JsonSyntaxException | FileNotFoundException e) {
 			e.printStackTrace();
