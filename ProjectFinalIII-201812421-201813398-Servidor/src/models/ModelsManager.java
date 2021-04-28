@@ -38,7 +38,6 @@ public class ModelsManager {
 		availableCourses = new AVLtree<>(stringComparator());
 		ArrayList<String> courses = archiveClass.getAvailableCourses();
 		for (String course : courses) {
-			System.out.println(courses.toString());
 			availableCourses.insert(course);
 		}
 		
@@ -69,7 +68,6 @@ public class ModelsManager {
 		Iterator<Student> itStudent = studentTree.inOrder();
 		while (itStudent.hasNext()) {
 			Student student = itStudent.next();
-			System.out.println("info dentro del arbol: "+ student.getNameUser());
 			if (student.getCodeUser().equalsIgnoreCase(codeStudent) && student.getPassword().equals(password)) {
 				return true;
 			}
@@ -138,12 +136,12 @@ public class ModelsManager {
 		return courses;
 	}
 
-	public String getAvailableTeachers() {
+	public String getAvailableTeachers(String course) {
 		String teachers = "";
 		for (int i = 0; i < courseGeneralList.size(); i++) {
-			if (!courseGeneralList.get(i).getNameCourseTeacher().equalsIgnoreCase("")) {
-				teachers += courseGeneralList.get(i).getNameCourseTeacher()
-						+courseGeneralList.get(i).getScheduleActivity() + ";";
+			if (courseGeneralList.get(i).getNameActivity().equalsIgnoreCase(course) 
+					&& !courseGeneralList.get(i).getNameCourseTeacher().equalsIgnoreCase("")) {
+				teachers += courseGeneralList.get(i).getNameCourseTeacher()+";";
 			}
 		}
 		return teachers;
