@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import persistence.GSONFileManager;
 import structures.AVLtree;
 
 public class ModelsManager {
 
 	private AVLtree<Student> studentTree;
 	private AVLtree<Teacher> teacherTree;
-	private AVLtree<String>	availableCourses;
+	private AVLtree<String> availableCourses;
 	private ArrayList<Course> courseGeneralList;
 
 	public ModelsManager() {
@@ -19,7 +18,7 @@ public class ModelsManager {
 		teacherTree = new AVLtree<Teacher>(teacherComparator());
 		availableCourses = new AVLtree<String>(stringComparator());
 		courseGeneralList = new ArrayList<Course>();
-		loadDefaulData();		
+		loadDefaulData();
 	}
 
 	public void createStudent(Student student) throws Exception {
@@ -84,12 +83,23 @@ public class ModelsManager {
 
 	public String getAvailableCourses() throws Exception {
 		String courses = "";
-		for (Course course : courseGeneralList) {
-			if (!course.getNameCourseTeacher().equalsIgnoreCase("")) {
-				courses+=course.toString();
-			}
+		Iterator<String> itAvailableCourses = availableCourses.inOrder();
+		while (itAvailableCourses.hasNext()) {
+			courses += itAvailableCourses.next() + ";";
+
 		}
 		return courses;
+	}
+
+	public String getAvailableTeachers(String course) {
+		String teachers = "";
+		for (int i = 0; i < courseGeneralList.size(); i++) {
+			if (courseGeneralList.get(i).getNameActivity().equalsIgnoreCase(course)
+					&& !courseGeneralList.get(i).getNameCourseTeacher().equalsIgnoreCase("")) {
+				teachers += courseGeneralList.get(i).getNameCourseTeacher() + ";";
+			}
+		}
+		return teachers;
 	}
 
 //  nuevo para asignar al estudiante la respectiva asignatura
@@ -148,7 +158,8 @@ public class ModelsManager {
 			String schedulerCourse) throws Exception {
 		boolean exist = false;
 		for (Course course : courseGeneralList) {
-			if (course.getNameActivity().equalsIgnoreCase(nameCourse) && course.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
+			if (course.getNameActivity().equalsIgnoreCase(nameCourse)
+					&& course.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
 				exist = true;
 			}
 		}
@@ -156,12 +167,12 @@ public class ModelsManager {
 			courseGeneralList.add(new Course(nameCourse, nameTeacher, descriptionCourse, schedulerCourse));
 			availableCourses.insert(nameCourse);
 		}
-}
+	}
 
 	public ArrayList<Course> getCourseGeneralList() {
 		return courseGeneralList;
 	}
-	
+
 	private Comparator<String> stringComparator() {
 		return new Comparator<String>() {
 			public int compare(String stringOne, String stringTwo) {
@@ -248,10 +259,11 @@ public class ModelsManager {
 			createTeacher("Omaira", "1234", "1");
 			createTeacher("Alexander", "3456", "1");
 			assignCourseTeacher("Hoyitos", "PROGRAMACION III", "Bienvenidas perras", "LUN#6#8%MIE#10#12");
-			assignCourseTeacher("Omaria Galindo", "PROGRAMACION III", "Hola soy omaewa kawai senpai :v<3", "MAR#10#12%MIE#12#2");
+			assignCourseTeacher("Omaria Galindo", "PROGRAMACION III", "Hola soy omaewa kawai senpai :v<3",
+					"MAR#10#12%MIE#12#2");
 			assignCourseTeacher("Alexander Sapoperro", "PROGRAMACION III", "OLA", "MAR#10#12%MIE#12#2");
-			assignCourseTeacher("lademetodosxd", "CALCULO II", "OLA", "MAR#10#12%MIE#12#2");
-			assignCourseTeacher("lademetodosxd", "CALCULO I", "OLA", "MAR#10#12%MIE#12#2");
+			assignCourseTeacher("Maria Alejandra", "CALCULO II", "OLA", "MAR#10#12%MIE#12#2");
+			assignCourseTeacher("Pedro costa", "CALCULO I", "OLA", "MAR#10#12%MIE#12#2");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
