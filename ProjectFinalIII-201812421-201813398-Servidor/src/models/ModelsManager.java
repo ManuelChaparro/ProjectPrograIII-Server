@@ -12,7 +12,7 @@ public class ModelsManager {
 	private ArchiveClass archiveClass;
 	private AVLtree<Student> studentTree;
 	private AVLtree<Teacher> teacherTree;
-	private AVLtree<String>	availableCourses;
+	private AVLtree<String> availableCourses;
 	private ArrayList<Course> courseGeneralList;
 
 	public ModelsManager() {
@@ -102,12 +102,23 @@ public class ModelsManager {
 
 	public String getStringAvailableCourses() throws Exception {
 		String courses = "";
-		for (Course course : courseGeneralList) {
-			if (!course.getNameCourseTeacher().equalsIgnoreCase("")) {
-				courses+=course.toString();
-			}
+		Iterator<String> itAvailableCourses = availableCourses.inOrder();
+		while (itAvailableCourses.hasNext()) {
+			courses += itAvailableCourses.next() + ";";
+
 		}
 		return courses;
+	}
+
+	public String getAvailableTeachers(String course) {
+		String teachers = "";
+		for (int i = 0; i < courseGeneralList.size(); i++) {
+			if (courseGeneralList.get(i).getNameActivity().equalsIgnoreCase(course)
+					&& !courseGeneralList.get(i).getNameCourseTeacher().equalsIgnoreCase("")) {
+				teachers += courseGeneralList.get(i).getNameCourseTeacher() + ";";
+			}
+		}
+		return teachers;
 	}
 
 //  nuevo para asignar al estudiante la respectiva asignatura
@@ -166,7 +177,8 @@ public class ModelsManager {
 			String schedulerCourse) throws Exception {
 		boolean exist = false;
 		for (Course course : courseGeneralList) {
-			if (course.getNameActivity().equalsIgnoreCase(nameCourse) && course.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
+			if (course.getNameActivity().equalsIgnoreCase(nameCourse)
+					&& course.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
 				exist = true;
 			}
 		}
@@ -174,12 +186,12 @@ public class ModelsManager {
 			courseGeneralList.add(new Course(nameCourse, nameTeacher, descriptionCourse, schedulerCourse));
 			availableCourses.insert(nameCourse);
 		}
-}
+	}
 
 	public ArrayList<Course> getCourseGeneralList() {
 		return courseGeneralList;
 	}
-	
+
 	private Comparator<String> stringComparator() {
 		return new Comparator<String>() {
 			public int compare(String stringOne, String stringTwo) {
@@ -216,64 +228,7 @@ public class ModelsManager {
 				}
 			}
 		};
-	}
-
-	private void loadDefaulData() {
-		studentTree.insert(new Student("Luis", "201813398", "1"));
-		courseGeneralList.add(new Course("PROGRAMACION I"));
-		courseGeneralList.add(new Course("PROGRAMACION II"));
-		courseGeneralList.add(new Course("PROGRAMACION III"));
-		courseGeneralList.add(new Course("CALCULO I"));
-		courseGeneralList.add(new Course("CALCULO II"));
-		courseGeneralList.add(new Course("CALCULO III"));
-		courseGeneralList.add(new Course("CALCULO IV"));
-		courseGeneralList.add(new Course("METODOS NUMERICOS"));
-		courseGeneralList.add(new Course("INGLES I"));
-		courseGeneralList.add(new Course("INGLES II"));
-		courseGeneralList.add(new Course("INGLES III"));
-		courseGeneralList.add(new Course("INGLES IV"));
-		courseGeneralList.add(new Course("INGLES V"));
-		courseGeneralList.add(new Course("INGLES VI"));
-		courseGeneralList.add(new Course("DISEÑO GRAFICO"));
-		courseGeneralList.add(new Course("FISICA I"));
-		courseGeneralList.add(new Course("FISICA II"));
-		courseGeneralList.add(new Course("FISICA III"));
-		courseGeneralList.add(new Course("ADMINISTRACION"));
-		courseGeneralList.add(new Course("BASES DE DATOS I"));
-		courseGeneralList.add(new Course("BASES DE DATOS II"));
-		courseGeneralList.add(new Course("CATEDRA UNIVERSITARIA"));
-		courseGeneralList.add(new Course("ETICA"));
-		courseGeneralList.add(new Course("MATEMATICAS DISCRETAS"));
-		courseGeneralList.add(new Course("INGENIERIA DE REQUISITOS"));
-		courseGeneralList.add(new Course("ELECTRONICA GENERAL"));
-		courseGeneralList.add(new Course("INGENIERIA DE SOFTWARE I"));
-		courseGeneralList.add(new Course("INGENIERIA DE SOFTWARE II"));
-		courseGeneralList.add(new Course("COMUNICACIONES"));
-		courseGeneralList.add(new Course("INVESTIGACION DE OPERACIONES"));
-		courseGeneralList.add(new Course("SISTEMAS DISTRIBUIDOS"));
-		courseGeneralList.add(new Course("LENGUAJES FORMALES"));
-		courseGeneralList.add(new Course("TRANSMISION DE DATOS"));
-		courseGeneralList.add(new Course("SISTEMAS OPERATIVOS"));
-		courseGeneralList.add(new Course("INTELIGENCIA COMPUTACIONAL"));
-		courseGeneralList.add(new Course("REDES DE DATOS"));
-		courseGeneralList.add(new Course("ARQUITECTURA DE COMPUTADORES"));
-		courseGeneralList.add(new Course("SIMULACION DE COMPUTADORAS"));
-		courseGeneralList.add(new Course("AUDITORIA DE SISTEMAS"));
-		courseGeneralList.add(new Course("GERENCIA INFORMATICA"));
-		try {
-			createTeacher("Hoyitos", "2345", "1");
-			createTeacher("Omaira", "1234", "1");
-			createTeacher("Alexander", "3456", "1");
-			assignCourseTeacher("Hoyitos", "PROGRAMACION III", "Bienvenidas perras", "LUN#6#8%MIE#10#12");
-			assignCourseTeacher("Omaria Galindo", "PROGRAMACION III", "Hola soy omaewa kawai senpai :v<3", "MAR#10#12%MIE#12#2");
-			assignCourseTeacher("Alexander Sapoperro", "PROGRAMACION III", "OLA", "MAR#10#12%MIE#12#2");
-			assignCourseTeacher("lademetodosxd", "CALCULO II", "OLA", "MAR#10#12%MIE#12#2");
-			assignCourseTeacher("lademetodosxd", "CALCULO I", "OLA", "MAR#10#12%MIE#12#2");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+  }
 	public AVLtree<Student> getStudentTree() {
 		return studentTree;
 	}

@@ -74,7 +74,8 @@ public class Client extends Thread {
 			conection.sendUTF(modelsManager.getStringAvailableCourses());
 			break;
 		case 3:
-//			deleteContact();
+			String string = conection.receiveUTF();
+			conection.sendUTF(modelsManager.getAvailableTeachers(string));
 			break;
 		case 4:
 //			conection.sendUTF(contactRecord.getContactListString());
