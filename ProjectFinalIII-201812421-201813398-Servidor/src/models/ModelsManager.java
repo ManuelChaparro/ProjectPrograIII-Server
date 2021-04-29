@@ -119,7 +119,13 @@ public class ModelsManager {
 		}
 		return teachers;
 	}
-//----------Metodos para modificar tareas --------------------------------
+
+//----------Metodos para anadir y modificar tareas --------------------------------
+	public void addStudentHomework(String codeStudent, String nameCourse, String nameHomework,
+			String annotationHomework, double calification) throws Exception {
+		getStudent(codeStudent).addHomework(nameCourse, nameHomework, annotationHomework, calification);
+	}
+
 	public String getStudentCourses(String codeStudent) throws Exception {
 		String courses = " ";
 		Student student = getStudent(codeStudent);
@@ -164,17 +170,13 @@ public class ModelsManager {
 		if (student.getCodeUser().equalsIgnoreCase(codeStudent)) {
 			for (Course course : student.getCourseList()) {
 				if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
-					for (Homework homework : course.getHomeworkList()) {
-						if (homework.getNameHomework().equalsIgnoreCase(nameHomework)) {
-							homework.setAnnotation(annotationHomework);
-							homework.setCalification(calification);
-						}
-					}
+					course.modifyHomeworkAnnotation(nameHomework, annotationHomework);
+					course.modifyHomeworkCalification(nameHomework, calification);
 				}
 			}
 		}
 	}
-	//--------------------------------------------------------
+	// --------------------------------------------------------
 
 	public void assignStudentCourse(String codeStudent, String nameCourse, String nameTeacher) throws Exception {
 		if (isExistCourse(nameCourse)) {
