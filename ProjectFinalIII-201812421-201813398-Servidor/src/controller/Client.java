@@ -94,6 +94,42 @@ public class Client extends Thread {
 				conection.sendBoolean(false);
 			}
 			break;
+		case "MODIFY_COURSE_ST":
+			conection.sendUTF(modelsManager.getStudentCourses(conection.receiveUTF()));
+			break;
+		case "FIND_HOMEWORK":
+			String code = conection.receiveUTF();
+			String course = conection.receiveUTF();
+			conection.sendUTF(modelsManager.getStudentHomeworks(code, course));
+			break;
+		case "FIND_INFO_HOMEWORK":
+			if (!conection.receiveBoolean()) {
+				String[] dataFindHomework = conection.receiveUTF().split(";;;");
+				conection.sendUTF(modelsManager.getSpecificStudentHomework(dataFindHomework[0], dataFindHomework[1],
+						dataFindHomework[2]));
+				;
+			}
+			break;
+		case "ADD_OR_MODIFY_HOMEWORK":
+			if (conection.receiveBoolean()) {
+				System.out.println(1);
+				String[] newHomework = conection.receiveUTF().split(";;;");
+				for (String string : newHomework) {
+					System.out.println(string);
+				}
+				modelsManager.addStudentHomework(newHomework[0], newHomework[1], newHomework[2], newHomework[3],
+						Double.parseDouble(newHomework[4]));
+			} else {
+				System.out.println(2);
+				String[] newHomework = conection.receiveUTF().split(";;;");
+				for (String string : newHomework) {
+					System.out.println(string);
+				}
+				modelsManager.modifySpecificHomework(newHomework[0], newHomework[1], newHomework[2], newHomework[3],
+						Double.parseDouble(newHomework[4]));
+			}
+			save();
+			break;
 		default:
 			break;
 		}
