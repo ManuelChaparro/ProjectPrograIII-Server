@@ -71,7 +71,12 @@ public class Student extends User {
 	}
 
 	public ArrayList<Course> getCourseList() {
-		return courseList;
+		if (courseList == null) {
+			courseList = new ArrayList<Course>();
+			return courseList;
+		} else {
+			return courseList;
+		}
 	}
 
 	public void addHomework(String nameCourse, String nameHomework, String annotationHomework, double calification)
