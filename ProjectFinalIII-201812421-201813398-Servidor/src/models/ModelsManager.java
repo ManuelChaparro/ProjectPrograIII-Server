@@ -123,7 +123,11 @@ public class ModelsManager {
 //----------Metodos para anadir y modificar tareas --------------------------------
 	public void addStudentHomework(String codeStudent, String nameCourse, String nameHomework,
 			String annotationHomework, double calification) throws Exception {
-		getStudent(codeStudent).addHomework(nameCourse, nameHomework, annotationHomework, calification);
+		if (!nameHomework.equalsIgnoreCase("")) {
+			getStudent(codeStudent).addHomework(nameCourse, nameHomework, annotationHomework, calification);
+		} else {
+			throw new Exception();
+		}
 	}
 
 	public String getStudentCourses(String codeStudent) throws Exception {
@@ -187,7 +191,7 @@ public class ModelsManager {
 				}
 			}
 		} else {
-			throw new Exception("La asignatura que desea inscribir no existe.");
+			throw new Exception();
 		}
 	}
 

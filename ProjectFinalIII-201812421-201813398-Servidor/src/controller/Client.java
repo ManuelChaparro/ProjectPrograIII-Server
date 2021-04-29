@@ -84,13 +84,12 @@ public class Client extends Thread {
 			conection.sendUTF(modelsManager.getInfoSchedule(conection.receiveUTF(), conection.receiveUTF()));
 			break;
 		case "INSERT_COURSE":
-			String[] xd = conection.receiveUTF().split(";;;");
+			String[] data = conection.receiveUTF().split(";;;");
 			try {
-				modelsManager.assignStudentCourse(xd[0], xd[1], xd[2]);
+				modelsManager.assignStudentCourse(data[0], data[1], data[2]);
 				conection.sendBoolean(true);
 				save();
 			} catch (Exception e) {
-				e.printStackTrace();
 				conection.sendBoolean(false);
 			}
 			break;
@@ -107,26 +106,27 @@ public class Client extends Thread {
 				String[] dataFindHomework = conection.receiveUTF().split(";;;");
 				conection.sendUTF(modelsManager.getSpecificStudentHomework(dataFindHomework[0], dataFindHomework[1],
 						dataFindHomework[2]));
-				;
 			}
 			break;
 		case "ADD_OR_MODIFY_HOMEWORK":
 			if (conection.receiveBoolean()) {
-				System.out.println(1);
-				String[] newHomework = conection.receiveUTF().split(";;;");
-				for (String string : newHomework) {
-					System.out.println(string);
+				try {
+					String[] newHomework = conection.receiveUTF().split(";;;");
+					modelsManager.addStudentHomework(newHomework[0], newHomework[1], newHomework[2], newHomework[3],
+							Double.parseDouble(newHomework[4]));
+					conection.sendBoolean(true);
+				} catch (Exception e) {
+					conection.sendBoolean(false);
 				}
-				modelsManager.addStudentHomework(newHomework[0], newHomework[1], newHomework[2], newHomework[3],
-						Double.parseDouble(newHomework[4]));
 			} else {
-				System.out.println(2);
-				String[] newHomework = conection.receiveUTF().split(";;;");
-				for (String string : newHomework) {
-					System.out.println(string);
+				try {
+					String[] newHomework = conection.receiveUTF().split(";;;");
+					modelsManager.modifySpecificHomework(newHomework[0], newHomework[1], newHomework[2], newHomework[3],
+							Double.parseDouble(newHomework[4]));
+					conection.sendBoolean(true);
+				} catch (Exception e) {
+					conection.sendBoolean(false);
 				}
-				modelsManager.modifySpecificHomework(newHomework[0], newHomework[1], newHomework[2], newHomework[3],
-						Double.parseDouble(newHomework[4]));
 			}
 			save();
 			break;
