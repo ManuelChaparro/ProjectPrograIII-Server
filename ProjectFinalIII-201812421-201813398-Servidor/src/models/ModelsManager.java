@@ -127,7 +127,7 @@ public class ModelsManager {
 	}
 
 	public String getStudentCourses(String codeStudent) throws Exception {
-		String courses = " ";
+		String courses = "";
 		Student student = getStudent(codeStudent);
 		for (Course course : student.getCourseList()) {
 			courses += course.getNameActivity() + ";";
@@ -136,7 +136,7 @@ public class ModelsManager {
 	}
 
 	public String getStudentHomeworks(String codeStudent, String nameCourse) throws Exception {
-		String homeworks = " ";
+		String homeworks = "";
 		Student student = getStudent(codeStudent);
 		for (Course course : student.getCourseList()) {
 			if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
