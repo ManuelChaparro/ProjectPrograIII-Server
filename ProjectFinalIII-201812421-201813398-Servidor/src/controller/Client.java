@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,8 +10,8 @@ import com.google.gson.Gson;
 import models.ModelsManager;
 import models.Student;
 import net.Conection;
-import persistence.GSONFileManager;
 import persistence.ArchiveClass;
+import persistence.GSONFileManager;
 
 public class Client extends Thread {
 
@@ -68,7 +67,7 @@ public class Client extends Thread {
 		GSONFileManager.writeFile(new ArchiveClass(modelsManager.getStudentTree(), modelsManager.getTeacherTree(),
 				modelsManager.getAvailableCourse(), modelsManager.getCourseGeneralList()));
 	}
-	
+
 	private void options() throws Exception {
 		String option = conection.receiveUTF();
 		switch (option) {

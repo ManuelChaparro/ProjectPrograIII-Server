@@ -52,7 +52,7 @@ public class Student extends User {
 				}
 			}
 		} else {
-			throw new Exception("La lista de cursos esta vacia.");
+			throw new Exception("El curso que desea eliminar no existe");
 		}
 	}
 
@@ -72,6 +72,12 @@ public class Student extends User {
 
 	public ArrayList<Course> getCourseList() {
 		return courseList;
+	}
+
+	public void addHomework(String nameCourse, String nameHomework, String annotationHomework, double calification)
+			throws Exception {
+		Course course = getCourse(nameCourse);
+		course.addHomework(new Homework(nameHomework, annotationHomework, calification));
 	}
 
 	private void initArrayExActivities() {
