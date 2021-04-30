@@ -46,9 +46,9 @@ public class Student extends User {
 
 	public void cancelCourse(String nameCourse) throws Exception {
 		if (validateExistCourse(nameCourse)) {
-			for (Course course : courseList) {
-				if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
-					courseList.remove(course);
+			for (int i = 0; i < courseList.size(); i++) {
+				if (courseList.get(i).getNameActivity().equalsIgnoreCase(nameCourse)) {
+					courseList.remove(courseList.get(i));
 				}
 			}
 		} else {
@@ -59,9 +59,9 @@ public class Student extends User {
 	public Course getCourse(String nameCourse) throws Exception {
 		Course course = null;
 		if (validateExistCourse(nameCourse)) {
-			for (Course auxCourse : courseList) {
-				if (auxCourse.getNameActivity().equalsIgnoreCase(nameCourse)) {
-					course = auxCourse;
+			for (int i = 0; i < courseList.size(); i++) {
+				if (courseList.get(i).getNameActivity().equalsIgnoreCase(nameCourse)) {
+					course = courseList.get(i);
 				}
 			}
 		} else {
@@ -121,9 +121,9 @@ public class Student extends User {
 
 	public void cancelExternalActivity(String nameExActivity) throws Exception {
 		if (validateExistExAct(nameExActivity)) {
-			for (ExternalActivity exActivity : externalActivitiesList) {
-				if (exActivity.getNameActivity().equalsIgnoreCase(nameExActivity)) {
-					externalActivitiesList.remove(exActivity);
+			for (int i = 0; i < externalActivitiesList.size(); i++) {
+				if (externalActivitiesList.get(i).getNameActivity().equalsIgnoreCase(nameExActivity)) {
+					externalActivitiesList.remove(externalActivitiesList.get(i));
 				}
 			}
 		} else {
@@ -133,9 +133,9 @@ public class Student extends User {
 
 	public ExternalActivity getExternalActivity(String nameExActivity) throws Exception {
 		if (validateExistExAct(nameExActivity)) {
-			for (ExternalActivity exActivity : externalActivitiesList) {
-				if (exActivity.getNameActivity().equalsIgnoreCase(nameExActivity)) {
-					return exActivity;
+			for (int i = 0; i < externalActivitiesList.size(); i++) {
+				if (externalActivitiesList.get(i).getNameActivity().equalsIgnoreCase(nameExActivity)) {
+					return externalActivitiesList.get(i);
 				}
 			}
 		} else {
@@ -157,9 +157,10 @@ public class Student extends User {
 		double result = 0;
 		double sumatoryCalification = 0;
 		int quantityCalification = 0;
-		for (Homework homework : getCourse(nameCourse).getHomeworkList()) {
+		ArrayList<Homework> homeworkList = getCourse(nameCourse).getHomeworkList();
+		for (int i = 0; i < homeworkList.size(); i++) {
 			quantityCalification++;
-			sumatoryCalification += homework.getCalification();
+			sumatoryCalification += homeworkList.get(i).getCalification();
 		}
 		result = sumatoryCalification / quantityCalification;
 		return result;
@@ -169,9 +170,9 @@ public class Student extends User {
 		double result = 0;
 		double sumatoryCalification = 0;
 		int quantityCourses = 0;
-		for (Course course : courseList) {
+		for (int i = 0; i < courseList.size(); i++) {
 			quantityCourses++;
-			sumatoryCalification += calculateAvgCourseCalification(course.getNameActivity());
+			sumatoryCalification += calculateAvgCourseCalification(courseList.get(i).getNameActivity());
 		}
 		result = sumatoryCalification / quantityCourses;
 		return result;

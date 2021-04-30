@@ -54,9 +54,9 @@ public class Course extends Activity {
 
 	public void cancelHomework(String nameHomework) throws Exception {
 		if (validateExistHomework(nameHomework)) {
-			for (Homework homework : homeworkList) {
-				if (homework.getNameHomework().equalsIgnoreCase(nameHomework)) {
-					homeworkList.remove(homework);
+			for (int i = 0; i < homeworkList.size(); i++) {
+				if (homeworkList.get(i).getNameHomework().equalsIgnoreCase(nameHomework)) {
+					homeworkList.remove(homeworkList.get(i));
 				}
 			}
 		} else {
@@ -76,9 +76,9 @@ public class Course extends Activity {
 	public Homework getHomework(String nameHomework) throws Exception {
 		Homework auxHomework = null;
 		if (validateExistHomework(nameHomework)) {
-			for (Homework homework : homeworkList) {
-				if (homework.getNameHomework().equalsIgnoreCase(nameHomework)) {
-					auxHomework = homework;
+			for (int i = 0; i < homeworkList.size(); i++) {
+				if (homeworkList.get(i).getNameHomework().equalsIgnoreCase(nameHomework)) {
+					auxHomework = homeworkList.get(i);
 				}
 			}
 		} else {
