@@ -1,1 +1,429 @@
-{"courseGeneralList":[{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"PROGRAMACION I"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"PROGRAMACION II"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"PROGRAMACION III"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"CALCULO I"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"CALCULO II"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"CALCULO III"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"CALCULO IV"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"METODOS NUMERICOS"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"INGLES I"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"INGLES II"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"INGLES III"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"INGLES IV"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"INGLES V"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"INGLES VI"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"DISEÑO GRAFICO"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"FISICA I"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"FISICA II"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"FISICA III"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"ADMINISTRACION"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"BASES DE DATOS I"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"BASES DE DATOS II"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"CATEDRA UNIVERSITARIA"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"ETICA"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"MATEMATICAS DISCRETAS"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"INGENIERIA DE REQUISITOS"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"ELECTRONICA GENERAL"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"INGENIERIA DE SOFTWARE I"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"INGENIERIA DE SOFTWARE II"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"COMUNICACIONES"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"INVESTIGACION DE OPERACIONES"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"SISTEMAS DISTRIBUIDOS"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"LENGUAJES FORMALES"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"TRANSMISION DE DATOS"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"SISTEMAS OPERATIVOS"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"INTELIGENCIA COMPUTACIONAL"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"REDES DE DATOS"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"ARQUITECTURA DE COMPUTADORES"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"SIMULACION DE COMPUTADORAS"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"AUDITORIA DE SISTEMAS"},{"nameCourseTeacher":"","homeworkList":[],"nameActivity":"GERENCIA INFORMATICA"},{"nameCourseTeacher":"Hoyitos","homeworkList":[],"nameActivity":"PROGRAMACION III","descriptionActivity":"Bienvenidas perras","scheduleActivity":"LUN#6#8%MIE#10#12"},{"nameCourseTeacher":"Omaria Galindo","homeworkList":[],"nameActivity":"PROGRAMACION III","descriptionActivity":"Hola soy omaewa kawai senpai :v\u003c3","scheduleActivity":"MAR#10#12%MIE#12#2"},{"nameCourseTeacher":"Alexander Sapoperro","homeworkList":[{"nameHomework":"GRAFITOS SUAVE","annotation":"pal viernes","calification":5.0}],"nameActivity":"PROGRAMACION III","descriptionActivity":"OLA","scheduleActivity":"MIE#2#4%JUE#12#2"},{"nameCourseTeacher":"Maria Alejandra","homeworkList":[],"nameActivity":"CALCULO II","descriptionActivity":"OLA","scheduleActivity":"LUN#10#12%VIE#7#8"},{"nameCourseTeacher":"Pedro costa","homeworkList":[{"nameHomework":"DERIVADAS","annotation":"Realizar la serie de ejercicios de derivadas del libro chapra pagina 25.","calification":3.9},{"nameHomework":"","annotation":"","calification":0.0}],"nameActivity":"CALCULO I","descriptionActivity":"OLA","scheduleActivity":"JUE#7#9%JUE#16#18"}],"students":[{"nameUser":"Fernanda","codeUser":"20202020","password":"1"},{"courseList":[{"nameCourseTeacher":"Hoyitos","homeworkList":[],"nameActivity":"PROGRAMACION III","descriptionActivity":"Bienvenidas perras","scheduleActivity":"LUN#6#8%MIE#10#12"},{"nameCourseTeacher":"Maria Alejandra","homeworkList":[],"nameActivity":"CALCULO II","descriptionActivity":"OLA","scheduleActivity":"LUN#10#12%VIE#7#8"}],"nameUser":"StudentHost","codeUser":"2020","password":"abc"},{"courseList":[{"nameCourseTeacher":"Maria Alejandra","homeworkList":[],"nameActivity":"CALCULO II","descriptionActivity":"OLA","scheduleActivity":"LUN#10#12%VIE#7#8"},{"nameCourseTeacher":"Omaria Galindo","homeworkList":[{"nameHomework":"Grafos","annotation":"Realizar procesamiento o recorrido en profundidad.","calification":4.9}],"nameActivity":"PROGRAMACION III","descriptionActivity":"Bienvenidos muchachos al curso de programacion","scheduleActivity":"MAR#10#12%MIE#12#2"},{"nameCourseTeacher":"Pedro costa","homeworkList":[],"nameActivity":"CALCULO I","descriptionActivity":"OLA","scheduleActivity":"JUE#7#9%JUE#16#18"}],"nameUser":"Luis","codeUser":"201813398","password":"1"},{"courseList":[{"nameCourseTeacher":"Pedro costa","homeworkList":[{"nameHomework":"DERIVADAS","annotation":"Realizar la serie de ejercicios de derivadas del libro chapra pagina 27.","calification":3.6999999999999997},{"nameHomework":"TALLER POLINOMIOS","annotation":"Ejercicios libro chapra pagina 105.","calification":4.3},{"nameHomework":"CURVAS POLINOMICAS","annotation":"Realizar cada una de las graficas polinomicas en papel milimetrado.","calification":4.5}],"nameActivity":"CALCULO I","descriptionActivity":"OLA","scheduleActivity":"JUE#7#9%JUE#16#18"},{"nameCourseTeacher":"Omaria Galindo","homeworkList":[],"nameActivity":"PROGRAMACION III","descriptionActivity":"Hola soy omaira galindo, su nueva profe :v\u003c3","scheduleActivity":"MAR#10#12%MIE#12#2"}],"nameUser":"Santiago","codeUser":"201812421","password":"1"},{"nameUser":"Juan David Canas","codeUser":"20181234","password":"1"}],"teachers":[{"nameUser":"Alexander","codeUser":"3456","password":"1"},{"nameUser":"Hoyitos","codeUser":"2345","password":"1"},{"nameUser":"Omaira","codeUser":"1234","password":"1"}],"availableCourses":["CALCULO I","CALCULO II","PROGRAMACION III"]}
+{
+	"courseGeneralList": [
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "PROGRAMACION I"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "PROGRAMACION II"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "PROGRAMACION III"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "CALCULO I"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "CALCULO II"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "CALCULO III"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "CALCULO IV"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "METODOS NUMERICOS"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "INGLES I"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "INGLES II"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "INGLES III"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "INGLES IV"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "INGLES V"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "INGLES VI"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "DISEÑO GRAFICO"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "FISICA I"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "FISICA II"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "FISICA III"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "ADMINISTRACION"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "BASES DE DATOS I"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "BASES DE DATOS II"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "CATEDRA UNIVERSITARIA"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "ETICA"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "MATEMATICAS DISCRETAS"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "INGENIERIA DE REQUISITOS"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "ELECTRONICA GENERAL"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "INGENIERIA DE SOFTWARE I"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "INGENIERIA DE SOFTWARE II"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "COMUNICACIONES"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "INVESTIGACION DE OPERACIONES"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "SISTEMAS DISTRIBUIDOS"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "LENGUAJES FORMALES"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "TRANSMISION DE DATOS"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "SISTEMAS OPERATIVOS"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "INTELIGENCIA COMPUTACIONAL"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "REDES DE DATOS"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "ARQUITECTURA DE COMPUTADORES"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "SIMULACION DE COMPUTADORAS"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "AUDITORIA DE SISTEMAS"
+		},
+		{
+			"nameCourseTeacher": "",
+			"homeworkList": [
+			],
+			"nameActivity": "GERENCIA INFORMATICA"
+		},
+		{
+			"nameCourseTeacher": "Hoyitos",
+			"homeworkList": [
+			],
+			"nameActivity": "PROGRAMACION III",
+			"descriptionActivity": "Bienvenidas perras",
+			"scheduleActivity": "LUNES#6#8%MIERCOLES#10#12"
+		},
+		{
+			"nameCourseTeacher": "Omaria Galindo",
+			"homeworkList": [
+			],
+			"nameActivity": "PROGRAMACION III",
+			"descriptionActivity": "Hola soy omaewa kawai senpai :v\u003c3",
+			"scheduleActivity": "MARTES#10#12%MIERCOLES#12#2"
+		},
+		{
+			"nameCourseTeacher": "Alexander Sapoperro",
+			"homeworkList": [
+				{
+					"nameHomework": "GRAFITOS SUAVE",
+					"annotation": "pal viernes",
+					"calification": 5.0
+				}
+			],
+			"nameActivity": "PROGRAMACION III",
+			"descriptionActivity": "OLA",
+			"scheduleActivity": "MIERCOLES#2#4%JUEVES#12#2"
+		},
+		{
+			"nameCourseTeacher": "Maria Alejandra",
+			"homeworkList": [
+			],
+			"nameActivity": "CALCULO II",
+			"descriptionActivity": "OLA",
+			"scheduleActivity": "LUNES#10#12%VIERNES#7#8"
+		},
+		{
+			"nameCourseTeacher": "Pedro costa",
+			"homeworkList": [
+				{
+					"nameHomework": "DERIVADAS",
+					"annotation": "Realizar la serie de ejercicios de derivadas del libro chapra pagina 25.",
+					"calification": 3.9
+				},
+				{
+					"nameHomework": "",
+					"annotation": "",
+					"calification": 0.0
+				}
+			],
+			"nameActivity": "CALCULO I",
+			"descriptionActivity": "OLA",
+			"scheduleActivity": "JUEVES#7#9%JUEVES#16#18"
+		}
+	],
+	"students": [
+		{
+			"nameUser": "Fernanda",
+			"codeUser": "20202020",
+			"password": "1"
+		},
+		{
+			"courseList": [
+				{
+					"nameCourseTeacher": "Hoyitos",
+					"homeworkList": [
+					],
+					"nameActivity": "PROGRAMACION III",
+					"descriptionActivity": "Bienvenidas perras",
+					"scheduleActivity": "LUNES#6#8%MIERCOLES#10#12"
+				}
+			],
+			"externalActivitiesList": [
+				{
+					"nameActivity": "SALIR A CORRER",
+					"descriptionActivity": "Llevar toalla y agua.",
+					"scheduleActivity": "LUNES#10#12"
+				}
+			],
+			"nameUser": "StudentHost",
+			"codeUser": "2020",
+			"password": "abc"
+		},
+		{
+			"courseList": [
+				{
+					"nameCourseTeacher": "Maria Alejandra",
+					"homeworkList": [
+					],
+					"nameActivity": "CALCULO II",
+					"descriptionActivity": "OLA",
+					"scheduleActivity": "LUNES#10#12%VIERNES#7#8"
+				},
+				{
+					"nameCourseTeacher": "Omaria Galindo",
+					"homeworkList": [
+						{
+							"nameHomework": "Grafos",
+							"annotation": "Realizar procesamiento o recorrido en profundidad.",
+							"calification": 4.9
+						}
+					],
+					"nameActivity": "PROGRAMACION III",
+					"descriptionActivity": "Bienvenidos muchachos al curso de programacion",
+					"scheduleActivity": "MARTES#10#12%MIERCOLES#12#2"
+				},
+				{
+					"nameCourseTeacher": "Pedro costa",
+					"homeworkList": [
+					],
+					"nameActivity": "CALCULO I",
+					"descriptionActivity": "OLA",
+					"scheduleActivity": "JUEVES#7#9%JUEVES#16#18"
+				}
+			],
+			"nameUser": "Luis",
+			"codeUser": "201813398",
+			"password": "1"
+		},
+		{
+			"courseList": [
+				{
+					"nameCourseTeacher": "Pedro costa",
+					"homeworkList": [
+						{
+							"nameHomework": "DERIVADAS",
+							"annotation": "Realizar la serie de ejercicios de derivadas del libro chapra pagina 27.",
+							"calification": 3.6999999999999997
+						},
+						{
+							"nameHomework": "TALLER POLINOMIOS",
+							"annotation": "Ejercicios libro chapra pagina 105.",
+							"calification": 4.3
+						},
+						{
+							"nameHomework": "CURVAS POLINOMICAS",
+							"annotation": "Realizar cada una de las graficas polinomicas en papel milimetrado.",
+							"calification": 4.5
+						}
+					],
+					"nameActivity": "CALCULO I",
+					"descriptionActivity": "OLA",
+					"scheduleActivity": "JUEVES#7#9%JUEVES#16#18"
+				},
+				{
+					"nameCourseTeacher": "Omaria Galindo",
+					"homeworkList": [
+					],
+					"nameActivity": "PROGRAMACION III",
+					"descriptionActivity": "Hola soy omaira galindo, su nueva profe :v\u003c3",
+					"scheduleActivity": "MARTES#10#12%MIERCOLES#12#2"
+				}
+			],
+			"nameUser": "Santiago",
+			"codeUser": "201812421",
+			"password": "1"
+		},
+		{
+			"nameUser": "Juan David Canas",
+			"codeUser": "20181234",
+			"password": "1"
+		}
+	],
+	"teachers": [
+		{
+			"nameUser": "Alexander",
+			"codeUser": "3456",
+			"password": "1"
+		},
+		{
+			"nameUser": "Hoyitos",
+			"codeUser": "2345",
+			"password": "1"
+		},
+		{
+			"nameUser": "Omaira",
+			"codeUser": "1234",
+			"password": "1"
+		}
+	],
+	"availableCourses": [
+		"CALCULO I",
+		"CALCULO II",
+		"PROGRAMACION III"
+	]
+}
