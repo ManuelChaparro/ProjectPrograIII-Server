@@ -130,6 +130,20 @@ public class Client extends Thread {
 			}
 			save();
 			break;
+		case "DELETE_COURSE_OR_HOMEWORK":
+			conection.sendUTF(modelsManager.getStudentCourses(conection.receiveUTF()));
+			break;
+		case "FIND_HOMEWORK_DELETE":
+			conection.sendUTF(modelsManager.getStudentHomeworks(conection.receiveUTF(), conection.receiveUTF()));
+			break;
+		case "CONFIRM_DELETE_COURSE":
+			modelsManager.cancelStudentCourse(conection.receiveUTF(), conection.receiveUTF());
+			save();
+			break;
+		case "CONFIRM_DELETE_HOMEWORK":
+			modelsManager.cancelStudentHomework(conection.receiveUTF(), conection.receiveUTF(), conection.receiveUTF());
+			save();
+			break;
 		default:
 			break;
 		}
