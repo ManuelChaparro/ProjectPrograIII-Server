@@ -185,7 +185,7 @@ public class ModelsManager {
 		String externalActivities = "";
 		ArrayList<ExternalActivity> externalActivitiesList = getStudent(codeStudent).getExternalActivityList();
 		for (int i = 0; i < externalActivitiesList.size(); i++) {
-			externalActivities += externalActivitiesList.get(i).getNameActivity() + ";";
+			externalActivities += externalActivitiesList.get(i).getNameActivity() + ";;;";
 		}
 		return externalActivities;
 	}
