@@ -81,8 +81,11 @@ public class Student extends User {
 
 	public void addHomework(String nameCourse, String nameHomework, String annotationHomework, double calification)
 			throws Exception {
-		Course course = getCourse(nameCourse);
-		course.addHomework(new Homework(nameHomework, annotationHomework, calification));
+		getCourse(nameCourse).addHomework(new Homework(nameHomework, annotationHomework, calification));
+	}
+
+	public void cancelHomework(String nameCourse, String nameHomework) throws Exception {
+		getCourse(nameCourse).cancelHomework(nameHomework);
 	}
 
 	private void initArrayExActivities() {
@@ -110,12 +113,13 @@ public class Student extends User {
 		}
 	}
 
-	public void modifyExternalActivityDescription(String nameExActivity, String descriptionExActivity)
+	public void modifyExternalActivity(String nameExActivity, String descriptionExActivity, String schedulerExActivity)
 			throws Exception {
 		getExternalActivity(nameExActivity).setDescriptionActivity(descriptionExActivity);
+		getExternalActivity(nameExActivity).setScheduleActivity(schedulerExActivity);
 	}
 
-	public void deleteExternalActivity(String nameExActivity) throws Exception {
+	public void cancelExternalActivity(String nameExActivity) throws Exception {
 		if (validateExistExAct(nameExActivity)) {
 			for (ExternalActivity exActivity : externalActivitiesList) {
 				if (exActivity.getNameActivity().equalsIgnoreCase(nameExActivity)) {
@@ -141,24 +145,24 @@ public class Student extends User {
 	}
 
 	public ArrayList<ExternalActivity> getExternalActivityList() {
-		return externalActivitiesList;
+		if (externalActivitiesList == null) {
+			externalActivitiesList = new ArrayList<>();
+			return externalActivitiesList;
+		} else {
+			return externalActivitiesList;
+		}
 	}
 
 	public double calculateAvgCourseCalification(String nameCourse) throws Exception {
 		double result = 0;
 		double sumatoryCalification = 0;
 		int quantityCalification = 0;
-		Course course = getCourse(nameCourse);
-		if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
-			for (Homework homework : course.getHomeworkList()) {
-				quantityCalification++;
-				sumatoryCalification += homework.getCalification();
-			}
-			result = sumatoryCalification / quantityCalification;
-			return result;
-		} else {
-			throw new Exception("El curso que desea calcular el promedio, no existe.");
+		for (Homework homework : getCourse(nameCourse).getHomeworkList()) {
+			quantityCalification++;
+			sumatoryCalification += homework.getCalification();
 		}
+		result = sumatoryCalification / quantityCalification;
+		return result;
 	}
 
 	public double calculateTotalAvgCalification() throws Exception {
