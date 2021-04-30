@@ -52,7 +52,7 @@ public class Course extends Activity {
 		}
 	}
 
-	public void deleteHomework(String nameHomework) throws Exception {
+	public void cancelHomework(String nameHomework) throws Exception {
 		if (validateExistHomework(nameHomework)) {
 			for (Homework homework : homeworkList) {
 				if (homework.getNameHomework().equalsIgnoreCase(nameHomework)) {
@@ -64,11 +64,8 @@ public class Course extends Activity {
 		}
 	}
 
-	public void modifyHomeworkAnnotation(String nameHomework, String annotation) throws Exception {
+	public void modifyHomework(String nameHomework, String annotation, double calification) throws Exception {
 		getHomework(nameHomework).setAnnotation(annotation);
-	}
-
-	public void modifyHomeworkCalification(String nameHomework, double calification) throws Exception {
 		getHomework(nameHomework).setCalification(calification);
 	}
 

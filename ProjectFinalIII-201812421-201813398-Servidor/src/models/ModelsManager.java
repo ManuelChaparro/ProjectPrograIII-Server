@@ -20,26 +20,6 @@ public class ModelsManager {
 		loadData();
 	}
 
-	private void loadData() {
-		archiveClass = GSONFileManager.readFile();
-		studentTree = new AVLtree<>(studentComparator());
-		ArrayList<Student> students = archiveClass.getStudents();
-		for (Student student : students) {
-			studentTree.insert(student);
-		}
-		teacherTree = new AVLtree<>(teacherComparator());
-		ArrayList<Teacher> teachers = archiveClass.getTeachers();
-		for (Teacher teacher : teachers) {
-			teacherTree.insert(teacher);
-		}
-		availableCourses = new AVLtree<>(stringComparator());
-		ArrayList<String> courses = archiveClass.getAvailableCourses();
-		for (String course : courses) {
-			availableCourses.insert(course);
-		}
-		courseGeneralList = archiveClass.getCourseGeneralList();
-	}
-
 	public void createStudent(Student student) throws Exception {
 		if (!studentTree.exist(student)) {
 			studentTree.insert(student);
@@ -63,8 +43,7 @@ public class ModelsManager {
 		return studentTree.exist(new Student(codeStudent));
 	}
 
-	public void createTeacher(String nameTeacher, String codeTeacher, String password) throws Exception {
-		Teacher teacher = new Teacher(nameTeacher, codeTeacher, password);
+	public void createTeacher(Teacher teacher) throws Exception {
 		if (!teacherTree.exist(teacher)) {
 			teacherTree.insert(teacher);
 		} else {
@@ -90,7 +69,7 @@ public class ModelsManager {
 		}
 	}
 
-	// metodo unicamente para crear y aï¿½adir asignatura a la lista general de
+	// metodo unicamente para crear y anadir asignatura a la lista general de
 	// asignaturas.
 	public void addCourseGeneralList(Course course) throws Exception {
 		if (!courseGeneralList.contains(course)) {
@@ -133,8 +112,7 @@ public class ModelsManager {
 
 	public String getStudentCourses(String codeStudent) throws Exception {
 		String courses = "";
-		Student student = getStudent(codeStudent);
-		for (Course course : student.getCourseList()) {
+		for (Course course : getStudent(codeStudent).getCourseList()) {
 			courses += course.getNameActivity() + ";";
 		}
 		return courses;
@@ -142,44 +120,20 @@ public class ModelsManager {
 
 	public String getStudentHomeworks(String codeStudent, String nameCourse) throws Exception {
 		String homeworks = "";
-		Student student = getStudent(codeStudent);
-		for (Course course : student.getCourseList()) {
-			if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
-				for (Homework homework : course.getHomeworkList()) {
-					homeworks += homework.getNameHomework() + ";";
-				}
-			}
+		for (Homework homework : getStudent(codeStudent).getCourse(nameCourse).getHomeworkList()) {
+			homeworks += homework.getNameHomework() + ";";
 		}
 		return homeworks;
 	}
 
 	public String getSpecificStudentHomework(String codeStudent, String nameCourse, String nameHomework)
 			throws Exception {
-		String completeHomework = "";
-		Student student = getStudent(codeStudent);
-		for (Course course : student.getCourseList()) {
-			if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
-				for (Homework homework : course.getHomeworkList()) {
-					if (homework.getNameHomework().equalsIgnoreCase(nameHomework)) {
-						completeHomework = homework.toString();
-					}
-				}
-			}
-		}
-		return completeHomework;
+		return getStudent(codeStudent).getCourse(nameCourse).getHomework(nameHomework).toString();
 	}
 
 	public void modifySpecificHomework(String codeStudent, String nameCourse, String nameHomework,
 			String annotationHomework, double calification) throws Exception {
-		Student student = getStudent(codeStudent);
-		if (student.getCodeUser().equalsIgnoreCase(codeStudent)) {
-			for (Course course : student.getCourseList()) {
-				if (course.getNameActivity().equalsIgnoreCase(nameCourse)) {
-					course.modifyHomeworkAnnotation(nameHomework, annotationHomework);
-					course.modifyHomeworkCalification(nameHomework, calification);
-				}
-			}
-		}
+		getStudent(codeStudent).getCourse(nameCourse).modifyHomework(nameHomework, nameHomework, calification);
 	}
 	// --------------------------------------------------------
 
@@ -206,50 +160,68 @@ public class ModelsManager {
 		return isExist;
 	}
 
-	// metodo nuevO para el caso de que el estudiante quiera cancelar la materia de
-//	su horario.
+//-----------Metodos para cancelar tarea/ asignatura
 	public void cancelStudentCourse(String codeStudent, String nameCourse) throws Exception {
 		getStudent(codeStudent).cancelCourse(nameCourse);
 	}
 
-	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
-	// asignarle una actividad externa.
-	public void addExternalActivity(String codeStudent, String nameExActivity, String descriptionExActivity,
-			String scheduleExActivity) throws Exception {
-		ExternalActivity exActivity = new ExternalActivity(nameExActivity, descriptionExActivity, scheduleExActivity);
-		getStudent(codeStudent).addExternalActivity(exActivity);
+	public void cancelStudentHomework(String codeStudent, String nameCourse, String nameHomework) throws Exception {
+		getStudent(codeStudent).cancelHomework(nameCourse, nameHomework);
 	}
 
-	// aca pasamos el codigo del estudiante para poder buscarlo y si es el caso
-	// obtener una actividad externa especifica.
-//	public ExternalActivity getExternalActivity(String codeStudent, String nameExActivity) throws Exception {
-//		Iterator<Student> itStudent = studentTree.inOrder();
-//		while (itStudent.hasNext()) {
-//			if (itStudent.next().getCodeUser().equalsIgnoreCase(codeStudent)) {
-//				return itStudent.next().getExternalActivity(nameExActivity);
-//			}
-//		}
-//		throw new Exception("No existe un estudiante con codigo: " + codeStudent);
-//	}
-//
+//--------------------------------------------------
+
+//-------------Metodos para Agregar / modificar actividad externa
+	public void addStudentExternalActivity(String codeStudent, String nameExActivity, String descriptionExActivity,
+			String scheduleExActivity) throws Exception {
+		getStudent(codeStudent)
+				.addExternalActivity(new ExternalActivity(nameExActivity, descriptionExActivity, scheduleExActivity));
+	}
+
+	public String getStudentExternalActivities(String codeStudent) throws Exception {
+		String externalActivities = "";
+		for (ExternalActivity externalActivity : getStudent(codeStudent).getExternalActivityList()) {
+			externalActivities += externalActivity.getNameActivity() + ";";
+		}
+		return externalActivities;
+	}
+
+	public String getStudentSpecificExternalActivity(String codeStudent, String nameExActivity) throws Exception {
+		return getStudent(codeStudent).getExternalActivity(nameExActivity).toString();
+	}
+
+	public void modifyExternalActivity(String codeStudent, String nameExActivity, String descriptionExActivity,
+			String schedulerExActivity) throws Exception {
+		getStudent(codeStudent).modifyExternalActivity(nameExActivity, descriptionExActivity, schedulerExActivity);
+	}
+
+//---------------------------------------------------------------
+
+//----------------Metodo para cancelar actividad-----------------
+	public void cancelExternalActivity(String codeStudent, String nameExActivity) throws Exception {
+		getStudent(codeStudent).cancelExternalActivity(nameExActivity);
+	}
+
+//---------------------------------------------------------------
+
 //	// Metodo para calcular el promedio de notas para la asignatura que se quiera.
-//	public double calculateAvgCourseCalification(String codeStudent, String nameCourse) throws Exception {
-//		return getStudent(codeStudent).calculateAvgCourseCalification(nameCourse);
-//	}
+	public double calculateAvgCourseCalification(String codeStudent, String nameCourse) throws Exception {
+		return getStudent(codeStudent).calculateAvgCourseCalification(nameCourse);
+	}
+
 //
 //	// Metodo para calcular el promedio general de un estudiante.
-//	public double calculateTotalAvgCalification(String codeStudent) throws Exception {
-//		return getStudent(codeStudent).calculateTotalAvgCalification();
-//	}
+	public double calculateTotalAvgCalification(String codeStudent) throws Exception {
+		return getStudent(codeStudent).calculateTotalAvgCalification();
+	}
 
-	// Metodo para que el docente pueda seleccionar la asignatura y pueda agregar
-	// descripcion y horario.
+//----------------------Metodo para asignar la materia al profesor
 	public void assignCourseTeacher(String nameTeacher, String nameCourse, String descriptionCourse,
 			String schedulerCourse) throws Exception {
 		boolean exist = false;
 		for (Course course : courseGeneralList) {
 			if (course.getNameActivity().equalsIgnoreCase(nameCourse)
-					&& course.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
+					&& !course.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
 				exist = true;
 			}
 		}
@@ -257,6 +229,66 @@ public class ModelsManager {
 			courseGeneralList.add(new Course(nameCourse, nameTeacher, descriptionCourse, schedulerCourse));
 			availableCourses.insert(nameCourse);
 		}
+	}
+
+//------------------------------------------------------------------
+
+//------------------------Metodo para que el profesor pueda cancelar la asignatura
+	public void cancelTeacherCourse(String nameTeacher, String nameCourse) {
+		for (Course course : courseGeneralList) {
+			if (course.getNameActivity().equalsIgnoreCase(nameCourse)
+					&& course.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
+				courseGeneralList.remove(course);
+				if (!isUniqueCourseTeacher(nameCourse)) {
+					availableCourses.delete(nameCourse);
+				}
+			}
+		}
+	}
+
+	private boolean isUniqueCourseTeacher(String nameCourse) {
+		for (Course course : courseGeneralList) {
+			if (course.getNameActivity().equalsIgnoreCase(nameCourse)
+					&& !course.getNameCourseTeacher().equalsIgnoreCase("")) {
+				return false;
+			}
+		}
+		return true;
+	}
+//-------------------------------------------------------------------------------
+
+//------------------Metodo para modificar el curso del profesor
+	public String getSpecificCourseTeacher(String nameCourse, String nameTeacher) {
+		String specificCourseTeacher = "";
+		for (Course course : courseGeneralList) {
+			if (course.getNameActivity().equalsIgnoreCase(nameCourse)
+					&& course.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
+				specificCourseTeacher = course.toString();
+			}
+		}
+		return specificCourseTeacher;
+	}
+	
+	public void modifyCourseTeacher(String nameCourse, String nameTeacher, String descriptionCourse,
+			String schedulerCourse) {
+		for (Course course : courseGeneralList) {
+			if (course.getNameActivity().equalsIgnoreCase(nameCourse)
+					&& course.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
+				course.setDescriptionActivity(descriptionCourse);
+				course.setScheduleActivity(schedulerCourse);
+			}
+		}
+	}
+//----------------------------------------------------------------
+	public String getInfoSchedule(String nameCourse, String nameTeacher) {
+		String schedule = "";
+		for (Course list : courseGeneralList) {
+			if (list.getNameActivity().equalsIgnoreCase(nameCourse)
+					&& list.getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
+				schedule += list.getScheduleActivity();
+			}
+		}
+		return schedule;
 	}
 
 	public ArrayList<Course> getCourseGeneralList() {
@@ -301,6 +333,26 @@ public class ModelsManager {
 		};
 	}
 
+	private void loadData() {
+		archiveClass = GSONFileManager.readFile();
+		studentTree = new AVLtree<>(studentComparator());
+		ArrayList<Student> students = archiveClass.getStudents();
+		for (Student student : students) {
+			studentTree.insert(student);
+		}
+		teacherTree = new AVLtree<>(teacherComparator());
+		ArrayList<Teacher> teachers = archiveClass.getTeachers();
+		for (Teacher teacher : teachers) {
+			teacherTree.insert(teacher);
+		}
+		availableCourses = new AVLtree<>(stringComparator());
+		ArrayList<String> courses = archiveClass.getAvailableCourses();
+		for (String course : courses) {
+			availableCourses.insert(course);
+		}
+		courseGeneralList = archiveClass.getCourseGeneralList();
+	}
+
 	public AVLtree<Student> getStudentTree() {
 		return studentTree;
 	}
@@ -311,16 +363,5 @@ public class ModelsManager {
 
 	public AVLtree<String> getAvailableCourse() {
 		return availableCourses;
-	}
-
-	public String getInfoSchedule(String course, String teacher) {
-		String schedule = "";
-		for (Course list : courseGeneralList) {
-			if (list.getNameActivity().equalsIgnoreCase(course)
-					&& list.getNameCourseTeacher().equalsIgnoreCase(teacher)) {
-				schedule += list.getScheduleActivity();
-			}
-		}
-		return schedule;
 	}
 }
