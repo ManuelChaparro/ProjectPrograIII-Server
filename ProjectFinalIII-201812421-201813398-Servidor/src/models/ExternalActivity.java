@@ -9,4 +9,10 @@ public class ExternalActivity extends Activity {
 	public ExternalActivity(String nameExActivity) {
 		super(nameExActivity);
 	}
+
+	@Override
+	public String toString() {
+		return getNameActivity() + "&" + getDescriptionActivity() + "&" + getScheduleActivity();
+	}
+
 }

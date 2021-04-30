@@ -8,7 +8,6 @@ public class AVLtree<T> {
 
 	private Node<T> root;
 	private Comparator<T> comparator;
-	private ArrayList<T> listTree;
 
 	public AVLtree(Comparator<T> comparator) {
 		root = null;
@@ -42,8 +41,7 @@ public class AVLtree<T> {
 					node = rotateRight(node);
 				}
 			}
-		} else
-			;
+		}
 		node.setHeight(max(height(node.getLeft()), height(node.getRight())) + 1);
 		return node;
 	}
@@ -216,16 +214,6 @@ public class AVLtree<T> {
 			showPost(auxNode.getRight());
 			System.out.println(auxNode.getData() + "-->");
 		}
-	}
-
-	private boolean isInArray(T data) {
-		boolean itIs = false;
-		for (T t : listTree) {
-			if (comparator.compare(t, data) == 0) {
-				itIs = true;
-			}
-		}
-		return itIs;
 	}
 
 	public int calculateHeight() {
