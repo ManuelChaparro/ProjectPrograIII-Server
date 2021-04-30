@@ -164,6 +164,7 @@ public class ModelsManager {
 
 //-----------Metodos para cancelar tarea/ asignatura
 	public void cancelStudentCourse(String codeStudent, String nameCourse) throws Exception {
+		getStudent(codeStudent).getCourse(nameCourse).getHomeworkList().clear();
 		getStudent(codeStudent).cancelCourse(nameCourse);
 	}
 
