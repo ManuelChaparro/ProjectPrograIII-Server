@@ -40,7 +40,7 @@ public class Client extends Thread {
 			Gson gson = new Gson();
 			String option = conection.receiveUTF();
 			Student user = gson.fromJson(option.toString(), Student.class);
-			if (modelsManager.isExistStudent(user.getCodeUser(), user.getPassword())) {
+			if (modelsManager.validateStudentLogin(user.getCodeUser(), user.getPassword())) {
 				conection.sendBoolean(true);
 				options();
 			} else {
@@ -61,6 +61,7 @@ public class Client extends Thread {
 				initApp();
 			}
 		}
+		conection.closeConection();
 	}
 
 	private void save() throws Exception {

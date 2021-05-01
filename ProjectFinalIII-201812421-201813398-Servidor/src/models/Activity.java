@@ -20,10 +20,6 @@ public class Activity {
 		return nameActivity;
 	}
 
-	public void setNameActivity(String nameActivity) {
-		this.nameActivity = nameActivity;
-	}
-
 	public String getDescriptionActivity() {
 		return descriptionActivity;
 	}

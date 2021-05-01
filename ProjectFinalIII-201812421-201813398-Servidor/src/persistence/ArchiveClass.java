@@ -5,7 +5,7 @@ import java.util.Iterator;
 import models.Course;
 import models.Student;
 import models.Teacher;
-import structures.AVLtree;
+import structures.AVLTree;
 
 public class ArchiveClass {
 
@@ -14,7 +14,7 @@ public class ArchiveClass {
 	private ArrayList<Teacher> teachers;
 	private ArrayList<String> availableCourses;
 
-	public ArchiveClass(AVLtree<Student> students, AVLtree<Teacher> teachers, AVLtree<String> courses,
+	public ArchiveClass(AVLTree<Student> students, AVLTree<Teacher> teachers, AVLTree<String> courses,
 			ArrayList<Course> courseGeneralList) {
 		this.students = new ArrayList<Student>();
 		this.teachers = new ArrayList<Teacher>();
@@ -23,7 +23,7 @@ public class ArchiveClass {
 		initSave(students, teachers, courses, courseGeneralList);
 	}
 
-	private void initSave(AVLtree<Student> students, AVLtree<Teacher> teachers, AVLtree<String> courses,
+	private void initSave(AVLTree<Student> students, AVLTree<Teacher> teachers, AVLTree<String> courses,
 			ArrayList<Course> courseGeneralList) {
 		saveStudents(students);
 		saveTeachers(teachers);
@@ -31,22 +31,22 @@ public class ArchiveClass {
 		this.courseGeneralList = courseGeneralList;
 	}
 
-	private void saveStudents(AVLtree<Student> auxStudents) {
+	private void saveStudents(AVLTree<Student> auxStudents) {
 		Iterator<Student> it = auxStudents.inOrder();
 		while (it.hasNext()) {
 			students.add((Student) it.next());
 		}
 	}
 
-	private void saveTeachers(AVLtree<Teacher> auxTeachers) {
+	private void saveTeachers(AVLTree<Teacher> auxTeachers) {
 		Iterator<Teacher> it = auxTeachers.inOrder();
 		while (it.hasNext()) {
 			teachers.add((Teacher) it.next());
 		}
 	}
 
-	private void saveCourses(AVLtree<String> courses) {
-		Iterator<String> it = courses.inOrder();
+	private void saveCourses(AVLTree<String> auxCourses) {
+		Iterator<String> it = auxCourses.inOrder();
 		while (it.hasNext()) {
 			availableCourses.add((String) it.next());
 		}
