@@ -243,6 +243,11 @@
 		{
 			"nameCourseTeacher": "Hoyitos",
 			"homeworkList": [
+				{
+					"nameHomework": "A",
+					"annotation": "a",
+					"calification": 3.3000000000000003
+				}
 			],
 			"nameActivity": "PROGRAMACION III",
 			"descriptionActivity": "Bienvenidas perras",
@@ -280,16 +285,6 @@
 		{
 			"nameCourseTeacher": "Pedro costa",
 			"homeworkList": [
-				{
-					"nameHomework": "DERIVADAS",
-					"annotation": "Realizar la serie de ejercicios de derivadas del libro chapra pagina 25.",
-					"calification": 3.9
-				},
-				{
-					"nameHomework": "",
-					"annotation": "",
-					"calification": 0.0
-				}
 			],
 			"nameActivity": "CALCULO I",
 			"descriptionActivity": "OLA",
@@ -305,8 +300,21 @@
 		{
 			"courseList": [
 				{
+					"nameCourseTeacher": "Maria Alejandra",
+					"homeworkList": [
+					],
+					"nameActivity": "CALCULO II",
+					"descriptionActivity": "OLA",
+					"scheduleActivity": "LUNES#10#12%VIERNES#7#8"
+				},
+				{
 					"nameCourseTeacher": "Hoyitos",
 					"homeworkList": [
+						{
+							"nameHomework": "A",
+							"annotation": "a",
+							"calification": 3.3000000000000003
+						}
 					],
 					"nameActivity": "PROGRAMACION III",
 					"descriptionActivity": "Bienvenidas perras",
