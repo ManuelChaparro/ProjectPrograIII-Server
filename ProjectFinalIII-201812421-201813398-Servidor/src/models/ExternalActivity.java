@@ -6,13 +6,8 @@ public class ExternalActivity extends Activity {
 		super(nameExActivity, descriptionExActivity, scheduleExActivity);
 	}
 
-	public ExternalActivity(String nameExActivity) {
-		super(nameExActivity);
-	}
-
 	@Override
 	public String toString() {
 		return getNameActivity() + "&" + getDescriptionActivity() + "&" + getScheduleActivity();
 	}
-
 }

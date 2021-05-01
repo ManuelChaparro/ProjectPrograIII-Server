@@ -19,20 +19,36 @@ public class Course extends Activity {
 		homeworkList = new ArrayList<Homework>();
 	}
 
-	public void initArrayHomeworkList() {
-		if (homeworkList == null) {
-			homeworkList = new ArrayList<Homework>();
-		}
-	}
-
-	public void setNameCourseTeacher(String nameCourseTeacher) {
-		this.nameCourseTeacher = nameCourseTeacher;
-	}
-
 	public String getNameCourseTeacher() {
 		return nameCourseTeacher;
 	}
 
+	public void addHomework(Homework homework) throws Exception {
+		initArrayHomeworkList();
+		if (!validateExistHomework(homework.getNameHomework())) {
+			homeworkList.add(homework);
+		} else {
+			throw new Exception();
+		}
+	}
+
+	public void deleteHomework(String nameHomework) throws Exception {
+		if (validateExistHomework(nameHomework)) {
+			for (int i = 0; i < homeworkList.size(); i++) {
+				if (homeworkList.get(i).getNameHomework().equalsIgnoreCase(nameHomework)) {
+					homeworkList.remove(homeworkList.get(i));
+				}
+			}
+		} else {
+			throw new Exception();
+		}
+	}
+	
+	public void modifyHomework(String nameHomework, String annotation, double calification) throws Exception {
+		getHomework(nameHomework).setAnnotation(annotation);
+		getHomework(nameHomework).setCalification(calification);
+	}
+	
 	public boolean validateExistHomework(String nameHomework) {
 		boolean exist = false;
 		for (int i = 0; i < homeworkList.size(); i++) {
@@ -41,32 +57,6 @@ public class Course extends Activity {
 			}
 		}
 		return exist;
-	}
-
-	public void addHomework(Homework homework) throws Exception {
-		initArrayHomeworkList();
-		if (!validateExistHomework(homework.getNameHomework())) {
-			homeworkList.add(homework);
-		} else {
-			throw new Exception("La tarea ya existe.");
-		}
-	}
-
-	public void cancelHomework(String nameHomework) throws Exception {
-		if (validateExistHomework(nameHomework)) {
-			for (int i = 0; i < homeworkList.size(); i++) {
-				if (homeworkList.get(i).getNameHomework().equalsIgnoreCase(nameHomework)) {
-					homeworkList.remove(homeworkList.get(i));
-				}
-			}
-		} else {
-			throw new Exception("La tarea que desea eliminar no existe.");
-		}
-	}
-
-	public void modifyHomework(String nameHomework, String annotation, double calification) throws Exception {
-		getHomework(nameHomework).setAnnotation(annotation);
-		getHomework(nameHomework).setCalification(calification);
 	}
 
 	public ArrayList<Homework> getHomeworkList() {
@@ -82,9 +72,15 @@ public class Course extends Activity {
 				}
 			}
 		} else {
-			throw new Exception("La tarea que busca no existe.");
+			throw new Exception();
 		}
 		return auxHomework;
+	}
+
+	private void initArrayHomeworkList() {
+		if (homeworkList == null) {
+			homeworkList = new ArrayList<Homework>();
+		}
 	}
 
 	@Override

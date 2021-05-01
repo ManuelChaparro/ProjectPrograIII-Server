@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 
-public class AVLtree<T> {
+public class AVLTree<T> {
 
 	private Node<T> root;
 	private Comparator<T> comparator;
 
-	public AVLtree(Comparator<T> comparator) {
+	public AVLTree(Comparator<T> comparator) {
 		root = null;
 		this.comparator = comparator;
 	}
