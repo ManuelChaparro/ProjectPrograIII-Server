@@ -61,6 +61,7 @@ public class Client extends Thread {
 				initApp();
 			}
 		}
+		conection.closeConection();
 	}
 
 	private void save() throws Exception {
