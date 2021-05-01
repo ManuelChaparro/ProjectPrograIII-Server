@@ -144,6 +144,44 @@ public class Client extends Thread {
 			modelsManager.cancelStudentHomework(conection.receiveUTF(), conection.receiveUTF(), conection.receiveUTF());
 			save();
 			break;
+		case "ADD_OR_MOD_ACTIVITY_ST":
+			conection.sendUTF(modelsManager.getStudentExternalActivities(conection.receiveUTF()));
+			break;
+		case "FIND_MODIFY_HOMEWORK":
+			conection.sendUTF(
+					modelsManager.getStudentSpecificExternalActivity(conection.receiveUTF(), conection.receiveUTF()));
+			break;
+		case "SEND_ACTIVITY":
+			if (conection.receiveBoolean()) {
+				code = conection.receiveUTF();
+				data = conection.receiveUTF().split(";;;");
+				modelsManager.addStudentExternalActivity(code, data[0], data[1], data[2]);
+			} else {
+				code = conection.receiveUTF();
+				data = conection.receiveUTF().split(";;;");
+				modelsManager.modifyExternalActivity(code, data[0], data[1], data[2]);
+			}
+			conection.sendUTF(modelsManager.getStudentExternalActivities(code));
+			save();
+			break;
+		case "DELETE_ACTIVITY_ST":
+			conection.sendUTF(modelsManager.getStudentExternalActivities(conection.receiveUTF()));
+			break;
+		case "CONFIRM_DELETE_ACTIVITY":
+			code = conection.receiveUTF();
+			String deleteActivity = conection.receiveUTF();
+			modelsManager.cancelExternalActivity(code, deleteActivity);
+			conection.sendUTF(modelsManager.getStudentExternalActivities(code));
+			save();
+			break;
+		case "AVG_ST":
+			conection.sendUTF(modelsManager.getStudentCourses(conection.receiveUTF()));
+			break;
+		case "CALCULATE_AVG":
+			code = conection.receiveUTF();
+			conection.sendUTF(String.valueOf(modelsManager.calculateAvgCourseCalification(code, conection.receiveUTF())));
+			conection.sendUTF(String.valueOf(modelsManager.calculateTotalAvgCalification(code)));
+			break;
 		default:
 			break;
 		}
