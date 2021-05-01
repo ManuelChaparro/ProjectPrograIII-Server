@@ -159,8 +159,11 @@ public class Student extends User {
 		double sumatoryCalification = 0;
 		int quantityCourses = 0;
 		for (int i = 0; i < courseList.size(); i++) {
-			quantityCourses++;
-			sumatoryCalification += calculateAvgCourseCalification(courseList.get(i).getNameActivity());
+			double avgCourse = calculateAvgCourseCalification(courseList.get(i).getNameActivity());
+			if (avgCourse>=0.0) {
+				quantityCourses++;			
+				sumatoryCalification += avgCourse;
+			}
 		}
 		result = sumatoryCalification / quantityCourses;
 		return result;
