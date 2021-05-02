@@ -34,6 +34,7 @@ public class Homework {
 
 	@Override
 	public String toString() {
-		return nameHomework + "&" + annotation + "&" + calification;
+		return nameHomework + ConstantsModels.SEPARATOR_Y_SPECIAL + annotation + ConstantsModels.SEPARATOR_Y_SPECIAL
+				+ calification;
 	}
 }

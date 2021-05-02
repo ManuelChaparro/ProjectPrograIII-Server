@@ -29,7 +29,7 @@ public class Client extends Thread {
 		try {
 			initApp();
 		} catch (IOException e) {
-			Logger.getGlobal().log(Level.INFO, "Una conexion finalizada.");
+			Logger.getGlobal().log(Level.INFO, ConstantsCnt.ERROR_MESSAGE_FAILED_CONNECTION);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -73,21 +73,22 @@ public class Client extends Thread {
 
 	private void options() throws Exception {
 		String option = conection.receiveUTF();
-		String code = "";
+		String code = ConstantsCnt.EMPTY_STRING;
 		switch (option) {
 		case "SHOW_SCHEDULE":
 			code = conection.receiveUTF();
-			conection.sendUTF(modelsManager.getStudentCompleteCourses(code) + "/////" + modelsManager.getStudentTotalExternalActivities(code));
+			conection.sendUTF(modelsManager.getStudentCompleteCourses(code) + ConstantsCnt.SEPARATOR_FIVE_SLEEP_LINES
+					+ modelsManager.getStudentTotalExternalActivities(code));
 			break;
 		case "ACTION_SCHEDULER_BTN":
 			code = conection.receiveUTF();
 			String info = conection.receiveUTF();
 			String course = modelsManager.getStudentSpecifiCourse(code, info);
-			if (course.equalsIgnoreCase("")) {
+			if (course.equalsIgnoreCase(ConstantsCnt.EMPTY_STRING)) {
 				String activity = modelsManager.getStudentSpecificExternalActivity(code, info);
 				conection.sendBoolean(true);
 				conection.sendUTF(activity);
-			}else {
+			} else {
 				conection.sendBoolean(false);
 				conection.sendUTF(course);
 			}
@@ -102,7 +103,7 @@ public class Client extends Thread {
 			conection.sendUTF(modelsManager.getInfoSchedule(conection.receiveUTF(), conection.receiveUTF()));
 			break;
 		case "INSERT_COURSE":
-			String[] data = conection.receiveUTF().split(";;;");
+			String[] data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
 			try {
 				modelsManager.assignStudentCourse(data[0], data[1], data[2]);
 				conection.sendBoolean(true);
@@ -121,7 +122,7 @@ public class Client extends Thread {
 			break;
 		case "FIND_INFO_HOMEWORK":
 			if (!conection.receiveBoolean()) {
-				String[] dataFindHomework = conection.receiveUTF().split(";;;");
+				String[] dataFindHomework = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
 				conection.sendUTF(modelsManager.getSpecificStudentHomework(dataFindHomework[0], dataFindHomework[1],
 						dataFindHomework[2]));
 			}
@@ -129,7 +130,7 @@ public class Client extends Thread {
 		case "ADD_OR_MODIFY_HOMEWORK":
 			if (conection.receiveBoolean()) {
 				try {
-					String[] newHomework = conection.receiveUTF().split(";;;");
+					String[] newHomework = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
 					modelsManager.addStudentHomework(newHomework[0], newHomework[1], newHomework[2], newHomework[3],
 							Double.parseDouble(newHomework[4]));
 					conection.sendBoolean(true);
@@ -138,7 +139,7 @@ public class Client extends Thread {
 				}
 			} else {
 				try {
-					String[] newHomework = conection.receiveUTF().split(";;;");
+					String[] newHomework = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
 					modelsManager.modifySpecificHomework(newHomework[0], newHomework[1], newHomework[2], newHomework[3],
 							Double.parseDouble(newHomework[4]));
 					conection.sendBoolean(true);
@@ -173,11 +174,11 @@ public class Client extends Thread {
 			try {
 				if (conection.receiveBoolean()) {
 					code = conection.receiveUTF();
-					data = conection.receiveUTF().split(";;;");
+					data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
 					modelsManager.addStudentExternalActivity(code, data[0], data[1], data[2]);
 				} else {
 					code = conection.receiveUTF();
-					data = conection.receiveUTF().split(";;;");
+					data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
 					modelsManager.modifyExternalActivity(code, data[0], data[1], data[2]);
 				}
 				conection.sendBoolean(true);
@@ -202,7 +203,8 @@ public class Client extends Thread {
 			break;
 		case "CALCULATE_AVG":
 			code = conection.receiveUTF();
-			conection.sendUTF(String.valueOf(modelsManager.calculateAvgCourseCalification(code, conection.receiveUTF())));
+			conection.sendUTF(
+					String.valueOf(modelsManager.calculateAvgCourseCalification(code, conection.receiveUTF())));
 			conection.sendUTF(String.valueOf(modelsManager.calculateTotalAvgCalification(code)));
 			break;
 		default:
