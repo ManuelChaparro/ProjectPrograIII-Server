@@ -27,6 +27,10 @@ public class ModelsManager {
 			throw new Exception();
 		}
 	}
+	
+	public String getStudentName(String codeStudent) throws Exception {
+		return getStudent(codeStudent).getNameUser();
+	}
 
 	public boolean validateStudentLogin(String codeStudent, String password) {
 		Iterator<Student> itStudent = studentTree.inOrder();
@@ -155,7 +159,7 @@ public class ModelsManager {
 
 	public void modifySpecificHomework(String codeStudent, String nameCourse, String nameHomework,
 			String annotationHomework, double calification) throws Exception {
-		getStudent(codeStudent).getCourse(nameCourse).modifyHomework(nameHomework, nameHomework, calification);
+		getStudent(codeStudent).getCourse(nameCourse).modifyHomework(nameHomework, annotationHomework, calification);
 	}
 
 	public void assignStudentCourse(String codeStudent, String nameCourse, String nameTeacher) throws Exception {

@@ -220,6 +220,9 @@ public class Student extends User {
 	public void addExternalActivity(ExternalActivity externalActivity) throws Exception {
 		initArrayExActivities();
 		String[] infoActivity = externalActivity.toString().split("&")[2].split("%");
+		for (String string : infoActivity) {
+			System.out.println(string);
+		}
 		if (!validateExistExActivity(externalActivity.getNameActivity()) && isAvailableSchedule(infoActivity)) {
 			forScheduleMatrix(infoActivity);
 			externalActivitiesList.add(externalActivity);
@@ -230,8 +233,16 @@ public class Student extends User {
 
 	public void modifyExternalActivity(String nameExActivity, String descriptionExActivity, String schedulerExActivity)
 			throws Exception {
-		getExternalActivity(nameExActivity).setDescriptionActivity(descriptionExActivity);
-		getExternalActivity(nameExActivity).setScheduleActivity(schedulerExActivity);
+		String[] infoSchedule = new String[1];
+		infoSchedule[0] = schedulerExActivity;
+		System.out.println("aqui: "+isAvailableSchedule(infoSchedule));
+		if (isAvailableSchedule(infoSchedule)) {
+			forScheduleMatrix(infoSchedule);
+			getExternalActivity(nameExActivity).setDescriptionActivity(descriptionExActivity);
+			getExternalActivity(nameExActivity).setScheduleActivity(schedulerExActivity);
+		}else {
+			throw new Exception();
+		}
 	}
 
 	public void cancelExternalActivity(String nameExActivity) throws Exception {
