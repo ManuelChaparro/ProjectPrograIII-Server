@@ -71,9 +71,24 @@ public class Client extends Thread {
 
 	private void options() throws Exception {
 		String option = conection.receiveUTF();
+		String code = "";
 		switch (option) {
 		case "SHOW_SCHEDULE":
-			conection.sendUTF("Mostrando horario...");
+			code = conection.receiveUTF();
+			conection.sendUTF(modelsManager.getStudentCompleteCourses(code) + "/////" + modelsManager.getStudentTotalExternalActivities(code));
+			break;
+		case "ACTION_SCHEDULER_BTN":
+			code = conection.receiveUTF();
+			String info = conection.receiveUTF();
+			String course = modelsManager.getStudentSpecifiCourse(code, info);
+			if (course.equalsIgnoreCase("")) {
+				String activity = modelsManager.getStudentSpecificExternalActivity(code, info);
+				conection.sendBoolean(true);
+				conection.sendUTF(activity);
+			}else {
+				conection.sendBoolean(false);
+				conection.sendUTF(course);
+			}
 			break;
 		case "ADD_COURSE_ST":
 			conection.sendUTF(modelsManager.getAvailableCourses());
@@ -98,8 +113,8 @@ public class Client extends Thread {
 			conection.sendUTF(modelsManager.getStudentCourses(conection.receiveUTF()));
 			break;
 		case "FIND_HOMEWORK":
-			String code = conection.receiveUTF();
-			String course = conection.receiveUTF();
+			code = conection.receiveUTF();
+			course = conection.receiveUTF();
 			conection.sendUTF(modelsManager.getStudentHomeworks(code, course));
 			break;
 		case "FIND_INFO_HOMEWORK":
@@ -153,14 +168,19 @@ public class Client extends Thread {
 					modelsManager.getStudentSpecificExternalActivity(conection.receiveUTF(), conection.receiveUTF()));
 			break;
 		case "SEND_ACTIVITY":
-			if (conection.receiveBoolean()) {
-				code = conection.receiveUTF();
-				data = conection.receiveUTF().split(";;;");
-				modelsManager.addStudentExternalActivity(code, data[0], data[1], data[2]);
-			} else {
-				code = conection.receiveUTF();
-				data = conection.receiveUTF().split(";;;");
-				modelsManager.modifyExternalActivity(code, data[0], data[1], data[2]);
+			try {
+				if (conection.receiveBoolean()) {
+					code = conection.receiveUTF();
+					data = conection.receiveUTF().split(";;;");
+					modelsManager.addStudentExternalActivity(code, data[0], data[1], data[2]);
+				} else {
+					code = conection.receiveUTF();
+					data = conection.receiveUTF().split(";;;");
+					modelsManager.modifyExternalActivity(code, data[0], data[1], data[2]);
+				}
+				conection.sendBoolean(true);
+			} catch (Exception e) {
+				conection.sendBoolean(false);
 			}
 			conection.sendUTF(modelsManager.getStudentExternalActivities(code));
 			save();
