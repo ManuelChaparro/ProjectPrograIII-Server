@@ -12,32 +12,24 @@ public class Homework {
 		this.calification = calification;
 	}
 
-	public Homework(String nameHomework) {
-		this.nameHomework = nameHomework;
-	}
-
 	public String getNameHomework() {
 		return nameHomework;
-	}
-
-	public void setNameHomework(String nameHomework) {
-		this.nameHomework = nameHomework;
-	}
-
-	public String getAnnotation() {
-		return annotation;
 	}
 
 	public void setAnnotation(String annotation) {
 		this.annotation = annotation;
 	}
 
-	public double getCalification() {
-		return calification;
+	public String getAnnotation() {
+		return annotation;
 	}
 
 	public void setCalification(double calification) {
 		this.calification = calification;
+	}
+
+	public double getCalification() {
+		return calification;
 	}
 
 	@Override
