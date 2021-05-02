@@ -42,6 +42,7 @@ public class Client extends Thread {
 			Student user = gson.fromJson(option.toString(), Student.class);
 			if (modelsManager.validateStudentLogin(user.getCodeUser(), user.getPassword())) {
 				conection.sendBoolean(true);
+				conection.sendUTF(modelsManager.getStudentName(conection.receiveUTF()));
 				options();
 			} else {
 				conection.sendBoolean(false);
@@ -56,6 +57,7 @@ public class Client extends Thread {
 				initApp();
 			} else {
 				modelsManager.createStudent(user);
+
 				save();
 				conection.sendBoolean(true);
 				initApp();
