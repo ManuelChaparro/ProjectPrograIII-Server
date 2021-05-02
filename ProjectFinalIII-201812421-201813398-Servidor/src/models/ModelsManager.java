@@ -101,6 +101,35 @@ public class ModelsManager {
 		}
 	}
 
+	public String getStudentTotalExternalActivities(String codeStudent) throws Exception {
+		String externalActivities = "";
+		ArrayList<ExternalActivity> externalActivitiesList = getStudent(codeStudent).getExternalActivityList();
+		for (int i = 0; i < externalActivitiesList.size(); i++) {
+			externalActivities += externalActivitiesList.get(i).toString() + ";";
+		}
+		return externalActivities;
+	}
+	
+	public String getStudentSpecifiCourse(String codeStudent, String nameCourse) throws Exception {
+		String courses = "";
+		ArrayList<Course> coursesList = getStudent(codeStudent).getCourseList();
+		for (int i = 0; i < coursesList.size(); i++) {
+			if(coursesList.get(i).getNameActivity().equalsIgnoreCase(nameCourse)) {
+				courses = coursesList.get(i).toString() + ";";
+			}
+		}
+		return courses;
+	}
+
+	public String getStudentCompleteCourses(String codeStudent) throws Exception {
+		String courses = "";
+		ArrayList<Course> coursesList = getStudent(codeStudent).getCourseList();
+		for (int i = 0; i < coursesList.size(); i++) {
+			courses += coursesList.get(i).toStringVariant() + ";";
+		}
+		return courses;
+	}
+
 	public String getStudentCourses(String codeStudent) throws Exception {
 		String courses = "";
 		ArrayList<Course> coursesList = getStudent(codeStudent).getCourseList();
