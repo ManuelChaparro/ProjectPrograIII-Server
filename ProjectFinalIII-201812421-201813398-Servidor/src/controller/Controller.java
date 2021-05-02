@@ -14,15 +14,15 @@ public class Controller {
 	public Controller() {
 		try {
 			server = new ServerSocket(PORT);
-			Logger.getGlobal().log(Level.INFO, "Arranco el servidor.");
+			Logger.getGlobal().log(Level.INFO, ConstantsCnt.SERVER_STAR_RUN);
 			while(true) {
 				Socket socket = server.accept();
 				new Client(socket).start();
-				Logger.getGlobal().log(Level.INFO, "Nueva conexion aceptada");
+				Logger.getGlobal().log(Level.INFO, ConstantsCnt.MESSAGE_ACCEPT_NEW_CONNECTION);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			Logger.getGlobal().log(Level.WARNING, "Servidor ya se encuentra corriendo.");
+			Logger.getGlobal().log(Level.WARNING, ConstantsCnt.ERROR_MESSAGE_SERVER_ALREADY_RUN);
 		}
 	}
 }

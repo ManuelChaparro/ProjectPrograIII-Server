@@ -15,7 +15,7 @@ public class Course extends Activity {
 
 	public Course(String nameCourse) {
 		super(nameCourse);
-		this.nameCourseTeacher = "";
+		this.nameCourseTeacher = ConstantsModels.EMPTY_STRING;
 		homeworkList = new ArrayList<Homework>();
 	}
 
@@ -43,12 +43,12 @@ public class Course extends Activity {
 			throw new Exception();
 		}
 	}
-	
+
 	public void modifyHomework(String nameHomework, String annotation, double calification) throws Exception {
 		getHomework(nameHomework).setAnnotation(annotation);
 		getHomework(nameHomework).setCalification(calification);
 	}
-	
+
 	public boolean validateExistHomework(String nameHomework) {
 		boolean exist = false;
 		for (int i = 0; i < homeworkList.size(); i++) {
@@ -84,11 +84,13 @@ public class Course extends Activity {
 	}
 
 	public String toStringVariant() {
-		return getNameActivity() + "&" + getDescriptionActivity() + "&" + getScheduleActivity();
+		return getNameActivity() + ConstantsModels.SEPARATOR_Y_SPECIAL + getDescriptionActivity()
+				+ ConstantsModels.SEPARATOR_Y_SPECIAL + getScheduleActivity();
 	}
-	
+
 	public String toString() {
-		return getNameActivity() + "&" + getNameCourseTeacher() + "&" + getDescriptionActivity() + "&"
+		return getNameActivity() + ConstantsModels.SEPARATOR_Y_SPECIAL + getNameCourseTeacher()
+				+ ConstantsModels.SEPARATOR_Y_SPECIAL + getDescriptionActivity() + ConstantsModels.SEPARATOR_Y_SPECIAL
 				+ getScheduleActivity();
 	}
 }

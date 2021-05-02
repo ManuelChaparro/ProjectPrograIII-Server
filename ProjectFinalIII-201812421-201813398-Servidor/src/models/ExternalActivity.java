@@ -8,6 +8,7 @@ public class ExternalActivity extends Activity {
 
 	@Override
 	public String toString() {
-		return getNameActivity() + "&" + getDescriptionActivity() + "&" + getScheduleActivity();
+		return getNameActivity() + ConstantsModels.SEPARATOR_Y_SPECIAL + getDescriptionActivity()
+				+ ConstantsModels.SEPARATOR_Y_SPECIAL + getScheduleActivity();
 	}
 }

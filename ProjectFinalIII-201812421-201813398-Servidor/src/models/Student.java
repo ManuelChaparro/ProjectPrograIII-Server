@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class Student extends User {
 
+	private static final int DAYS = 7;
+	private static final int HOURS = 15;
 	private int[][] sheduleAvailable;
 	private ArrayList<Course> courseList;
 	private ArrayList<ExternalActivity> externalActivitiesList;
@@ -12,115 +14,27 @@ public class Student extends User {
 		super(nameStudent, codeStudent, password);
 		courseList = new ArrayList<Course>();
 		externalActivitiesList = new ArrayList<ExternalActivity>();
-		sheduleAvailable = new int[15][7];
+		sheduleAvailable = new int[HOURS][DAYS];
 		initMatrix();
-	}
-
-	private void initMatrix() {
-		for (int i = 0; i < 15; i++) {
-			for (int j = 0; j < 7; j++) {
-				sheduleAvailable[i][j] = 0;
-			}
-		}
 	}
 
 	public Student(String codeStudent) {
 		super(codeStudent);
 		courseList = new ArrayList<Course>();
 		externalActivitiesList = new ArrayList<ExternalActivity>();
-		sheduleAvailable = new int[15][7];
+		sheduleAvailable = new int[HOURS][DAYS];
 		initMatrix();
 	}
 
 	public void addCourse(Course course) throws Exception {
 		initArrayCourseList();
-		String[] infoCourse = course.toString().split("&")[3].split("%");
+		String[] infoCourse = course.toString().split(ConstantsModels.SEPARATOR_Y_SPECIAL)[3]
+				.split(ConstantsModels.SEPARATOR_PERCENT);
 		if (!validateExistCourse(course.getNameActivity()) && isAvailableSchedule(infoCourse)) {
-			forScheduleMatrix(infoCourse);
+			travelScheduleMatrix(infoCourse);
 			courseList.add(course);
 		} else {
 			throw new Exception();
-		}
-	}
-
-	private void forScheduleMatrix(String[] schedule) {
-		for (int i = 0; i < schedule.length; i++) {
-			switch (schedule[i].split("#")[0]) {
-			case "LUNES":
-				setScheduleMatrix(schedule[i], 0);
-				break;
-			case "MARTES":
-				setScheduleMatrix(schedule[i], 1);
-				break;
-			case "MIERCOLES":
-				setScheduleMatrix(schedule[i], 2);
-				break;
-			case "JUEVES":
-				setScheduleMatrix(schedule[i], 3);
-				break;
-			case "VIERNES":
-				setScheduleMatrix(schedule[i], 4);
-				break;
-			case "SABADO":
-				setScheduleMatrix(schedule[i], 5);
-				break;
-			case "DOMINGO":
-				setScheduleMatrix(schedule[i], 6);
-				break;
-			default:
-				break;
-			}
-		}
-	}
-
-	private boolean isAvailableSchedule(String[] schedule) {
-		boolean isAvailable = true;
-		for (int i = 0; i < schedule.length; i++) {
-			switch (schedule[i].split("#")[0]) {
-			case "LUNES":
-				isAvailable = isScheduleMatrix(schedule[i], isAvailable, 0);
-				break;
-			case "MARTES":
-				isAvailable = isScheduleMatrix(schedule[i], isAvailable, 1);
-				break;
-			case "MIERCOLES":
-				isAvailable = isScheduleMatrix(schedule[i], isAvailable, 2);
-				break;
-			case "JUEVES":
-				isAvailable = isScheduleMatrix(schedule[i], isAvailable, 3);
-				break;
-			case "VIERNES":
-				isAvailable = isScheduleMatrix(schedule[i], isAvailable, 4);
-				break;
-			case "SABADO":
-				isAvailable = isScheduleMatrix(schedule[i], isAvailable, 5);
-				break;
-			case "DOMINGO":
-				isAvailable = isScheduleMatrix(schedule[i], isAvailable, 6);
-				break;
-			default:
-				break;
-			}
-		}
-		return isAvailable;
-	}
-
-	private boolean isScheduleMatrix(String schedule, boolean isAvailable, int k) {
-		int init = Integer.parseInt(schedule.split("#")[1]);
-		int end = Integer.parseInt(schedule.split("#")[2]);
-		for (int j = 0; j < end - init; j++) {
-			if (sheduleAvailable[(init + j) - 6][k] == 1) {
-				isAvailable = false;
-			}
-		}
-		return isAvailable;
-	}
-
-	private void setScheduleMatrix(String schedule, int k) {
-		int init = Integer.parseInt(schedule.split("#")[1]);
-		int end = Integer.parseInt(schedule.split("#")[2]);
-		for (int j = 0; j < end - init; j++) {
-			sheduleAvailable[(init + j) - 6][k] = 1;
 		}
 	}
 
@@ -128,50 +42,13 @@ public class Student extends User {
 		if (validateExistCourse(nameCourse)) {
 			for (int i = 0; i < courseList.size(); i++) {
 				if (courseList.get(i).getNameActivity().equalsIgnoreCase(nameCourse)) {
-					forDeleteMatrix(courseList.get(i).toString().split("&")[3].split("%"));
+					deleteMatrix(courseList.get(i).toString().split(ConstantsModels.SEPARATOR_Y_SPECIAL)[3]
+							.split(ConstantsModels.SEPARATOR_PERCENT));
 					courseList.remove(courseList.get(i));
 				}
 			}
 		} else {
 			throw new Exception();
-		}
-	}
-
-	private void forDeleteMatrix(String[] schedule) {
-		for (int i = 0; i < schedule.length; i++) {
-			switch (schedule[i].split("#")[0]) {
-			case "LUNES":
-				deleteScheduleMatrix(schedule[i], 0);
-				break;
-			case "MARTES":
-				deleteScheduleMatrix(schedule[i], 1);
-				break;
-			case "MIERCOLES":
-				deleteScheduleMatrix(schedule[i], 2);
-				break;
-			case "JUEVES":
-				deleteScheduleMatrix(schedule[i], 3);
-				break;
-			case "VIERNES":
-				deleteScheduleMatrix(schedule[i], 4);
-				break;
-			case "SABADO":
-				deleteScheduleMatrix(schedule[i], 5);
-				break;
-			case "DOMINGO":
-				deleteScheduleMatrix(schedule[i], 6);
-				break;
-			default:
-				break;
-			}
-		}
-	}
-
-	private void deleteScheduleMatrix(String schedule, int k) {
-		int init = Integer.parseInt(schedule.split("#")[1]);
-		int end = Integer.parseInt(schedule.split("#")[2]);
-		for (int j = 0; j < end - init; j++) {
-			sheduleAvailable[(init + j) - 6][k] = 0;
 		}
 	}
 
@@ -219,12 +96,10 @@ public class Student extends User {
 
 	public void addExternalActivity(ExternalActivity externalActivity) throws Exception {
 		initArrayExActivities();
-		String[] infoActivity = externalActivity.toString().split("&")[2].split("%");
-		for (String string : infoActivity) {
-			System.out.println(string);
-		}
+		String[] infoActivity = externalActivity.toString().split(ConstantsModels.SEPARATOR_Y_SPECIAL)[2]
+				.split(ConstantsModels.SEPARATOR_PERCENT);
 		if (!validateExistExActivity(externalActivity.getNameActivity()) && isAvailableSchedule(infoActivity)) {
-			forScheduleMatrix(infoActivity);
+			travelScheduleMatrix(infoActivity);
 			externalActivitiesList.add(externalActivity);
 		} else {
 			throw new Exception();
@@ -235,12 +110,11 @@ public class Student extends User {
 			throws Exception {
 		String[] infoSchedule = new String[1];
 		infoSchedule[0] = schedulerExActivity;
-		System.out.println("aqui: "+isAvailableSchedule(infoSchedule));
 		if (isAvailableSchedule(infoSchedule)) {
-			forScheduleMatrix(infoSchedule);
+			travelScheduleMatrix(infoSchedule);
 			getExternalActivity(nameExActivity).setDescriptionActivity(descriptionExActivity);
 			getExternalActivity(nameExActivity).setScheduleActivity(schedulerExActivity);
-		}else {
+		} else {
 			throw new Exception();
 		}
 	}
@@ -249,7 +123,8 @@ public class Student extends User {
 		if (validateExistExActivity(nameExActivity)) {
 			for (int i = 0; i < externalActivitiesList.size(); i++) {
 				if (externalActivitiesList.get(i).getNameActivity().equalsIgnoreCase(nameExActivity)) {
-					forDeleteMatrix(externalActivitiesList.get(i).toString().split("&")[2].split("%"));
+					deleteMatrix(externalActivitiesList.get(i).toString().split(ConstantsModels.SEPARATOR_Y_SPECIAL)[2]
+							.split(ConstantsModels.SEPARATOR_PERCENT));
 					externalActivitiesList.remove(externalActivitiesList.get(i));
 				}
 			}
@@ -323,7 +198,7 @@ public class Student extends User {
 			courseList = new ArrayList<Course>();
 		}
 		if (sheduleAvailable == null) {
-			sheduleAvailable = new int[15][7];
+			sheduleAvailable = new int[HOURS][DAYS];
 			initMatrix();
 		}
 	}
@@ -331,6 +206,133 @@ public class Student extends User {
 	private void initArrayExActivities() {
 		if (externalActivitiesList == null) {
 			externalActivitiesList = new ArrayList<ExternalActivity>();
+		}
+	}
+
+	private void initMatrix() {
+		for (int i = 0; i < HOURS; i++) {
+			for (int j = 0; j < DAYS; j++) {
+				sheduleAvailable[i][j] = 0;
+			}
+		}
+	}
+
+	private boolean isScheduleMatrix(String schedule, boolean isAvailable, int k) {
+		int init = Integer.parseInt(schedule.split(ConstantsModels.SEPARATOR_NUMERAL)[1]);
+		int end = Integer.parseInt(schedule.split(ConstantsModels.SEPARATOR_NUMERAL)[2]);
+		for (int j = 0; j < end - init; j++) {
+			if (sheduleAvailable[(init + j) - 6][k] == 1) {
+				isAvailable = false;
+			}
+		}
+		return isAvailable;
+	}
+
+	private void setScheduleMatrix(String schedule, int k) {
+		int init = Integer.parseInt(schedule.split(ConstantsModels.SEPARATOR_NUMERAL)[1]);
+		int end = Integer.parseInt(schedule.split(ConstantsModels.SEPARATOR_NUMERAL)[2]);
+		for (int j = 0; j < end - init; j++) {
+			sheduleAvailable[(init + j) - 6][k] = 1;
+		}
+	}
+
+	private void deleteScheduleMatrix(String schedule, int k) {
+		int init = Integer.parseInt(schedule.split(ConstantsModels.SEPARATOR_NUMERAL)[1]);
+		int end = Integer.parseInt(schedule.split(ConstantsModels.SEPARATOR_NUMERAL)[2]);
+		for (int j = 0; j < end - init; j++) {
+			sheduleAvailable[(init + j) - 6][k] = 0;
+		}
+	}
+
+	private void travelScheduleMatrix(String[] schedule) {
+		for (int i = 0; i < schedule.length; i++) {
+			switch (schedule[i].split(ConstantsModels.SEPARATOR_NUMERAL)[0]) {
+			case ConstantsModels.MONDAY:
+				setScheduleMatrix(schedule[i], 0);
+				break;
+			case ConstantsModels.TUESDAY:
+				setScheduleMatrix(schedule[i], 1);
+				break;
+			case ConstantsModels.WEDNESDAY:
+				setScheduleMatrix(schedule[i], 2);
+				break;
+			case ConstantsModels.THURSDAY:
+				setScheduleMatrix(schedule[i], 3);
+				break;
+			case ConstantsModels.FRIDAY:
+				setScheduleMatrix(schedule[i], 4);
+				break;
+			case ConstantsModels.SATURDAY:
+				setScheduleMatrix(schedule[i], 5);
+				break;
+			case ConstantsModels.SUNDAY:
+				setScheduleMatrix(schedule[i], 6);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	private boolean isAvailableSchedule(String[] schedule) {
+		boolean isAvailable = true;
+		for (int i = 0; i < schedule.length; i++) {
+			switch (schedule[i].split(ConstantsModels.SEPARATOR_NUMERAL)[0]) {
+			case ConstantsModels.MONDAY:
+				isAvailable = isScheduleMatrix(schedule[i], isAvailable, 0);
+				break;
+			case ConstantsModels.TUESDAY:
+				isAvailable = isScheduleMatrix(schedule[i], isAvailable, 1);
+				break;
+			case ConstantsModels.WEDNESDAY:
+				isAvailable = isScheduleMatrix(schedule[i], isAvailable, 2);
+				break;
+			case ConstantsModels.THURSDAY:
+				isAvailable = isScheduleMatrix(schedule[i], isAvailable, 3);
+				break;
+			case ConstantsModels.FRIDAY:
+				isAvailable = isScheduleMatrix(schedule[i], isAvailable, 4);
+				break;
+			case ConstantsModels.SATURDAY:
+				isAvailable = isScheduleMatrix(schedule[i], isAvailable, 5);
+				break;
+			case ConstantsModels.SUNDAY:
+				isAvailable = isScheduleMatrix(schedule[i], isAvailable, 6);
+				break;
+			default:
+				break;
+			}
+		}
+		return isAvailable;
+	}
+
+	private void deleteMatrix(String[] schedule) {
+		for (int i = 0; i < schedule.length; i++) {
+			switch (schedule[i].split(ConstantsModels.SEPARATOR_NUMERAL)[0]) {
+			case ConstantsModels.MONDAY:
+				deleteScheduleMatrix(schedule[i], 0);
+				break;
+			case ConstantsModels.TUESDAY:
+				deleteScheduleMatrix(schedule[i], 1);
+				break;
+			case ConstantsModels.WEDNESDAY:
+				deleteScheduleMatrix(schedule[i], 2);
+				break;
+			case ConstantsModels.THURSDAY:
+				deleteScheduleMatrix(schedule[i], 3);
+				break;
+			case ConstantsModels.FRIDAY:
+				deleteScheduleMatrix(schedule[i], 4);
+				break;
+			case ConstantsModels.SATURDAY:
+				deleteScheduleMatrix(schedule[i], 5);
+				break;
+			case ConstantsModels.SUNDAY:
+				deleteScheduleMatrix(schedule[i], 6);
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
