@@ -28,10 +28,6 @@ public class ModelsManager {
 		}
 	}
 
-	public String getStudentName(String codeStudent) throws Exception {
-		return getStudent(codeStudent).getNameUser();
-	}
-
 	public boolean validateStudentLogin(String codeStudent, String password) {
 		Iterator<Student> itStudent = studentTree.inOrder();
 		while (itStudent.hasNext()) {
@@ -45,6 +41,10 @@ public class ModelsManager {
 
 	public boolean isExistStudent(String codeStudent) {
 		return studentTree.exist(new Student(codeStudent));
+	}
+	
+	public String getStudentName(String codeStudent) throws Exception {
+		return getStudent(codeStudent).getNameUser();
 	}
 
 	private Student getStudent(String codeStudent) throws Exception {
