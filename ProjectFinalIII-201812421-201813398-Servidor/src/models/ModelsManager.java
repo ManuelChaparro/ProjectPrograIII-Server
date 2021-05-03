@@ -97,8 +97,8 @@ public class ModelsManager {
 	}
 
 	public void addStudentHomework(String codeStudent, String nameCourse, String nameHomework,
-			String annotationHomework, double calification) throws Exception {
-		if (!nameHomework.equalsIgnoreCase(ConstantsModels.EMPTY_STRING)) {
+			String annotationHomework, double calification) throws Exception {		
+		if (!nameHomework.equalsIgnoreCase(ConstantsModels.EMPTY_STRING)) {			
 			getStudent(codeStudent).addHomework(nameCourse, nameHomework, annotationHomework, calification);
 		} else {
 			throw new Exception();
@@ -158,7 +158,9 @@ public class ModelsManager {
 			for (int i = 0; i < courseGeneralList.size(); i++) {
 				if (courseGeneralList.get(i).getNameActivity().equalsIgnoreCase(nameCourse)
 						&& courseGeneralList.get(i).getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
-					getStudent(codeStudent).addCourse(courseGeneralList.get(i));
+					String description = courseGeneralList.get(i).getDescriptionActivity();
+					String schedule = courseGeneralList.get(i).getScheduleActivity();
+					getStudent(codeStudent).addCourse(new Course(nameCourse, nameTeacher, description, schedule));
 				}
 			}
 		} else {
@@ -177,7 +179,6 @@ public class ModelsManager {
 	}
 
 	public void cancelStudentCourse(String codeStudent, String nameCourse) throws Exception {
-		getStudent(codeStudent).getCourse(nameCourse).getHomeworkList().clear();
 		getStudent(codeStudent).cancelCourse(nameCourse);
 	}
 
@@ -300,14 +301,6 @@ public class ModelsManager {
 		}
 		return schedule;
 	}
-
-//	public void addCourseGeneralList(Course course) throws Exception {
-//		if (!courseGeneralList.contains(course)) {
-//			courseGeneralList.add(course);
-//		} else {
-//			throw new Exception();
-//		}
-//	}
 
 	public ArrayList<Course> getCourseGeneralList() {
 		return courseGeneralList;
