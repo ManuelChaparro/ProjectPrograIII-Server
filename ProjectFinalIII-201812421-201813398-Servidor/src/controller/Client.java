@@ -116,9 +116,7 @@ public class Client extends Thread {
 			conection.sendUTF(modelsManager.getStudentCourses(conection.receiveUTF()));
 			break;
 		case "FIND_HOMEWORK":
-			code = conection.receiveUTF();
-			course = conection.receiveUTF();
-			conection.sendUTF(modelsManager.getStudentHomeworks(code, course));
+			conection.sendUTF(modelsManager.getStudentHomeworks(conection.receiveUTF(), conection.receiveUTF()));
 			break;
 		case "FIND_INFO_HOMEWORK":
 			if (!conection.receiveBoolean()) {
