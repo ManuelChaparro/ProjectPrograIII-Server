@@ -124,11 +124,6 @@ public class Client extends Thread {
 		}
 	}
 
-	private void save() throws Exception {
-		GSONFileManager.writeFile(new ArchiveClass(modelsManager.getStudentTree(), modelsManager.getTeacherTree(),
-				modelsManager.getAvailableCourse(), modelsManager.getCourseGeneralList()));
-	}
-
 	private void options() throws Exception {
 		String option = conection.receiveUTF();
 		String code = ConstantsCnt.EMPTY_STRING;
@@ -370,5 +365,10 @@ public class Client extends Thread {
 			conection.sendBoolean(false);
 			save();
 		}
+	}
+	
+	private void save() throws Exception {
+		GSONFileManager.writeFile(new ArchiveClass(modelsManager.getStudentTree(), modelsManager.getTeacherTree(),
+				modelsManager.getAvailableCourse(), modelsManager.getCourseGeneralList()));
 	}
 }
