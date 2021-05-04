@@ -15,4 +15,8 @@ public class ConstantsModels {
 	public static final String SEPARATOR_PERCENT = "%";
 	public static final String SEPARATOR_THREE_DOT_AND_COMA = ";;;";
 	public static final String SEPARATOR_DOT_AND_COMA = ";";
+	public static final String SEPARATOR_BETWEEN_SCHEDULES = "  ->  ";
+	public static final char CHAR_SEPARATOR_LINE = '-';
+	public static final char CHAR_SEPARATOR_NUMERAL = '#';
+	public static final char CHAR_SEPARATOR_TWO_DOTS = ':';
 }

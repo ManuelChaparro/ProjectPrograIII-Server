@@ -50,7 +50,7 @@ public class ModelsManager {
 	public boolean isExistStudent(String codeStudent) {
 		return studentTree.exist(new Student(codeStudent));
 	}
-	
+
 	public boolean isExistTeacher(String codeTeacher) {
 		return teacherTree.exist(new Teacher(codeTeacher));
 	}
@@ -112,7 +112,7 @@ public class ModelsManager {
 		}
 		return courses;
 	}
-	
+
 	public String getCoursesTH(String nameTeacher) throws Exception {
 		String courses = ConstantsModels.EMPTY_STRING;
 		for (int i = 0; i < courseGeneralList.size(); i++) {
@@ -122,7 +122,7 @@ public class ModelsManager {
 		}
 		return courses;
 	}
-	
+
 	public String getSpecificCourseTH(String nameTeacher) throws Exception {
 		String courses = ConstantsModels.EMPTY_STRING;
 		for (int i = 0; i < courseGeneralList.size(); i++) {
@@ -283,29 +283,33 @@ public class ModelsManager {
 	public void assignCourseTeacher(String nameTeacher, String nameCourse, String descriptionCourse,
 			String schedulerCourse) throws Exception {
 		boolean exist = false;
-		String[] schedules = schedulerCourse.split("  ->  ");
+		String[] schedules = schedulerCourse.split(ConstantsModels.SEPARATOR_BETWEEN_SCHEDULES);
 		String formatSchedules = formaterSchedule(schedules);
-		
+		validateExistCourseTeacher(nameTeacher, nameCourse, descriptionCourse, exist, formatSchedules);
+	}
+
+	private void validateExistCourseTeacher(String nameTeacher, String nameCourse, String descriptionCourse,
+			boolean isExist, String formatSchedules) throws Exception {
 		for (int i = 0; i < courseGeneralList.size(); i++) {
 			if (courseGeneralList.get(i).getNameActivity().equalsIgnoreCase(nameCourse)
 					&& courseGeneralList.get(i).getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
-				exist = true;
+				isExist = true;
 			}
 		}
-		if (!exist) {
+		if (!isExist) {
 			courseGeneralList.add(new Course(nameCourse, nameTeacher, descriptionCourse, formatSchedules));
 			availableCourses.insert(nameCourse);
-		}else {
+		} else {
 			throw new Exception();
 		}
 	}
 
 	private String formaterSchedule(String[] schedules) {
-		String formatSchedules = "";
+		String formatSchedules = ConstantsModels.EMPTY_STRING;
 		for (String string : schedules) {
-			string = string.replace(':', '#');
-			string = string.replace('-', '#');
-			formatSchedules += string + "%";
+			string = string.replace(ConstantsModels.CHAR_SEPARATOR_TWO_DOTS, ConstantsModels.CHAR_SEPARATOR_NUMERAL);
+			string = string.replace(ConstantsModels.CHAR_SEPARATOR_LINE, ConstantsModels.CHAR_SEPARATOR_NUMERAL);
+			formatSchedules += string + ConstantsModels.SEPARATOR_PERCENT;
 		}
 		return formatSchedules;
 	}
@@ -318,13 +322,16 @@ public class ModelsManager {
 				if (isUniqueCourseTeacher(nameCourse)) {
 					if (!availableCourses.isEmpty()) {
 						availableCourses.delete(nameCourse);
-					}else {
+					} else {
 						throw new Exception();
 					}
 				}
 			}
 		}
+		cancelCourseAllStudents(nameTeacher, nameCourse);
+	}
 
+	private void cancelCourseAllStudents(String nameTeacher, String nameCourse) {
 		Iterator<Student> it = studentTree.inOrder();
 		while (it.hasNext()) {
 			Student student = (Student) it.next();
@@ -361,15 +368,19 @@ public class ModelsManager {
 
 	public void modifyCourseTeacher(String nameTeacher, String nameCourse, String descriptionCourse,
 			String schedulerCourse) {
-		String[] schedules = schedulerCourse.split("  ->  ");
+		String[] schedules = schedulerCourse.split(ConstantsModels.SEPARATOR_BETWEEN_SCHEDULES);
 		String formatSchedules = formaterSchedule(schedules);
-		for (int i = 0; i < courseGeneralList.size(); i++) {			
+		for (int i = 0; i < courseGeneralList.size(); i++) {
 			if (courseGeneralList.get(i).getNameActivity().equalsIgnoreCase(nameCourse)
 					&& courseGeneralList.get(i).getNameCourseTeacher().equalsIgnoreCase(nameTeacher)) {
 				courseGeneralList.get(i).setDescriptionActivity(descriptionCourse);
 				courseGeneralList.get(i).setScheduleActivity(formatSchedules);
 			}
 		}
+		modifyCourseDescriptionTeacher(nameTeacher, nameCourse, descriptionCourse);
+	}
+
+	private void modifyCourseDescriptionTeacher(String nameTeacher, String nameCourse, String descriptionCourse) {
 		Iterator<Student> it = studentTree.inOrder();
 		while (it.hasNext()) {
 			Student student = (Student) it.next();
