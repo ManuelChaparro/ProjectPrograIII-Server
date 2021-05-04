@@ -50,6 +50,10 @@ public class ModelsManager {
 	public boolean isExistStudent(String codeStudent) {
 		return studentTree.exist(new Student(codeStudent));
 	}
+	
+	public String getStudentName(String codeStudent) throws Exception {
+		return getStudent(codeStudent).getNameUser();
+	}
 
 	public boolean isExistTeacher(String codeTeacher) {
 		return teacherTree.exist(new Teacher(codeTeacher));

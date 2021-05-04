@@ -217,30 +217,30 @@ public class Student extends User {
 		}
 	}
 
-	private boolean isScheduleMatrix(String schedule, boolean isAvailable, int k) {
+	private boolean isScheduleMatrix(String schedule, boolean isAvailable, int position) {
 		int init = Integer.parseInt(schedule.split(ConstantsModels.SEPARATOR_NUMERAL)[1]);
 		int end = Integer.parseInt(schedule.split(ConstantsModels.SEPARATOR_NUMERAL)[2]);
 		for (int j = 0; j < end - init; j++) {
-			if (sheduleAvailable[(init + j) - 6][k] == 1) {
+			if (sheduleAvailable[(init + j) - 6][position] == 1) {
 				isAvailable = false;
 			}
 		}
 		return isAvailable;
 	}
 
-	private void setScheduleMatrix(String schedule, int k) {
+	private void setScheduleMatrix(String schedule, int position) {
 		int init = Integer.parseInt(schedule.split(ConstantsModels.SEPARATOR_NUMERAL)[1]);
 		int end = Integer.parseInt(schedule.split(ConstantsModels.SEPARATOR_NUMERAL)[2]);
 		for (int j = 0; j < end - init; j++) {
-			sheduleAvailable[(init + j) - 6][k] = 1;
+			sheduleAvailable[(init + j) - 6][position] = 1;
 		}
 	}
 
-	private void deleteScheduleMatrix(String schedule, int k) {
+	private void deleteDataScheduleMatrix(String schedule, int position) {
 		int init = Integer.parseInt(schedule.split(ConstantsModels.SEPARATOR_NUMERAL)[1]);
 		int end = Integer.parseInt(schedule.split(ConstantsModels.SEPARATOR_NUMERAL)[2]);
 		for (int j = 0; j < end - init; j++) {
-			sheduleAvailable[(init + j) - 6][k] = 0;
+			sheduleAvailable[(init + j) - 6][position] = 0;
 		}
 	}
 
@@ -310,25 +310,25 @@ public class Student extends User {
 		for (int i = 0; i < schedule.length; i++) {
 			switch (schedule[i].split(ConstantsModels.SEPARATOR_NUMERAL)[0]) {
 			case ConstantsModels.MONDAY:
-				deleteScheduleMatrix(schedule[i], 0);
+				deleteDataScheduleMatrix(schedule[i], 0);
 				break;
 			case ConstantsModels.TUESDAY:
-				deleteScheduleMatrix(schedule[i], 1);
+				deleteDataScheduleMatrix(schedule[i], 1);
 				break;
 			case ConstantsModels.WEDNESDAY:
-				deleteScheduleMatrix(schedule[i], 2);
+				deleteDataScheduleMatrix(schedule[i], 2);
 				break;
 			case ConstantsModels.THURSDAY:
-				deleteScheduleMatrix(schedule[i], 3);
+				deleteDataScheduleMatrix(schedule[i], 3);
 				break;
 			case ConstantsModels.FRIDAY:
-				deleteScheduleMatrix(schedule[i], 4);
+				deleteDataScheduleMatrix(schedule[i], 4);
 				break;
 			case ConstantsModels.SATURDAY:
-				deleteScheduleMatrix(schedule[i], 5);
+				deleteDataScheduleMatrix(schedule[i], 5);
 				break;
 			case ConstantsModels.SUNDAY:
-				deleteScheduleMatrix(schedule[i], 6);
+				deleteDataScheduleMatrix(schedule[i], 6);
 				break;
 			default:
 				break;
