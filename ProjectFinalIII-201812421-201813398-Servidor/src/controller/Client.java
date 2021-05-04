@@ -42,7 +42,7 @@ public class Client extends Thread {
 		case "TEACHER":
 			initTeacher();
 			break;
-		case "STUDENT":	
+		case "STUDENT":
 			initStudent();
 			break;
 		}
@@ -50,62 +50,78 @@ public class Client extends Thread {
 
 	private void initTeacher() throws JsonSyntaxException, IOException, Exception {
 		if (conection.receiveBoolean()) {
-			Gson gson = new Gson();
-			String option = conection.receiveUTF();
-			Teacher user = gson.fromJson(option.toString(), Teacher.class);
-			if (modelsManager.validateTeacherLogin(user.getCodeUser(), user.getPassword())) {
-				conection.sendBoolean(true);
-				conection.sendUTF(modelsManager.getTeacherName(conection.receiveUTF()));
-				options();
-			} else {
-				conection.sendBoolean(false);
-				initApp();
-			}
+			actionLoginTeacher();
 		} else {
-			Gson gson = new Gson();
-			String option = conection.receiveUTF();
-			Teacher user = gson.fromJson(option.toString(), Teacher.class);
-			if (modelsManager.isExistTeacher(user.getCodeUser())) {
-				conection.sendBoolean(false);
-				initApp();
-			} else {
-				modelsManager.createTeacher(user);
-				save();
-				conection.sendBoolean(true);
-				initApp();
-			}
+			actionCreateCountTeacher();
 		}
 		conection.closeConection();
 	}
 
+	private void actionLoginTeacher() throws IOException, Exception {
+		Gson gson = new Gson();
+		String option = conection.receiveUTF();
+		Teacher user = gson.fromJson(option.toString(), Teacher.class);
+		if (modelsManager.validateTeacherLogin(user.getCodeUser(), user.getPassword())) {
+			conection.sendBoolean(true);
+			conection.sendUTF(modelsManager.getTeacherName(conection.receiveUTF()));
+			options();
+		} else {
+			conection.sendBoolean(false);
+			initApp();
+		}
+	}
+
+	private void actionCreateCountTeacher() throws IOException, Exception {
+		Gson gson = new Gson();
+		String option = conection.receiveUTF();
+		Teacher user = gson.fromJson(option.toString(), Teacher.class);
+		if (modelsManager.isExistTeacher(user.getCodeUser())) {
+			conection.sendBoolean(false);
+			initApp();
+		} else {
+			modelsManager.createTeacher(user);
+			save();
+			conection.sendBoolean(true);
+			initApp();
+		}
+	}
+
 	private void initStudent() throws IOException, Exception {
 		if (conection.receiveBoolean()) {
-			Gson gson = new Gson();
-			String option = conection.receiveUTF();
-			Student user = gson.fromJson(option.toString(), Student.class);
-			if (modelsManager.validateStudentLogin(user.getCodeUser(), user.getPassword())) {
-				conection.sendBoolean(true);
-				conection.sendUTF(modelsManager.getStudentName(conection.receiveUTF()));
-				options();
-			} else {
-				conection.sendBoolean(false);
-				initApp();
-			}
+			actionLoginStudent();
 		} else {
-			Gson gson = new Gson();
-			String option = conection.receiveUTF();
-			Student user = gson.fromJson(option.toString(), Student.class);
-			if (modelsManager.isExistStudent(user.getCodeUser())) {
-				conection.sendBoolean(false);
-				initApp();
-			} else {
-				modelsManager.createStudent(user);
-				save();
-				conection.sendBoolean(true);
-				initApp();
-			}
+			actionCreateCountStudent();
 		}
 		conection.closeConection();
+	}
+
+	private void actionLoginStudent() throws IOException, Exception {
+		Gson gson = new Gson();
+		String option = conection.receiveUTF();
+		Student user = gson.fromJson(option.toString(), Student.class);
+		if (modelsManager.validateStudentLogin(user.getCodeUser(), user.getPassword())) {
+			conection.sendBoolean(true);
+			conection.sendUTF(modelsManager.getStudentName(conection.receiveUTF()));
+			options();
+		} else {
+			conection.sendBoolean(false);
+			initApp();
+		}
+	}
+
+	private void actionCreateCountStudent() throws IOException, Exception {
+		Gson gson = new Gson();
+		String option = conection.receiveUTF();
+		Student user = gson.fromJson(option.toString(), Student.class);
+		if (modelsManager.isExistStudent(user.getCodeUser())) {
+			conection.sendBoolean(false);
+			initApp();
+		} else {
+			modelsManager.createStudent(user);
+			save();
+			conection.sendBoolean(true);
+			initApp();
+		}
 	}
 
 	private void save() throws Exception {
@@ -118,22 +134,10 @@ public class Client extends Thread {
 		String code = ConstantsCnt.EMPTY_STRING;
 		switch (option) {
 		case "SHOW_SCHEDULE":
-			code = conection.receiveUTF();
-			conection.sendUTF(modelsManager.getStudentCompleteCourses(code) + ConstantsCnt.SEPARATOR_FIVE_SLEEP_LINES
-					+ modelsManager.getStudentTotalExternalActivities(code));
+			actionShowScheduleStudent();
 			break;
 		case "ACTION_SCHEDULER_BTN":
-			code = conection.receiveUTF();
-			String info = conection.receiveUTF();
-			String course = modelsManager.getStudentSpecifiCourse(code, info);
-			if (course.equalsIgnoreCase(ConstantsCnt.EMPTY_STRING)) {
-				String activity = modelsManager.getStudentSpecificExternalActivity(code, info);
-				conection.sendBoolean(true);
-				conection.sendUTF(activity);
-			} else {
-				conection.sendBoolean(false);
-				conection.sendUTF(course);
-			}
+			actionShowInfoBtnSchedule();
 			break;
 		case "ADD_COURSE_ST":
 			conection.sendUTF(modelsManager.getAvailableCourses());
@@ -145,14 +149,7 @@ public class Client extends Thread {
 			conection.sendUTF(modelsManager.getInfoSchedule(conection.receiveUTF(), conection.receiveUTF()));
 			break;
 		case "INSERT_COURSE":
-			String[] data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
-			try {
-				modelsManager.assignStudentCourse(data[0], data[1], data[2]);
-				conection.sendBoolean(true);
-				save();
-			} catch (Exception e) {
-				conection.sendBoolean(false);
-			}
+			actionAssignStudentCourse();
 			break;
 		case "MODIFY_COURSE_ST":
 			conection.sendUTF(modelsManager.getStudentCourses(conection.receiveUTF()));
@@ -161,33 +158,10 @@ public class Client extends Thread {
 			conection.sendUTF(modelsManager.getStudentHomeworks(conection.receiveUTF(), conection.receiveUTF()));
 			break;
 		case "FIND_INFO_HOMEWORK":
-			if (!conection.receiveBoolean()) {
-				String[] dataFindHomework = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
-				conection.sendUTF(modelsManager.getSpecificStudentHomework(dataFindHomework[0], dataFindHomework[1],
-						dataFindHomework[2]));
-			}
+			actionSendInfoSpecificHomework();
 			break;
 		case "ADD_OR_MODIFY_HOMEWORK":
-			if (conection.receiveBoolean()) {
-				try {
-					String[] newHomework = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
-					modelsManager.addStudentHomework(newHomework[0], newHomework[1], newHomework[2], newHomework[3],
-							Double.parseDouble(newHomework[4]));
-					conection.sendBoolean(true);
-				} catch (Exception e) {
-					conection.sendBoolean(false);
-				}
-			} else {
-				try {
-					String[] newHomework = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
-					modelsManager.modifySpecificHomework(newHomework[0], newHomework[1], newHomework[2], newHomework[3],
-							Double.parseDouble(newHomework[4]));
-					conection.sendBoolean(true);
-				} catch (Exception e) {
-					conection.sendBoolean(false);
-				}
-			}
-			save();
+			actionAddOrModHomeworkStudent();
 			break;
 		case "DELETE_COURSE_OR_HOMEWORK":
 			conection.sendUTF(modelsManager.getStudentCourses(conection.receiveUTF()));
@@ -211,89 +185,190 @@ public class Client extends Thread {
 					modelsManager.getStudentSpecificExternalActivity(conection.receiveUTF(), conection.receiveUTF()));
 			break;
 		case "SEND_ACTIVITY":
-			try {
-				if (conection.receiveBoolean()) {
-					code = conection.receiveUTF();
-					data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
-					modelsManager.addStudentExternalActivity(code, data[0], data[1], data[2]);
-				} else {
-					code = conection.receiveUTF();
-					data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
-					modelsManager.modifyExternalActivity(code, data[0], data[1], data[2]);
-				}
-				conection.sendBoolean(true);
-			} catch (Exception e) {
-				conection.sendBoolean(false);
-			}
-			conection.sendUTF(modelsManager.getStudentExternalActivities(code));
-			save();
+			actionAddOrModExternalActivity(code);
 			break;
 		case "DELETE_ACTIVITY_ST":
 			conection.sendUTF(modelsManager.getStudentExternalActivities(conection.receiveUTF()));
 			break;
 		case "CONFIRM_DELETE_ACTIVITY":
-			code = conection.receiveUTF();
-			String deleteActivity = conection.receiveUTF();
-			modelsManager.cancelExternalActivity(code, deleteActivity);
-			conection.sendUTF(modelsManager.getStudentExternalActivities(code));
-			save();
+			actionConfirmDeleteExternalActivity();
 			break;
 		case "AVG_ST":
 			conection.sendUTF(modelsManager.getStudentCourses(conection.receiveUTF()));
 			break;
 		case "CALCULATE_AVG":
-			code = conection.receiveUTF();
-			conection.sendUTF(
-					String.valueOf(modelsManager.calculateAvgCourseCalification(code, conection.receiveUTF())));
-			conection.sendUTF(String.valueOf(modelsManager.calculateTotalAvgCalification(code)));
+			actionCalculateAvgCalification();
 			break;
 		case "ADD_COURSE_TH":
 			conection.sendUTF(modelsManager.getAvailableCoursesTH());
 			break;
 		case "INSERT_COURSE_TH":
-			data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);	
-			try {
-				modelsManager.assignCourseTeacher(data[0], data[1], data[2], data[3]);
-				conection.sendBoolean(true);
-				save();
-			} catch (Exception e) {
-				conection.sendBoolean(false);
-			}
+			actionAssingCourseTeacher();
 			break;
 		case "MODIFY_COURSE_TH":
 			conection.sendUTF(modelsManager.getCoursesTH(conection.receiveUTF()));
 			break;
 		case "BTN_MODIFY":
-			String name = conection.receiveUTF();
-			course = conection.receiveUTF();
-			conection.sendUTF(modelsManager.getSpecificCourseTeacher(course, name));
+			actionModifySpecificCourseTeacher();
 			break;
 		case "CONFIRM_MODIFY_COURSE_TH":
-			data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);	
-			try {
-				modelsManager.modifyCourseTeacher(data[0], data[1], data[2], data[3]);
-				conection.sendBoolean(true);
-				save();
-			} catch (Exception e) {
-				conection.sendBoolean(false);
-			}
+			actionModifyCourseTeacher();
 			break;
 		case "DELETE_COURSE_BTN":
 			conection.sendUTF(modelsManager.getCoursesTH(conection.receiveUTF()));
 			break;
 		case "CONFIRM_DELETE_COURSE_TH":
-			try {
-				modelsManager.cancelTeacherCourse(conection.receiveUTF(), conection.receiveUTF());
-				conection.sendBoolean(true);
-				save();
-			} catch (Exception e) {
-				conection.sendBoolean(false);
-				save();
-			}
+			actionConfirmDeleteCourseTeacher();
 			break;
 		default:
 			break;
 		}
 		options();
+	}
+
+	private void actionShowInfoBtnSchedule() throws IOException, Exception {
+		String code;
+		code = conection.receiveUTF();
+		String info = conection.receiveUTF();
+		String course = modelsManager.getStudentSpecifiCourse(code, info);
+		if (course.equalsIgnoreCase(ConstantsCnt.EMPTY_STRING)) {
+			String activity = modelsManager.getStudentSpecificExternalActivity(code, info);
+			conection.sendBoolean(true);
+			conection.sendUTF(activity);
+		} else {
+			conection.sendBoolean(false);
+			conection.sendUTF(course);
+		}
+	}
+
+	private void actionShowScheduleStudent() throws IOException, Exception {
+		String code;
+		code = conection.receiveUTF();
+		conection.sendUTF(modelsManager.getStudentCompleteCourses(code) + ConstantsCnt.SEPARATOR_FIVE_SLEEP_LINES
+				+ modelsManager.getStudentTotalExternalActivities(code));
+	}
+
+	private void actionAssignStudentCourse() throws IOException {
+		String[] data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
+		try {
+			modelsManager.assignStudentCourse(data[0], data[1], data[2]);
+			conection.sendBoolean(true);
+			save();
+		} catch (Exception e) {
+			conection.sendBoolean(false);
+		}
+	}
+
+	private void actionSendInfoSpecificHomework() throws IOException, Exception {
+		if (!conection.receiveBoolean()) {
+			String[] dataFindHomework = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
+			conection.sendUTF(modelsManager.getSpecificStudentHomework(dataFindHomework[0], dataFindHomework[1],
+					dataFindHomework[2]));
+		}
+	}
+
+	private void actionAddOrModHomeworkStudent() throws IOException, Exception {
+		if (conection.receiveBoolean()) {
+			actionAddHomeworkStudent();
+		} else {
+			actionModifyHomeworkStudent();
+		}
+		save();
+	}
+
+	private void actionAddHomeworkStudent() throws IOException {
+		try {
+			String[] newHomework = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
+			modelsManager.addStudentHomework(newHomework[0], newHomework[1], newHomework[2], newHomework[3],
+					Double.parseDouble(newHomework[4]));
+			conection.sendBoolean(true);
+		} catch (Exception e) {
+			conection.sendBoolean(false);
+		}
+	}
+
+	private void actionModifyHomeworkStudent() throws IOException {
+		try {
+			String[] newHomework = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
+			modelsManager.modifySpecificHomework(newHomework[0], newHomework[1], newHomework[2], newHomework[3],
+					Double.parseDouble(newHomework[4]));
+			conection.sendBoolean(true);
+		} catch (Exception e) {
+			conection.sendBoolean(false);
+		}
+	}
+
+	private void actionAddOrModExternalActivity(String code) throws IOException, Exception {
+		try {
+			if (conection.receiveBoolean()) {
+				code = conection.receiveUTF();
+				String[] data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
+				modelsManager.addStudentExternalActivity(code, data[0], data[1], data[2]);
+			} else {
+				code = conection.receiveUTF();
+				String[] data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
+				modelsManager.modifyExternalActivity(code, data[0], data[1], data[2]);
+			}
+			conection.sendBoolean(true);
+		} catch (Exception e) {
+			conection.sendBoolean(false);
+		}
+		conection.sendUTF(modelsManager.getStudentExternalActivities(code));
+		save();
+	}
+
+	private void actionConfirmDeleteExternalActivity() throws IOException, Exception {
+		String code;
+		code = conection.receiveUTF();
+		String deleteActivity = conection.receiveUTF();
+		modelsManager.cancelExternalActivity(code, deleteActivity);
+		conection.sendUTF(modelsManager.getStudentExternalActivities(code));
+		save();
+	}
+
+	private void actionCalculateAvgCalification() throws IOException, Exception {
+		String code;
+		code = conection.receiveUTF();
+		conection.sendUTF(String.valueOf(modelsManager.calculateAvgCourseCalification(code, conection.receiveUTF())));
+		conection.sendUTF(String.valueOf(modelsManager.calculateTotalAvgCalification(code)));
+	}
+
+	private void actionAssingCourseTeacher() throws IOException {
+		String[] data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
+		try {
+			modelsManager.assignCourseTeacher(data[0], data[1], data[2], data[3]);
+			conection.sendBoolean(true);
+			save();
+		} catch (Exception e) {
+			conection.sendBoolean(false);
+		}
+	}
+
+	private void actionModifySpecificCourseTeacher() throws IOException {
+		String name = conection.receiveUTF();
+		String course = conection.receiveUTF();
+		conection.sendUTF(modelsManager.getSpecificCourseTeacher(course, name));
+	}
+
+	private void actionModifyCourseTeacher() throws IOException {
+		String[] data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
+		try {
+			modelsManager.modifyCourseTeacher(data[0], data[1], data[2], data[3]);
+			conection.sendBoolean(true);
+			save();
+		} catch (Exception e) {
+			conection.sendBoolean(false);
+		}
+	}
+
+	private void actionConfirmDeleteCourseTeacher() throws IOException, Exception {
+		try {
+			modelsManager.cancelTeacherCourse(conection.receiveUTF(), conection.receiveUTF());
+			conection.sendBoolean(true);
+			save();
+		} catch (Exception e) {
+			conection.sendBoolean(false);
+			save();
+		}
 	}
 }
