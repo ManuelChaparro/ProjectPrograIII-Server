@@ -6,9 +6,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import models.ModelsManager;
 import models.Student;
+import models.Teacher;
 import net.Conection;
 import persistence.ArchiveClass;
 import persistence.GSONFileManager;
@@ -36,6 +38,47 @@ public class Client extends Thread {
 	}
 
 	private void initApp() throws Exception {
+		switch (conection.receiveUTF()) {
+		case "TEACHER":
+			initTeacher();
+			break;
+		case "STUDENT":	
+			initStudent();
+			break;
+		}
+	}
+
+	private void initTeacher() throws JsonSyntaxException, IOException, Exception {
+		if (conection.receiveBoolean()) {
+			Gson gson = new Gson();
+			String option = conection.receiveUTF();
+			Teacher user = gson.fromJson(option.toString(), Teacher.class);
+			if (modelsManager.validateTeacherLogin(user.getCodeUser(), user.getPassword())) {
+				conection.sendBoolean(true);
+				conection.sendUTF(modelsManager.getTeacherName(conection.receiveUTF()));
+				options();
+			} else {
+				conection.sendBoolean(false);
+				initApp();
+			}
+		} else {
+			Gson gson = new Gson();
+			String option = conection.receiveUTF();
+			Teacher user = gson.fromJson(option.toString(), Teacher.class);
+			if (modelsManager.isExistTeacher(user.getCodeUser())) {
+				conection.sendBoolean(false);
+				initApp();
+			} else {
+				modelsManager.createTeacher(user);
+				save();
+				conection.sendBoolean(true);
+				initApp();
+			}
+		}
+		conection.closeConection();
+	}
+
+	private void initStudent() throws IOException, Exception {
 		if (conection.receiveBoolean()) {
 			Gson gson = new Gson();
 			String option = conection.receiveUTF();
@@ -57,7 +100,6 @@ public class Client extends Thread {
 				initApp();
 			} else {
 				modelsManager.createStudent(user);
-
 				save();
 				conection.sendBoolean(true);
 				initApp();
@@ -204,6 +246,50 @@ public class Client extends Thread {
 			conection.sendUTF(
 					String.valueOf(modelsManager.calculateAvgCourseCalification(code, conection.receiveUTF())));
 			conection.sendUTF(String.valueOf(modelsManager.calculateTotalAvgCalification(code)));
+			break;
+		case "ADD_COURSE_TH":
+			conection.sendUTF(modelsManager.getAvailableCoursesTH());
+			break;
+		case "INSERT_COURSE_TH":
+			data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);	
+			try {
+				modelsManager.assignCourseTeacher(data[0], data[1], data[2], data[3]);
+				conection.sendBoolean(true);
+				save();
+			} catch (Exception e) {
+				conection.sendBoolean(false);
+			}
+			break;
+		case "MODIFY_COURSE_TH":
+			conection.sendUTF(modelsManager.getCoursesTH(conection.receiveUTF()));
+			break;
+		case "BTN_MODIFY":
+			String name = conection.receiveUTF();
+			course = conection.receiveUTF();
+			conection.sendUTF(modelsManager.getSpecificCourseTeacher(course, name));
+			break;
+		case "CONFIRM_MODIFY_COURSE_TH":
+			data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);	
+			try {
+				modelsManager.modifyCourseTeacher(data[0], data[1], data[2], data[3]);
+				conection.sendBoolean(true);
+				save();
+			} catch (Exception e) {
+				conection.sendBoolean(false);
+			}
+			break;
+		case "DELETE_COURSE_BTN":
+			conection.sendUTF(modelsManager.getCoursesTH(conection.receiveUTF()));
+			break;
+		case "CONFIRM_DELETE_COURSE_TH":
+			try {
+				modelsManager.cancelTeacherCourse(conection.receiveUTF(), conection.receiveUTF());
+				conection.sendBoolean(true);
+				save();
+			} catch (Exception e) {
+				conection.sendBoolean(false);
+				save();
+			}
 			break;
 		default:
 			break;
