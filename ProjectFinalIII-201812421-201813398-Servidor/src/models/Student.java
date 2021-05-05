@@ -94,6 +94,7 @@ public class Student extends User {
 		getCourse(nameCourse).deleteHomework(nameHomework);
 	}
 
+	
 	public void addExternalActivity(ExternalActivity externalActivity) throws Exception {
 		initArrayExActivities();
 		String[] infoActivity = externalActivity.toString().split(ConstantsModels.SEPARATOR_Y_SPECIAL)[2]

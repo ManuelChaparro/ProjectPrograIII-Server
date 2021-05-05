@@ -299,12 +299,21 @@ public class Client extends Thread {
 				code = conection.receiveUTF();
 				String[] data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
 				modelsManager.addStudentExternalActivity(code, data[0], data[1], data[2]);
+				conection.sendBoolean(true);
 			} else {
 				code = conection.receiveUTF();
 				String[] data = conection.receiveUTF().split(ConstantsCnt.SEPARATOR_THREE_DOT_AND_COMA);
-				modelsManager.modifyExternalActivity(code, data[0], data[1], data[2]);
+				String scheduleOriginal = modelsManager.getStudentSpecificExternalActivity(code, data[0]).split("&")[2];
+				String descriptionOriginal = modelsManager.getStudentSpecificExternalActivity(code, data[0]).split("&")[1];
+				modelsManager.cancelExternalActivity(code, data[0]);
+				try {
+					modelsManager.addStudentExternalActivity(code, data[0], data[1], data[2]);
+					conection.sendBoolean(true);
+				} catch (Exception e) {
+					modelsManager.addStudentExternalActivity(code, data[0], descriptionOriginal, scheduleOriginal);
+					conection.sendBoolean(false);
+				}
 			}
-			conection.sendBoolean(true);
 		} catch (Exception e) {
 			conection.sendBoolean(false);
 		}
@@ -316,6 +325,7 @@ public class Client extends Thread {
 		String code;
 		code = conection.receiveUTF();
 		String deleteActivity = conection.receiveUTF();
+
 		modelsManager.cancelExternalActivity(code, deleteActivity);
 		conection.sendUTF(modelsManager.getStudentExternalActivities(code));
 		save();
@@ -366,7 +376,7 @@ public class Client extends Thread {
 			save();
 		}
 	}
-	
+
 	private void save() throws Exception {
 		GSONFileManager.writeFile(new ArchiveClass(modelsManager.getStudentTree(), modelsManager.getTeacherTree(),
 				modelsManager.getAvailableCourse(), modelsManager.getCourseGeneralList()));
